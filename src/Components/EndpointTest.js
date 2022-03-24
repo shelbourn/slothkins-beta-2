@@ -8,21 +8,42 @@ import './_styles/EndpointTest.css';
 const EndpointTest = () => {
     // const [users, setUsers] = useState({});
     const [isJerryTrue, setIsJerryTrue] = useState(false);
+    const [cryptoNames, setCryptoNames] = useState([]);
 
-    const handleClick = async () => {
+    const handleCryptoNames = async () => {
         try {
             const response = await axios.get(
                 'https://slothkins-beta-2.herokuapp.com/crypto-names'
             );
             if (response.data) {
                 // Retrieves Array of Crypto Names
-                const testData = Object.values(response.data[0]);
-                console.log(testData);
+                const testData = response.data[0]['array'];
+
+                setCryptoNames(testData);
             }
         } catch (error) {
             console.log(error);
         }
     };
+
+    console.log(cryptoNames);
+
+    const handleCryptoPrices = async () => {
+        for (const name in cryptoNames) {
+            try {
+                const response = await axios.get(
+                    `https://slothkins-beta-2.herokuapp.com/all-crypto-prices?currencyName=${cryptoNames[name]}`
+                );
+                if (response.data) {
+                    console.log(response.data);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
+    console.log(cryptoNames);
 
     const isYourMamaTrue = () => {
         setIsJerryTrue((prev) => !prev);
@@ -36,11 +57,18 @@ const EndpointTest = () => {
                 <Image src={MyBaby} alt="Sky loves Dad" size="small" />
             )}
             <Button
-                onClick={handleClick}
+                onClick={handleCryptoNames}
                 variant="contained"
                 className="endpointTest"
             >
-                Endpoint Test
+                Get All Crypto Names
+            </Button>
+            <Button
+                onClick={handleCryptoPrices}
+                variant="contained"
+                className="endpointTest"
+            >
+                Get All Crypto Prices
             </Button>
         </>
     );
