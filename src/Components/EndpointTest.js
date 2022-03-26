@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
 import Image from 'material-ui-image';
+import { observer } from 'mobx-react-lite';
+
 import MyBaby from '../Assets/MyBaby.jpg';
 import { useStore } from '../Stores/StoreFunctions';
 
@@ -12,7 +14,7 @@ const EndpointTest = () => {
 
     // const [users, setUsers] = useState({});
     const [isJerryTrue, setIsJerryTrue] = useState(false);
-    const [cryptoNames, setCryptoNames] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const handleCryptoNames = async () => {
         try {
@@ -21,32 +23,34 @@ const EndpointTest = () => {
             );
             if (response.data) {
                 // Retrieves Array of Crypto Names
-                const testData = response.data[0]['array'];
-
-                setCryptoNames(testData);
+                CryptoStore.setCryptoNames(response.data[0]['array']);
+                CryptoStore.setIsLoaded('cryptoNames', true);
             }
         } catch (error) {
             console.log(error);
         }
     };
 
-    console.log(cryptoNames);
-    console.log(CryptoStore.cryptoTest);
-
     const handleCryptoPrices = async () => {
-        for (const name in cryptoNames) {
+        for (const name in CryptoStore.cryptoNames) {
             try {
                 const response = await axios.get(
-                    `https://slothkins-beta-2.herokuapp.com/all-crypto-prices?currencyName=${cryptoNames[name]}`
+                    `https://slothkins-beta-2.herokuapp.com/all-crypto-prices?currencyName=${CryptoStore.cryptoNames[name]}`
                 );
                 if (response.data) {
-                    console.log(response.data);
+                    const { array } = response.data[0];
+                    CryptoStore.setCryptoPrice(
+                        CryptoStore.cryptoNames[name],
+                        array
+                    );
                 }
             } catch (error) {
                 console.log(error);
             }
         }
     };
+
+    console.log(CryptoStore.cryptoPrices);
 
     const isYourMamaTrue = () => {
         setIsJerryTrue((prev) => !prev);
@@ -68,6 +72,7 @@ const EndpointTest = () => {
                 onClick={handleCryptoPrices}
                 variant="contained"
                 className="endpointTest"
+                disabled={!CryptoStore.loaded.cryptoNames}
             >
                 Get All Crypto Prices
             </Button>
@@ -75,4 +80,4 @@ const EndpointTest = () => {
     );
 };
 
-export default EndpointTest;
+export default observer(EndpointTest);
