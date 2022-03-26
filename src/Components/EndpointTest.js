@@ -3,9 +3,13 @@ import axios from 'axios';
 import Button from '@mui/material/Button';
 import Image from 'material-ui-image';
 import MyBaby from '../Assets/MyBaby.jpg';
+import { useStore } from '../Stores/StoreFunctions';
+
 import './_styles/EndpointTest.css';
 
 const EndpointTest = () => {
+    const { CryptoStore } = useStore();
+
     // const [users, setUsers] = useState({});
     const [isJerryTrue, setIsJerryTrue] = useState(false);
     const [cryptoNames, setCryptoNames] = useState([]);
@@ -27,6 +31,7 @@ const EndpointTest = () => {
     };
 
     console.log(cryptoNames);
+    console.log(CryptoStore.cryptoTest);
 
     const handleCryptoPrices = async () => {
         for (const name in cryptoNames) {
@@ -43,13 +48,9 @@ const EndpointTest = () => {
         }
     };
 
-    console.log(cryptoNames);
-
     const isYourMamaTrue = () => {
         setIsJerryTrue((prev) => !prev);
     };
-
-    console.log(isJerryTrue);
 
     return (
         <>

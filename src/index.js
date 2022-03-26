@@ -7,10 +7,11 @@ import '@fontsource/roboto/700.css';
 import './index.css';
 // import App from './App';
 import Routing from './Router/Routing';
+import { storeContext, stores } from './Stores/StoreFunctions';
 
 ReactDOM.render(
-    <React.StrictMode>
+    <storeContext.Provider value={stores}>
         <Routing />
-    </React.StrictMode>,
+    </storeContext.Provider>,
     document.getElementById('root')
 );
