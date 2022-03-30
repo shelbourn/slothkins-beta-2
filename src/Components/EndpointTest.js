@@ -12,17 +12,15 @@ import './_styles/EndpointTest.css';
 const EndpointTest = () => {
     const { CryptoStore } = useStore();
 
-    // const [users, setUsers] = useState({});
-    const [isJerryTrue, setIsJerryTrue] = useState(false);
-    const [isLoaded, setIsLoaded] = useState(false);
-
+    /***
+     * Retrieves all crypto names and hydrates the CryptoStore
+     */
     const handleCryptoNames = async () => {
         try {
             const response = await axios.get(
                 'https://slothkins-beta-2.herokuapp.com/crypto-names'
             );
             if (response.data) {
-                // Retrieves Array of Crypto Names
                 CryptoStore.setCryptoNames(response.data[0]['array']);
                 CryptoStore.setIsLoaded('cryptoNames', true);
             }
@@ -31,6 +29,9 @@ const EndpointTest = () => {
         }
     };
 
+    /***
+     * Retrieves all crypto priceve by ticker and hydrates the CryptoStore
+     */
     const handleCryptoPrices = async () => {
         for (const name in CryptoStore.cryptoNames) {
             try {
@@ -48,19 +49,21 @@ const EndpointTest = () => {
                 console.log(error);
             }
         }
+        CryptoStore.setIsLoaded('cryptoPrices', true);
     };
 
-    console.log(CryptoStore.cryptoPrices);
-
-    const isYourMamaTrue = () => {
-        setIsJerryTrue((prev) => !prev);
+    const handleCryptoPercentChange = () => {
+        CryptoStore.setCryptoPercentChange();
     };
+
+    const handleCalculateAnnualMeanReturns = () => {
+        CryptoStore.setAnnualMeanReturns();
+    };
+
+    console.log(CryptoStore.annualMeanReturns);
 
     return (
         <>
-            {isJerryTrue && (
-                <Image src={MyBaby} alt="Sky loves Dad" size="small" />
-            )}
             <Button
                 onClick={handleCryptoNames}
                 variant="contained"
@@ -75,6 +78,30 @@ const EndpointTest = () => {
                 disabled={!CryptoStore.loaded.cryptoNames}
             >
                 Get All Crypto Prices
+            </Button>
+            <Button
+                onClick={handleCryptoPercentChange}
+                variant="contained"
+                className="endpointTest"
+                disabled={!CryptoStore.loaded.cryptoPrices}
+            >
+                Calculate all percent changes in crypto prices
+            </Button>
+            <Button
+                onClick={handleCalculateAnnualMeanReturns}
+                variant="contained"
+                className="endpointTest"
+                disabled={!CryptoStore.loaded.cryptoPercentChange}
+            >
+                Calculate annual mean returns for all crypto prices
+            </Button>
+            <Button
+                onClick={handleCalculateAnnualMeanReturns}
+                variant="contained"
+                className="endpointTest"
+                disabled={!CryptoStore.loaded.annualMeanReturns}
+            >
+                Calculate annual mean returns for all crypto prices
             </Button>
         </>
     );
