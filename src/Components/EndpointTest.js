@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
-import Image from 'material-ui-image';
 import { observer } from 'mobx-react-lite';
+import ObjectLearning from 'object-learning';
 
-import MyBaby from '../Assets/MyBaby.jpg';
 import { useStore } from '../Stores/StoreFunctions';
 
 import './_styles/EndpointTest.css';
@@ -60,6 +59,25 @@ const EndpointTest = () => {
         CryptoStore.setAnnualMeanReturns();
     };
 
+    const handleCalculatePriceVariances = () => {
+        CryptoStore.setAnnualPriceVariances();
+    };
+
+    const handleCalculateKMeansData = () => {
+        CryptoStore.setKMeansData();
+    };
+
+    // TODO: Find a way to label data points (find group based on annualMeanReturns and annualPriceVariance)
+
+    const handleKMeansClustering = () => {
+        const clusteringModel = ObjectLearning.runKClustering(
+            CryptoStore.kMeansData,
+            ['meanReturn', 'priceVariance'],
+            { maxIter: 1000, groups: 3, groupNames: ['low', 'med', 'high'] }
+        );
+        console.log(clusteringModel);
+    };
+
     console.log(CryptoStore.annualMeanReturns);
 
     return (
@@ -96,12 +114,28 @@ const EndpointTest = () => {
                 Calculate annual mean returns for all crypto prices
             </Button>
             <Button
-                onClick={handleCalculateAnnualMeanReturns}
+                onClick={handleCalculatePriceVariances}
                 variant="contained"
                 className="endpointTest"
                 disabled={!CryptoStore.loaded.annualMeanReturns}
             >
-                Calculate annual mean returns for all crypto prices
+                Calculate annual price variances for all crypto prices
+            </Button>
+            <Button
+                onClick={handleCalculateKMeansData}
+                variant="contained"
+                className="endpointTest"
+                disabled={!CryptoStore.loaded.annualPriceVariances}
+            >
+                Calculate K-Means Data
+            </Button>
+            <Button
+                onClick={handleKMeansClustering}
+                variant="contained"
+                className="endpointTest"
+                disabled={!CryptoStore.loaded.kMeansData}
+            >
+                K-Means Clustering
             </Button>
         </>
     );
