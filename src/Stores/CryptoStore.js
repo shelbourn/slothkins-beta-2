@@ -8,7 +8,8 @@ class CryptoStore {
         cryptoPercentChange: false,
         annualMeanReturns: false,
         annualPriceVariances: false,
-        kMeansData: false
+        kMeansData: false,
+        kMeansClusteringData: false
     };
     cryptoTest = '12345';
     cryptoNames = [];
@@ -17,6 +18,23 @@ class CryptoStore {
     annualMeanReturns = {};
     annualPriceVariances = {};
     kMeansData = [];
+    kMeansClusteringIter100 = [];
+    kMeansClusteringIter1000 = [];
+    kMeansClusteringIter10000 = [];
+    kMeansCentroidColors = [
+        '#EF5350',
+        '#AB47BC',
+        '#29B6F6',
+        '#66BB6A',
+        '#FFA726'
+    ];
+    kMeansClusterColors = [
+        '#EF9A9A',
+        '#CE93D8',
+        '#81D4FA',
+        '#A5D6A7',
+        '#FFCC80'
+    ];
 
     constructor(root) {
         makeAutoObservable(this);
@@ -119,6 +137,30 @@ class CryptoStore {
             };
         });
         this.setIsLoaded('kMeansData', true);
+    }
+
+    setKMeansIter100Data(key, data) {
+        data.forEach((group, i) => {
+            this[key] = [
+                ...this[key],
+                {
+                    ...group['groupAvgs'],
+                    c: this.kMeansCentroidColors[i],
+                    groupName: group['groupName']
+                }
+            ];
+            group['objects'].forEach((obj) => {
+                this[key] = [
+                    ...this[key],
+                    {
+                        ...obj,
+                        c: this.kMeansClusterColors[i],
+                        groupName: group['groupName']
+                    }
+                ];
+            });
+        });
+        this.setIsLoaded('kMeansClusteringData', true);
     }
 }
 

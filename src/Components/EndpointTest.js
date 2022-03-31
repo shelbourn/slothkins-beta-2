@@ -69,16 +69,85 @@ const EndpointTest = () => {
 
     // TODO: Find a way to label data points (find group based on annualMeanReturns and annualPriceVariance)
 
-    const handleKMeansClustering = () => {
+    const centroidColors = [
+        '#EF5350',
+        '#AB47BC',
+        '#29B6F6',
+        '#66BB6A',
+        '#FFA726'
+    ];
+
+    const dataPointColors = [
+        '#EF9A9A',
+        '#CE93D8',
+        '#81D4FA',
+        '#A5D6A7',
+        '#FFCC80'
+    ];
+
+    const handleKMeansClusteringIter100 = () => {
         const clusteringModel = ObjectLearning.runKClustering(
             CryptoStore.kMeansData,
             ['meanReturn', 'priceVariance'],
-            { maxIter: 1000, groups: 3, groupNames: ['low', 'med', 'high'] }
+            {
+                maxIter: 100,
+                groups: 5,
+                groupNames: [
+                    'Conservative',
+                    'Conservative-Moderate',
+                    'Moderate',
+                    'Moderate-Aggressive',
+                    'Aggressive'
+                ]
+            }
         );
-        console.log(clusteringModel);
+        // console.log(JSON.parse(JSON.stringify(clusteringModel)));
+        // console.log(JSON.parse(JSON.stringify(clusteringModel))['groups']);
+        CryptoStore.setKMeansIter100Data(
+            'kMeansClusteringIter100',
+            JSON.parse(JSON.stringify(clusteringModel))['groups']
+        );
     };
 
-    console.log(CryptoStore.annualMeanReturns);
+    console.log(CryptoStore.kMeansClusteringIter100);
+
+    const handleKMeansClusteringIter1000 = () => {
+        const clusteringModel = ObjectLearning.runKClustering(
+            CryptoStore.kMeansData,
+            ['meanReturn', 'priceVariance'],
+            {
+                maxIter: 1000,
+                groups: 5,
+                groupNames: [
+                    'Conservative',
+                    'Conservative-Moderate',
+                    'Moderate',
+                    'Moderate-Aggressive',
+                    'Aggressive'
+                ]
+            }
+        );
+        console.log(JSON.parse(JSON.stringify(clusteringModel)));
+    };
+
+    const handleKMeansClusteringIter10000 = () => {
+        const clusteringModel = ObjectLearning.runKClustering(
+            CryptoStore.kMeansData,
+            ['meanReturn', 'priceVariance'],
+            {
+                maxIter: 10000,
+                groups: 5,
+                groupNames: [
+                    'Conservative',
+                    'Conservative-Moderate',
+                    'Moderate',
+                    'Moderate-Aggressive',
+                    'Aggressive'
+                ]
+            }
+        );
+        console.log(JSON.parse(JSON.stringify(clusteringModel)));
+    };
 
     return (
         <>
@@ -130,10 +199,18 @@ const EndpointTest = () => {
                 Calculate K-Means Data
             </Button>
             <Button
-                onClick={handleKMeansClustering}
+                onClick={handleKMeansClusteringIter100}
                 variant="contained"
                 className="endpointTest"
                 disabled={!CryptoStore.loaded.kMeansData}
+            >
+                K-Means Clustering
+            </Button>
+            <Button
+                onClick={handleKMeansClusteringIter100}
+                variant="contained"
+                className="endpointTest"
+                disabled={!CryptoStore.loaded.kMeansClusteringData}
             >
                 K-Means Clustering
             </Button>
