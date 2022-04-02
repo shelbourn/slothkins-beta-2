@@ -1,0 +1,19 @@
+.endpointTest {
+    width: 100%;
+}
+
+.kMeansScatter {
+    display: flex;
+    justify-content: center;
+}
+
+.tickerNameTooltip {
+    background-color: rgba(205, 205, 205, 0.9);
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.tooltipLabel {
+    font-weight: 600;
+}
