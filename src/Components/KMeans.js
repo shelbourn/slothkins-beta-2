@@ -8,7 +8,7 @@ import {
     Alert
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { observer } from 'mobx-react-lite';
+import { Observer } from 'mobx-react-lite';
 import ObjectLearning from 'object-learning';
 import {
     ScatterChart,
@@ -23,9 +23,9 @@ import {
 
 import { useStore } from '../Stores/StoreFunctions';
 
-import './_styles/EndpointTest.css';
+import './_styles/KMeans.css';
 
-const EndpointTest = () => {
+const KMeans = () => {
     const { CryptoStore } = useStore();
 
     const [loading, setLoading] = useState({
@@ -352,4 +352,4 @@ const EndpointTest = () => {
     );
 };
 
-export default observer(EndpointTest);
+export default Observer(KMeans);

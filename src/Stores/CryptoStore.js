@@ -39,6 +39,7 @@ class CryptoStore {
         '#C8E6C9',
         '#FFE0B2'
     ];
+    logRegressionData = [];
 
     constructor(root) {
         makeAutoObservable(this);
@@ -253,6 +254,8 @@ class CryptoStore {
             false
         );
     }
+
+    setLogRegressionData() {}
 }
 
 export default CryptoStore;
