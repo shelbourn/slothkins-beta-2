@@ -30,11 +30,11 @@ class CryptoStore {
         '#FFA726'
     ];
     kMeansClusterColors = [
-        '#EF9A9A',
-        '#CE93D8',
-        '#81D4FA',
-        '#A5D6A7',
-        '#FFCC80'
+        '#FFCDD2',
+        '#E1BEE7',
+        '#B3E5FC',
+        '#C8E6C9',
+        '#FFE0B2'
     ];
 
     constructor(root) {
@@ -171,6 +171,11 @@ class CryptoStore {
     }
 
     setKMeansIterData(key, data) {
+        this.kMeansClusteringIter100 = [];
+        this.kMeansClusteringIter1000 = [];
+        this.kMeansClusteringIter10000 = [];
+        this.kMeansClusteringIter100000 = [];
+
         data.forEach((group, i) => {
             this[key] = [
                 ...this[key],
