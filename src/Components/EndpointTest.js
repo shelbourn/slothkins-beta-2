@@ -82,29 +82,9 @@ const EndpointTest = () => {
     };
 
     const handleCryptoPercentChange = () => {
-        setLoading({ ...loading, percentChange: true });
         setInfoMessage(true);
-        setTimeout(() => {
-            CryptoStore.setCryptoPercentChange();
-        }, 1000);
-        setTimeout(() => {
-            setLoading({ ...loading, percentChange: false });
-            setInfoMessage(false);
-        }, 16000);
+        CryptoStore.setCryptoPercentChange();
     };
-
-    const handleCryptoPercentChangeAsync = (array) => {
-let arrayChunk = 100
-let index = 0;
-const processChunk = () => {
-    let count = chunk
-    while (count-- && index < array.length) {
-        
-    }
-
-
-}
-    }
 
     const handleCalculateAnnualMeanReturns = () => {
         setLoading({ ...loading, meanReturns: true });
@@ -209,7 +189,7 @@ const processChunk = () => {
                     sx={{ width: '100%' }}
                     onClose={handleInfoClickaway}
                 >
-                    <p>Sloths work a bit slow</p>
+                    <p>Sloths are meticulous but work a bit slow</p>
                     <p>
                         Please allow the calculations to complete. It'll take
                         about 20 seconds.
@@ -218,7 +198,7 @@ const processChunk = () => {
             </Snackbar>
             <Backdrop
                 sx={{ color: '#fff', zIndex: '9' }}
-                open={loading.percentChange}
+                open={CryptoStore.loading.cryptoPercentChange}
                 onClick={handleBackdropClick}
             >
                 <CircularProgress color="inherit" size={100} />

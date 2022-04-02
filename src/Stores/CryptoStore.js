@@ -11,6 +11,9 @@ class CryptoStore {
         kMeansData: false,
         kMeansClusteringData: false
     };
+    loading = {
+        cryptoPercentChange: false
+    };
     cryptoTest = '12345';
     cryptoNames = [];
     cryptoPrices = {};
@@ -48,6 +51,10 @@ class CryptoStore {
         });
     }
 
+    setIsLoading(key, bool) {
+        this.loading[key] = bool;
+    }
+
     setCryptoNames(names) {
         this.cryptoNames = names;
     }
@@ -57,34 +64,52 @@ class CryptoStore {
     }
 
     setCryptoPercentChange() {
+        this.setIsLoading('cryptoPercentChange', true);
         this.cryptoPercentChange = {};
         Object.entries(this.cryptoPrices).forEach(([ticker, priceArray]) => {
             let percent;
-            // priceArray.forEach((price, i) => {
-            //     if (priceArray?.length - 1 === i) {
-            //         return;
-            //     }
-            //     if (priceArray[i + 1] !== 0) {
-            //         if (price !== 0) {
-            //             percent = (priceArray[i + 1] - price) / price;
-            //         } else {
-            //             percent = priceArray[i + 1];
-            //         }
-            //     } else {
-            //         percent = -price;
-            //     }
-            //     if (this.cryptoPercentChange[ticker]?.length > 0) {
-            //         this.cryptoPercentChange[ticker] = [
-            //             ...this.cryptoPercentChange[ticker],
-            //             percent
-            //         ];
-            //     } else {
-            //         this.cryptoPercentChange[ticker] = [percent];
-            //     }
-            // });
+            let chunk = 200;
+            let i = 0;
+
+            const executeChunk = () => {
+                let count = chunk;
+                while (count-- && i < priceArray.length) {
+                    if (priceArray?.length - 1 === i) {
+                        return;
+                    }
+                    if (priceArray[i + 1] !== 0) {
+                        if (priceArray[i] !== 0) {
+                            percent =
+                                (priceArray[i + 1] - priceArray[i]) /
+                                priceArray[i];
+                        } else {
+                            percent = priceArray[i + 1];
+                        }
+                    } else {
+                        percent = -priceArray[i];
+                    }
+                    if (this.cryptoPercentChange[ticker]?.length > 0) {
+                        this.cryptoPercentChange[ticker] = [
+                            ...this.cryptoPercentChange[ticker],
+                            percent
+                        ];
+                    } else {
+                        this.cryptoPercentChange[ticker] = [percent];
+                    }
+                    ++i;
+                }
+                if (i < priceArray.length) {
+                    setTimeout(executeChunk, 1);
+                }
+            };
+            executeChunk();
         });
-        this.removePercentChangeBadData();
-        this.setIsLoaded(['cryptoPercentChange'], true);
+
+        setTimeout(() => {
+            this.removePercentChangeBadData();
+            this.setIsLoaded(['cryptoPercentChange'], true);
+            this.setIsLoading('cryptoPercentChange', false);
+        }, 20000);
     }
 
     removePercentChangeBadData() {
