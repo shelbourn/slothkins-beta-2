@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
 import { observer } from 'mobx-react-lite';
 import ObjectLearning from 'object-learning';
+import {
+    ScatterChart,
+    Scatter,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Cell
+} from 'recharts';
 
 import { useStore } from '../Stores/StoreFunctions';
 
@@ -21,7 +30,7 @@ const EndpointTest = () => {
             );
             if (response.data) {
                 CryptoStore.setCryptoNames(response.data[0]['array']);
-                CryptoStore.setIsLoaded('cryptoNames', true);
+                CryptoStore.setIsLoaded(['cryptoNames'], true);
             }
         } catch (error) {
             console.log(error);
@@ -41,14 +50,14 @@ const EndpointTest = () => {
                     const { array } = response.data[0];
                     CryptoStore.setCryptoPrice(
                         CryptoStore.cryptoNames[name],
-                        array
+                        array.filter((el) => el !== 0)
                     );
                 }
             } catch (error) {
                 console.log(error);
             }
         }
-        CryptoStore.setIsLoaded('cryptoPrices', true);
+        CryptoStore.setIsLoaded(['cryptoPrices'], true);
     };
 
     const handleCryptoPercentChange = () => {
@@ -85,12 +94,12 @@ const EndpointTest = () => {
         '#FFCC80'
     ];
 
-    const handleKMeansClusteringIter100 = () => {
+    const handleKMeansClusteringIter = (iterations) => () => {
         const clusteringModel = ObjectLearning.runKClustering(
             CryptoStore.kMeansData,
             ['meanReturn', 'priceVariance'],
             {
-                maxIter: 100,
+                maxIter: iterations,
                 groups: 5,
                 groupNames: [
                     'Conservative',
@@ -103,50 +112,18 @@ const EndpointTest = () => {
         );
         // console.log(JSON.parse(JSON.stringify(clusteringModel)));
         // console.log(JSON.parse(JSON.stringify(clusteringModel))['groups']);
-        CryptoStore.setKMeansIter100Data(
-            'kMeansClusteringIter100',
+        CryptoStore.setKMeansIterData(
+            `kMeansClusteringIter${iterations}`,
             JSON.parse(JSON.stringify(clusteringModel))['groups']
         );
     };
 
-    console.log(CryptoStore.kMeansClusteringIter100);
+    console.log(
+        JSON.parse(JSON.stringify(CryptoStore.kMeansClusteringIter10000))
+    );
 
-    const handleKMeansClusteringIter1000 = () => {
-        const clusteringModel = ObjectLearning.runKClustering(
-            CryptoStore.kMeansData,
-            ['meanReturn', 'priceVariance'],
-            {
-                maxIter: 1000,
-                groups: 5,
-                groupNames: [
-                    'Conservative',
-                    'Conservative-Moderate',
-                    'Moderate',
-                    'Moderate-Aggressive',
-                    'Aggressive'
-                ]
-            }
-        );
-        console.log(JSON.parse(JSON.stringify(clusteringModel)));
-    };
-
-    const handleKMeansClusteringIter10000 = () => {
-        const clusteringModel = ObjectLearning.runKClustering(
-            CryptoStore.kMeansData,
-            ['meanReturn', 'priceVariance'],
-            {
-                maxIter: 10000,
-                groups: 5,
-                groupNames: [
-                    'Conservative',
-                    'Conservative-Moderate',
-                    'Moderate',
-                    'Moderate-Aggressive',
-                    'Aggressive'
-                ]
-            }
-        );
-        console.log(JSON.parse(JSON.stringify(clusteringModel)));
+    const handleDeleteOutlier = () => {
+        CryptoStore.deleteStoreOutlier('kMeansClusteringIter10000');
     };
 
     return (
@@ -199,21 +176,75 @@ const EndpointTest = () => {
                 Calculate K-Means Data
             </Button>
             <Button
-                onClick={handleKMeansClusteringIter100}
+                onClick={handleKMeansClusteringIter(10000)}
                 variant="contained"
                 className="endpointTest"
                 disabled={!CryptoStore.loaded.kMeansData}
             >
-                K-Means Clustering
+                K-Means Clustering 10,000
             </Button>
             <Button
-                onClick={handleKMeansClusteringIter100}
+                onClick={handleDeleteOutlier}
                 variant="contained"
                 className="endpointTest"
-                disabled={!CryptoStore.loaded.kMeansClusteringData}
+                disabled={!CryptoStore.loaded.kMeansData}
             >
-                K-Means Clustering
+                Delete Outlier
             </Button>
+            <Button
+                onClick={handleCalculateKMeansData}
+                variant="contained"
+                className="endpointTest"
+                disabled={!CryptoStore.loaded.annualPriceVariances}
+            >
+                Calculate K-Means Data
+            </Button>
+            <Button
+                onClick={handleKMeansClusteringIter(100000)}
+                variant="contained"
+                className="endpointTest"
+                disabled={!CryptoStore.loaded.kMeansData}
+            >
+                K-Means Clustering 100,000
+            </Button>
+            {CryptoStore.loaded.kMeansClusteringData && (
+                <ScatterChart
+                    width={400}
+                    height={400}
+                    margin={{
+                        top: 20,
+                        right: 20,
+                        bottom: 20,
+                        left: 20
+                    }}
+                >
+                    <CartesianGrid />
+                    <XAxis
+                        type="number"
+                        dataKey="meanReturn"
+                        name="Mean Return"
+                        unit="$"
+                    />
+                    <YAxis
+                        type="number"
+                        dataKey="priceVariance"
+                        name="Price Variance"
+                        unit="$"
+                    />
+                    <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+                    <Scatter
+                        name="Test"
+                        data={CryptoStore.kMeansClusteringIter10000}
+                        fill="#8884d8"
+                    >
+                        {CryptoStore.kMeansClusteringIter10000.map(
+                            (entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.c} />
+                            )
+                        )}
+                    </Scatter>
+                </ScatterChart>
+            )}
         </>
     );
 };

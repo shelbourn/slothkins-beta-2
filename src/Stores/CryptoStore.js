@@ -21,6 +21,7 @@ class CryptoStore {
     kMeansClusteringIter100 = [];
     kMeansClusteringIter1000 = [];
     kMeansClusteringIter10000 = [];
+    kMeansClusteringIter100000 = [];
     kMeansCentroidColors = [
         '#EF5350',
         '#AB47BC',
@@ -41,8 +42,10 @@ class CryptoStore {
         this.root = root;
     }
 
-    setIsLoaded(key, bool) {
-        this.loaded[key] = bool;
+    setIsLoaded(arrayOfKeys, bool) {
+        arrayOfKeys.forEach((key) => {
+            this.loaded[key] = bool;
+        });
     }
 
     setCryptoNames(names) {
@@ -54,6 +57,8 @@ class CryptoStore {
     }
 
     setCryptoPercentChange() {
+        this.cryptoPercentChange = {};
+
         Object.entries(this.cryptoPrices).forEach(([ticker, priceArray]) => {
             for (const index in priceArray) {
                 let percent;
@@ -87,7 +92,7 @@ class CryptoStore {
             }
         });
         // this.removePercentChangeBadData();
-        this.setIsLoaded('cryptoPercentChange', true);
+        this.setIsLoaded(['cryptoPercentChange'], true);
     }
 
     removePercentChangeBadData() {
@@ -101,6 +106,7 @@ class CryptoStore {
     }
 
     setAnnualMeanReturns() {
+        this.annualMeanReturns = {};
         Object.entries(this.cryptoPercentChange).forEach(
             ([ticker, priceChangeArray]) => {
                 this.annualMeanReturns[ticker] =
@@ -109,20 +115,22 @@ class CryptoStore {
                     365;
             }
         );
-        this.setIsLoaded('annualMeanReturns', true);
+        this.setIsLoaded(['annualMeanReturns'], true);
     }
 
     setAnnualPriceVariances() {
+        this.annualPriceVariances = {};
         Object.entries(this.cryptoPercentChange).forEach(
             ([ticker, priceChangeArray]) => {
                 this.annualPriceVariances[ticker] =
                     std(priceChangeArray) * sqrt(365);
             }
         );
-        this.setIsLoaded('annualPriceVariances', true);
+        this.setIsLoaded(['annualPriceVariances'], true);
     }
 
     setKMeansData() {
+        this.kMeansData = [];
         Object.values(this.annualMeanReturns).forEach((meanReturn, i) => {
             this.kMeansData[i] = {
                 ...this.kMeansData[i],
@@ -136,10 +144,10 @@ class CryptoStore {
                 priceVariance: priceVariance
             };
         });
-        this.setIsLoaded('kMeansData', true);
+        this.setIsLoaded(['kMeansData'], true);
     }
 
-    setKMeansIter100Data(key, data) {
+    setKMeansIterData(key, data) {
         data.forEach((group, i) => {
             this[key] = [
                 ...this[key],
@@ -160,7 +168,28 @@ class CryptoStore {
                 ];
             });
         });
-        this.setIsLoaded('kMeansClusteringData', true);
+        this.setIsLoaded(['kMeansClusteringData'], true);
+    }
+
+    deleteStoreOutlier(key) {
+        this[key] = [];
+
+        const keyToDelete = Object.entries(this.annualMeanReturns).sort(
+            (a, b) => b[1] - a[1]
+        )[0][0];
+
+        delete this.cryptoPrices[keyToDelete];
+
+        this.setIsLoaded(
+            [
+                'cryptoPercentChange',
+                'annualMeanReturns',
+                'annualPriceVariances',
+                'kMeansData',
+                'kMeansClusteringData'
+            ],
+            false
+        );
     }
 }
 
