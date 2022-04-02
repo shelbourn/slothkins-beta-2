@@ -7,6 +7,7 @@ import {
     Snackbar,
     Alert
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { observer } from 'mobx-react-lite';
 import ObjectLearning from 'object-learning';
 import {
@@ -27,13 +28,20 @@ import './_styles/EndpointTest.css';
 const EndpointTest = () => {
     const { CryptoStore } = useStore();
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState({
+        cryptoNames: false,
+        cryptoPrices: false,
+        percentChange: false,
+        meanReturns: false,
+        priceVariances: false
+    });
     const [infoMessage, setInfoMessage] = useState(false);
 
     /***
      * Retrieves all crypto names and hydrates the CryptoStore
      */
     const handleCryptoNames = async () => {
+        setLoading({ ...loading, cryptoNames: true });
         try {
             const response = await axios.get(
                 'https://slothkins-beta-2.herokuapp.com/crypto-names'
@@ -41,6 +49,7 @@ const EndpointTest = () => {
             if (response.data) {
                 CryptoStore.setCryptoNames(response.data[0]['array']);
                 CryptoStore.setIsLoaded(['cryptoNames'], true);
+                setLoading({ ...loading, cryptoNames: false });
             }
         } catch (error) {
             console.log(error);
@@ -51,6 +60,7 @@ const EndpointTest = () => {
      * Retrieves all crypto priceve by ticker and hydrates the CryptoStore
      */
     const handleCryptoPrices = async () => {
+        setLoading({ ...loading, cryptoPrices: true });
         for (const name in CryptoStore.cryptoNames) {
             try {
                 const response = await axios.get(
@@ -68,26 +78,44 @@ const EndpointTest = () => {
             }
         }
         CryptoStore.setIsLoaded(['cryptoPrices'], true);
+        setLoading({ ...loading, cryptoPrices: false });
     };
 
     const handleCryptoPercentChange = () => {
-        setLoading(true);
+        setLoading({ ...loading, percentChange: true });
         setInfoMessage(true);
         setTimeout(() => {
             CryptoStore.setCryptoPercentChange();
         }, 1000);
         setTimeout(() => {
-            setLoading(false);
+            setLoading({ ...loading, percentChange: false });
             setInfoMessage(false);
         }, 16000);
     };
 
+    const handleCryptoPercentChangeAsync = (array) => {
+let arrayChunk = 100
+let index = 0;
+const processChunk = () => {
+    let count = chunk
+    while (count-- && index < array.length) {
+        
+    }
+
+
+}
+    }
+
     const handleCalculateAnnualMeanReturns = () => {
+        setLoading({ ...loading, meanReturns: true });
         CryptoStore.setAnnualMeanReturns();
+        setLoading({ ...loading, meanReturns: false });
     };
 
     const handleCalculatePriceVariances = () => {
+        setLoading({ ...loading, priceVariances: true });
         CryptoStore.setAnnualPriceVariances();
+        setLoading({ ...loading, priceVariances: false });
     };
 
     const handleCalculateKMeansData = () => {
@@ -190,50 +218,55 @@ const EndpointTest = () => {
             </Snackbar>
             <Backdrop
                 sx={{ color: '#fff', zIndex: '9' }}
-                open={loading}
+                open={loading.percentChange}
                 onClick={handleBackdropClick}
             >
                 <CircularProgress color="inherit" size={100} />
             </Backdrop>
-            <Button
+            <LoadingButton
                 onClick={handleCryptoNames}
                 variant="contained"
                 className="endpointTest"
+                loading={loading.cryptoNames}
             >
                 Get All Crypto Names
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
                 onClick={handleCryptoPrices}
                 variant="contained"
                 className="endpointTest"
+                loading={loading.cryptoPrices}
                 disabled={!CryptoStore.loaded.cryptoNames}
             >
                 Get All Crypto Prices
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
                 onClick={handleCryptoPercentChange}
                 variant="contained"
                 className="endpointTest"
+                loading={loading.percentChange}
                 disabled={!CryptoStore.loaded.cryptoPrices}
             >
                 Calculate all percent changes in crypto prices
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
                 onClick={handleCalculateAnnualMeanReturns}
                 variant="contained"
                 className="endpointTest"
+                loading={loading.meanReturns}
                 disabled={!CryptoStore.loaded.cryptoPercentChange}
             >
                 Calculate annual mean returns for all crypto prices
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
                 onClick={handleCalculatePriceVariances}
                 variant="contained"
                 className="endpointTest"
+                loading={loading.priceVariances}
                 disabled={!CryptoStore.loaded.annualMeanReturns}
             >
                 Calculate annual price variances for all crypto prices
-            </Button>
+            </LoadingButton>
             <Button
                 onClick={handleCalculateKMeansData}
                 variant="contained"

@@ -60,28 +60,28 @@ class CryptoStore {
         this.cryptoPercentChange = {};
         Object.entries(this.cryptoPrices).forEach(([ticker, priceArray]) => {
             let percent;
-            priceArray.forEach((price, i) => {
-                if (priceArray?.length - 1 === i) {
-                    return;
-                }
-                if (priceArray[i + 1] !== 0) {
-                    if (price !== 0) {
-                        percent = (priceArray[i + 1] - price) / price;
-                    } else {
-                        percent = priceArray[i + 1];
-                    }
-                } else {
-                    percent = -price;
-                }
-                if (this.cryptoPercentChange[ticker]?.length > 0) {
-                    this.cryptoPercentChange[ticker] = [
-                        ...this.cryptoPercentChange[ticker],
-                        percent
-                    ];
-                } else {
-                    this.cryptoPercentChange[ticker] = [percent];
-                }
-            });
+            // priceArray.forEach((price, i) => {
+            //     if (priceArray?.length - 1 === i) {
+            //         return;
+            //     }
+            //     if (priceArray[i + 1] !== 0) {
+            //         if (price !== 0) {
+            //             percent = (priceArray[i + 1] - price) / price;
+            //         } else {
+            //             percent = priceArray[i + 1];
+            //         }
+            //     } else {
+            //         percent = -price;
+            //     }
+            //     if (this.cryptoPercentChange[ticker]?.length > 0) {
+            //         this.cryptoPercentChange[ticker] = [
+            //             ...this.cryptoPercentChange[ticker],
+            //             percent
+            //         ];
+            //     } else {
+            //         this.cryptoPercentChange[ticker] = [percent];
+            //     }
+            // });
         });
         this.removePercentChangeBadData();
         this.setIsLoaded(['cryptoPercentChange'], true);
