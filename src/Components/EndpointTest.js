@@ -8,9 +8,11 @@ import {
     Scatter,
     XAxis,
     YAxis,
+    ZAxis,
     CartesianGrid,
     Tooltip,
-    Cell
+    Cell,
+    Label
 } from 'recharts';
 
 import { useStore } from '../Stores/StoreFunctions';
@@ -126,6 +128,21 @@ const EndpointTest = () => {
         CryptoStore.deleteStoreOutlier('kMeansClusteringIter10000');
     };
 
+    const TickerName = ({ payload, label, active }) => {
+        console.log(payload);
+        if (active) {
+            return (
+                <div className="tickerNameTooltip">
+                    <p className="tooltipLabel">{`${payload[0].name} : $ ${payload[0].value}`}</p>
+                    <p className="tooltipLabel">{`${payload[1].name} :$ ${payload[1].value}`}</p>
+                    <p className="tooltipLabel">{`Ticker : ${payload[0].payload.label}`}</p>
+                    <p className="tooltipLabel">{`Risk Group : ${payload[0].payload.groupName}`}</p>
+                </div>
+            );
+        }
+        return null;
+    };
+
     return (
         <>
             <Button
@@ -208,42 +225,66 @@ const EndpointTest = () => {
                 K-Means Clustering 100,000
             </Button>
             {CryptoStore.loaded.kMeansClusteringData && (
-                <ScatterChart
-                    width={400}
-                    height={400}
-                    margin={{
-                        top: 20,
-                        right: 20,
-                        bottom: 20,
-                        left: 20
-                    }}
-                >
-                    <CartesianGrid />
-                    <XAxis
-                        type="number"
-                        dataKey="meanReturn"
-                        name="Mean Return"
-                        unit="$"
-                    />
-                    <YAxis
-                        type="number"
-                        dataKey="priceVariance"
-                        name="Price Variance"
-                        unit="$"
-                    />
-                    <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                    <Scatter
-                        name="Test"
-                        data={CryptoStore.kMeansClusteringIter10000}
-                        fill="#8884d8"
+                <div className="kMeansScatter">
+                    <ScatterChart
+                        width={500}
+                        height={500}
+                        margin={{
+                            top: 20,
+                            right: 20,
+                            bottom: 20,
+                            left: 20
+                        }}
                     >
-                        {CryptoStore.kMeansClusteringIter10000.map(
-                            (entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.c} />
-                            )
-                        )}
-                    </Scatter>
-                </ScatterChart>
+                        <CartesianGrid />
+                        <XAxis
+                            unit="$"
+                            type="number"
+                            dataKey="meanReturn"
+                            name="Mean Return"
+                            dy={10}
+                        >
+                            <Label
+                                value="Annual Mean Returns"
+                                offset={-20}
+                                position="insideBottom"
+                            />
+                        </XAxis>
+                        <YAxis
+                            unit="$"
+                            type="number"
+                            dataKey="priceVariance"
+                            name="Price Variance"
+                            dx={-10}
+                        >
+                            <Label
+                                value="Annual Price Variance"
+                                offset={80}
+                                angle={-90}
+                                position="insideLeft"
+                                style={{ textAnchor: 'middle' }}
+                            />
+                        </YAxis>
+                        <Tooltip
+                            content={<TickerName />}
+                            cursor={{ strokeDasharray: '3 3' }}
+                        />
+                        <Scatter
+                            name="Test"
+                            data={CryptoStore.kMeansClusteringIter10000}
+                            fill="#8884d8"
+                        >
+                            {CryptoStore.kMeansClusteringIter10000.map(
+                                (entry, index) => (
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={entry.c}
+                                    />
+                                )
+                            )}
+                        </Scatter>
+                    </ScatterChart>
+                </div>
             )}
         </>
     );

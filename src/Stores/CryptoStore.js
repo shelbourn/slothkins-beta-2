@@ -154,16 +154,26 @@ class CryptoStore {
                 {
                     ...group['groupAvgs'],
                     c: this.kMeansCentroidColors[i],
-                    groupName: group['groupName']
+                    groupName: group['groupName'],
+                    label: `${group['groupName']} Centroid`
                 }
             ];
             group['objects'].forEach((obj) => {
+                const labelKey = Object.entries(this.annualMeanReturns).filter(
+                    ([key, val]) => {
+                        if (val === obj['meanReturn']) {
+                            return key;
+                        }
+                    }
+                );
+
                 this[key] = [
                     ...this[key],
                     {
                         ...obj,
                         c: this.kMeansClusterColors[i],
-                        groupName: group['groupName']
+                        groupName: group['groupName'],
+                        label: labelKey[0][0]
                     }
                 ];
             });
