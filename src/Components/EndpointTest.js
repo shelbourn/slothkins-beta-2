@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Button from '@mui/material/Button';
+import { Button, CircularProgress } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import ObjectLearning from 'object-learning';
 import {
@@ -20,6 +20,8 @@ import './_styles/EndpointTest.css';
 
 const EndpointTest = () => {
     const { CryptoStore } = useStore();
+
+    const [loading, setLoading] = useState(false);
 
     /***
      * Retrieves all crypto names and hydrates the CryptoStore
@@ -62,7 +64,15 @@ const EndpointTest = () => {
     };
 
     const handleCryptoPercentChange = () => {
-        CryptoStore.setCryptoPercentChange();
+        setLoading(true);
+        setTimeout(() => {
+            CryptoStore.setCryptoPercentChange();
+        }, 3000);
+        setTimeout(() => {
+            setLoading(false);
+        }, 18000);
+
+        // CryptoStore.setCryptoPercentChange();
     };
 
     const handleCalculateAnnualMeanReturns = () => {
@@ -141,146 +151,152 @@ const EndpointTest = () => {
 
     return (
         <>
-            <Button
-                onClick={handleCryptoNames}
-                variant="contained"
-                className="endpointTest"
-            >
-                Get All Crypto Names
-            </Button>
-            <Button
-                onClick={handleCryptoPrices}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.cryptoNames}
-            >
-                Get All Crypto Prices
-            </Button>
-            <Button
-                onClick={handleCryptoPercentChange}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.cryptoPrices}
-            >
-                Calculate all percent changes in crypto prices
-            </Button>
-            <Button
-                onClick={handleCalculateAnnualMeanReturns}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.cryptoPercentChange}
-            >
-                Calculate annual mean returns for all crypto prices
-            </Button>
-            <Button
-                onClick={handleCalculatePriceVariances}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.annualMeanReturns}
-            >
-                Calculate annual price variances for all crypto prices
-            </Button>
-            <Button
-                onClick={handleCalculateKMeansData}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.annualPriceVariances}
-            >
-                Calculate K-Means Data
-            </Button>
-            <Button
-                onClick={handleKMeansClusteringIter(10000)}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.kMeansData}
-            >
-                K-Means Clustering 10,000
-            </Button>
-            <Button
-                onClick={handleDeleteOutlier}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.kMeansData}
-            >
-                Delete Outlier
-            </Button>
-            <Button
-                onClick={handleCalculateKMeansData}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.annualPriceVariances}
-            >
-                Calculate K-Means Data
-            </Button>
-            <Button
-                onClick={handleKMeansClusteringIter(100000)}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.kMeansData}
-            >
-                K-Means Clustering 100,000
-            </Button>
-            {CryptoStore.loaded.kMeansClusteringData && (
-                <div className="kMeansScatter">
-                    <ScatterChart
-                        width={500}
-                        height={500}
-                        margin={{
-                            top: 20,
-                            right: 20,
-                            bottom: 20,
-                            left: 20
-                        }}
+            {!loading ? (
+                <>
+                    <Button
+                        onClick={handleCryptoNames}
+                        variant="contained"
+                        className="endpointTest"
                     >
-                        <CartesianGrid />
-                        <XAxis
-                            unit="%"
-                            type="number"
-                            dataKey="meanReturn"
-                            name="Mean Return"
-                            dy={10}
-                        >
-                            <Label
-                                value="Annual Mean Returns"
-                                offset={-20}
-                                position="insideBottom"
-                            />
-                        </XAxis>
-                        <YAxis
-                            unit="%"
-                            type="number"
-                            dataKey="priceVariance"
-                            name="Price Variance"
-                            dx={-10}
-                        >
-                            <Label
-                                value="Annual Price Variance"
-                                offset={10}
-                                angle={-90}
-                                position="left"
-                                style={{ textAnchor: 'middle' }}
-                            />
-                        </YAxis>
-                        <Tooltip
-                            content={<TickerName />}
-                            cursor={{ strokeDasharray: '3 3' }}
-                        />
-                        <Scatter
-                            name="Test"
-                            data={CryptoStore.kMeansClusteringIter10000}
-                            fill="#8884d8"
-                        >
-                            {CryptoStore.kMeansClusteringIter10000.map(
-                                (entry, index) => (
-                                    <Cell
-                                        key={`cell-${index}`}
-                                        fill={entry.c}
+                        Get All Crypto Names
+                    </Button>
+                    <Button
+                        onClick={handleCryptoPrices}
+                        variant="contained"
+                        className="endpointTest"
+                        disabled={!CryptoStore.loaded.cryptoNames}
+                    >
+                        Get All Crypto Prices
+                    </Button>
+                    <Button
+                        onClick={handleCryptoPercentChange}
+                        variant="contained"
+                        className="endpointTest"
+                        disabled={!CryptoStore.loaded.cryptoPrices}
+                    >
+                        Calculate all percent changes in crypto prices
+                    </Button>
+                    <Button
+                        onClick={handleCalculateAnnualMeanReturns}
+                        variant="contained"
+                        className="endpointTest"
+                        disabled={!CryptoStore.loaded.cryptoPercentChange}
+                    >
+                        Calculate annual mean returns for all crypto prices
+                    </Button>
+                    <Button
+                        onClick={handleCalculatePriceVariances}
+                        variant="contained"
+                        className="endpointTest"
+                        disabled={!CryptoStore.loaded.annualMeanReturns}
+                    >
+                        Calculate annual price variances for all crypto prices
+                    </Button>
+                    <Button
+                        onClick={handleCalculateKMeansData}
+                        variant="contained"
+                        className="endpointTest"
+                        disabled={!CryptoStore.loaded.annualPriceVariances}
+                    >
+                        Calculate K-Means Data
+                    </Button>
+                    <Button
+                        onClick={handleKMeansClusteringIter(10000)}
+                        variant="contained"
+                        className="endpointTest"
+                        disabled={!CryptoStore.loaded.kMeansData}
+                    >
+                        K-Means Clustering 10,000
+                    </Button>
+                    <Button
+                        onClick={handleDeleteOutlier}
+                        variant="contained"
+                        className="endpointTest"
+                        disabled={!CryptoStore.loaded.kMeansData}
+                    >
+                        Delete Outlier
+                    </Button>
+                    <Button
+                        onClick={handleCalculateKMeansData}
+                        variant="contained"
+                        className="endpointTest"
+                        disabled={!CryptoStore.loaded.annualPriceVariances}
+                    >
+                        Calculate K-Means Data
+                    </Button>
+                    <Button
+                        onClick={handleKMeansClusteringIter(100000)}
+                        variant="contained"
+                        className="endpointTest"
+                        disabled={!CryptoStore.loaded.kMeansData}
+                    >
+                        K-Means Clustering 100,000
+                    </Button>
+                    {CryptoStore.loaded.kMeansClusteringData && (
+                        <div className="kMeansScatter">
+                            <ScatterChart
+                                width={500}
+                                height={500}
+                                margin={{
+                                    top: 20,
+                                    right: 20,
+                                    bottom: 20,
+                                    left: 20
+                                }}
+                            >
+                                <CartesianGrid />
+                                <XAxis
+                                    unit="%"
+                                    type="number"
+                                    dataKey="meanReturn"
+                                    name="Mean Return"
+                                    dy={10}
+                                >
+                                    <Label
+                                        value="Annual Mean Returns"
+                                        offset={-20}
+                                        position="insideBottom"
                                     />
-                                )
-                            )}
-                        </Scatter>
-                    </ScatterChart>
-                </div>
+                                </XAxis>
+                                <YAxis
+                                    unit="%"
+                                    type="number"
+                                    dataKey="priceVariance"
+                                    name="Price Variance"
+                                    dx={-10}
+                                >
+                                    <Label
+                                        value="Annual Price Variance"
+                                        offset={10}
+                                        angle={-90}
+                                        position="left"
+                                        style={{ textAnchor: 'middle' }}
+                                    />
+                                </YAxis>
+                                <Tooltip
+                                    content={<TickerName />}
+                                    cursor={{ strokeDasharray: '3 3' }}
+                                />
+                                <Scatter
+                                    name="Test"
+                                    data={CryptoStore.kMeansClusteringIter10000}
+                                    fill="#8884d8"
+                                >
+                                    {CryptoStore.kMeansClusteringIter10000.map(
+                                        (entry, index) => (
+                                            <Cell
+                                                key={`cell-${index}`}
+                                                fill={entry.c}
+                                            />
+                                        )
+                                    )}
+                                </Scatter>
+                            </ScatterChart>
+                        </div>
+                    )}
+                </>
+            ) : (
+                <CircularProgress />
             )}
         </>
     );

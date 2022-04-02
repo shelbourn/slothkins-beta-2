@@ -11,9 +11,6 @@ class CryptoStore {
         kMeansData: false,
         kMeansClusteringData: false
     };
-    loading = {
-        cryptoPercentChange: false
-    };
     cryptoTest = '12345';
     cryptoNames = [];
     cryptoPrices = {};
@@ -51,10 +48,6 @@ class CryptoStore {
         });
     }
 
-    setIsLoading(key, bool) {
-        this[key] = bool;
-    }
-
     setCryptoNames(names) {
         this.cryptoNames = names;
     }
@@ -66,7 +59,6 @@ class CryptoStore {
     setCryptoPercentChange() {
         this.cryptoPercentChange = {};
         Object.entries(this.cryptoPrices).forEach(([ticker, priceArray]) => {
-            // for (const index in priceArray) {
             let percent;
             priceArray.forEach((price, i) => {
                 if (priceArray?.length - 1 === i) {
@@ -90,47 +82,6 @@ class CryptoStore {
                     this.cryptoPercentChange[ticker] = [percent];
                 }
             });
-            // let percent;
-
-            // if (!priceArray[index + 1]) {
-            //     return;
-            // }
-
-            // if (index === 0) {
-            //     percent = priceArray[index];
-            // } else {
-            //     percent =
-            //         (priceArray[index + 1] - priceArray[index]) /
-            //         priceArray[index];
-            // }
-
-            // if (
-            //     (priceArray[index] === 0 && priceArray[index + 1] === 0) ||
-            //     isNaN(priceArray[index]) ||
-            //     isNaN(priceArray[index + 1])
-            // ) {
-            //     break;
-            // }
-
-            // if (priceArray[index + 1] && priceArray[index + 1] !== 0) {
-            //     if (priceArray[index] !== 0) {
-            //         percent =
-            //             (priceArray[index + 1] - priceArray[index]) /
-            //             priceArray[index];
-            //     } else {
-            //         percent = priceArray[index + 1];
-            //     }
-            // } else {
-            //     percent = -priceArray[index];
-            // }
-            // if (this.cryptoPercentChange[ticker]?.length > 0) {
-            //     this.cryptoPercentChange[ticker] = [
-            //         ...this.cryptoPercentChange[ticker],
-            //         percent
-            //     ];
-            // } else {
-            //     this.cryptoPercentChange[ticker] = [percent];
-            // }
         });
         this.removePercentChangeBadData();
         this.setIsLoaded(['cryptoPercentChange'], true);
@@ -206,7 +157,6 @@ class CryptoStore {
         this.kMeansData = [];
         Object.values(this.annualMeanReturns).forEach((meanReturn, i) => {
             this.kMeansData[i] = {
-                ...this.kMeansData[i],
                 meanReturn: meanReturn
             };
         });
