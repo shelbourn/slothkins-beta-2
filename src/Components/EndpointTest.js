@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import {
     Button,
@@ -31,7 +31,6 @@ const EndpointTest = () => {
     const [loading, setLoading] = useState({
         cryptoNames: false,
         cryptoPrices: false,
-        percentChange: false,
         meanReturns: false,
         priceVariances: false
     });
