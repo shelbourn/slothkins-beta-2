@@ -8,7 +8,6 @@ import {
     Scatter,
     XAxis,
     YAxis,
-    ZAxis,
     CartesianGrid,
     Tooltip,
     Cell,
@@ -120,21 +119,18 @@ const EndpointTest = () => {
         );
     };
 
-    console.log(
-        JSON.parse(JSON.stringify(CryptoStore.kMeansClusteringIter10000))
-    );
-
     const handleDeleteOutlier = () => {
         CryptoStore.deleteStoreOutlier('kMeansClusteringIter10000');
     };
 
-    const TickerName = ({ payload, label, active }) => {
-        console.log(payload);
+    // console.log(JSON.parse(JSON.stringify(CryptoStore.annualPriceVariances)));
+
+    const TickerName = ({ payload, active }) => {
         if (active) {
             return (
                 <div className="tickerNameTooltip">
-                    <p className="tooltipLabel">{`${payload[0].name} : $ ${payload[0].value}`}</p>
-                    <p className="tooltipLabel">{`${payload[1].name} :$ ${payload[1].value}`}</p>
+                    <p className="tooltipLabel">{`${payload[0].name} : ${payload[0].value}%`}</p>
+                    <p className="tooltipLabel">{`${payload[1].name} : ${payload[1].value}%`}</p>
                     <p className="tooltipLabel">{`Ticker : ${payload[0].payload.label}`}</p>
                     <p className="tooltipLabel">{`Risk Group : ${payload[0].payload.groupName}`}</p>
                 </div>
@@ -238,7 +234,7 @@ const EndpointTest = () => {
                     >
                         <CartesianGrid />
                         <XAxis
-                            unit="$"
+                            unit="%"
                             type="number"
                             dataKey="meanReturn"
                             name="Mean Return"
@@ -251,7 +247,7 @@ const EndpointTest = () => {
                             />
                         </XAxis>
                         <YAxis
-                            unit="$"
+                            unit="%"
                             type="number"
                             dataKey="priceVariance"
                             name="Price Variance"
@@ -259,9 +255,9 @@ const EndpointTest = () => {
                         >
                             <Label
                                 value="Annual Price Variance"
-                                offset={80}
+                                offset={10}
                                 angle={-90}
-                                position="insideLeft"
+                                position="left"
                                 style={{ textAnchor: 'middle' }}
                             />
                         </YAxis>
