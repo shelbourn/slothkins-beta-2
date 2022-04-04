@@ -11,7 +11,7 @@ const Routing = () => {
                 <Route path="/" exact element={<App />} />
                 <Route path="/k-means-analysis" exact element={<KMeans />} />
                 <Route
-                    path="/other-ml-algo"
+                    path="/logistic-regression-analysis"
                     exact
                     element={<LogisticRegression />}
                 />

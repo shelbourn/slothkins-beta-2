@@ -8,7 +8,7 @@ import {
     Alert
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { Observer } from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import ObjectLearning from 'object-learning';
 import {
     ScatterChart,
@@ -54,6 +54,10 @@ const KMeans = () => {
             console.log(error);
         }
     };
+
+    console.log(
+        JSON.parse(JSON.stringify(CryptoStore.kMeansClusteringIter10000))
+    );
 
     /***
      * Retrieves all crypto priceve by ticker and hydrates the CryptoStore
@@ -352,4 +356,4 @@ const KMeans = () => {
     );
 };
 
-export default Observer(KMeans);
+export default observer(KMeans);

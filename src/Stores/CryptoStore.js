@@ -255,7 +255,9 @@ class CryptoStore {
         );
     }
 
-    setLogRegressionData() {}
+    setLogRegressionData(data) {
+        this.logRegressionData = data;
+    }
 }
 
 export default CryptoStore;
