@@ -39,7 +39,8 @@ class CryptoStore {
         '#C8E6C9',
         '#FFE0B2'
     ];
-    logRegressionData = [];
+    logRegressionRawData = [];
+    logRegressionUsableData = [];
 
     constructor(root) {
         makeAutoObservable(this);
@@ -255,8 +256,38 @@ class CryptoStore {
         );
     }
 
-    setLogRegressionData(data) {
-        this.logRegressionData = data;
+    setLogRegressionRawData(data) {
+        this.logRegressionRawData = data;
+    }
+
+    setLogRegressionUsableData() {
+        this.logRegressionRawData.forEach((el, i) => {
+            // if (i === 0) {
+            //     return;
+            // }
+            this.logRegressionUsableData = [
+                ...this.logRegressionUsableData,
+                {
+                    date: el['Date'],
+                    name: el['Name'],
+                    ticker: el['Symbol'],
+                    open: el['Open'],
+                    openOpen:
+                        el['Open'] -
+                        (this.logRegressionRawData[i - 1]
+                            ? this.logRegressionRawData[i - 1]['Open']
+                            : 0),
+                    mav: !!this.logRegressionRawData[i - 9]
+                        ? this.logRegressionRawData
+                              .slice(i - 9, i + 1)
+                              .reduce((a, b) => a + +b['Open'], 0) / 10
+                        : this.logRegressionRawData
+                              .slice(0, i + 1)
+                              .reduce((a, b) => a + +b['Open'], 0) /
+                          (i + 1)
+                }
+            ];
+        });
     }
 }
 

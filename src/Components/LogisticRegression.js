@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import ObjectLearning from 'object-learning';
 import axios from 'axios';
+import { Button } from '@mui/material';
 
 import { useStore } from '../Stores/StoreFunctions';
 
@@ -15,16 +16,23 @@ const LogisticRegression = () => {
                     'https://slothkins-beta-2.herokuapp.com/detailed-crypto-data?ticker=AAVE'
                 );
                 if (response.data) {
-                    CryptoStore.setLogRegressionData(response.data);
+                    CryptoStore.setLogRegressionRawData(response.data);
                 }
             } catch (error) {
                 console.log(error);
             }
         };
         test();
-    });
+    }, []);
 
-    console.log(CryptoStore.logRegressionData);
+    const handleSetLogRegressionUsableData = () => {
+        CryptoStore.setLogRegressionUsableData();
+    };
+
+    // console.log(JSON.parse(JSON.stringify(CryptoStore.logRegressionRawData)));
+    console.log(
+        JSON.parse(JSON.stringify(CryptoStore.logRegressionUsableData))
+    );
 
     // TODO: Use Previous day close, current day open, Open 10 day MAV close-close = buy/sell
 
@@ -55,11 +63,21 @@ const LogisticRegression = () => {
         'buy'
     );
 
-    console.log(
-        regressionModel.evalObject({ A: 5123, B: 234, C: 1.7, D: 0.35 })
-    );
+    // console.log(
+    //     regressionModel.evalObject({ A: 5123, B: 234, C: 1.7, D: 0.35 })
+    // );
 
-    return <>Test</>;
+    return (
+        <>
+            <Button
+                variant="contained"
+                className="endpointTest"
+                onClick={handleSetLogRegressionUsableData}
+            >
+                Set Log Regression Data
+            </Button>
+        </>
+    );
 };
 
 export default observer(LogisticRegression);
