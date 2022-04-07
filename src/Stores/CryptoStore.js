@@ -41,6 +41,10 @@ class CryptoStore {
     ];
     logRegressionRawData = [];
     logRegressionUsableData = [];
+    logRegressionFormattedData = [];
+    logRegressionTrainingData = [];
+    logRegressionModeledData = [];
+    logRegressionChartColors = ['#26C6DA', '#EC407A', '#FF7043', '#8D6E63'];
 
     constructor(root) {
         makeAutoObservable(this);
@@ -271,7 +275,7 @@ class CryptoStore {
                     date: el['Date'],
                     name: el['Name'],
                     ticker: el['Symbol'],
-                    open: el['Open'],
+                    open: +el['Open'],
                     openOpen:
                         el['Open'] -
                         (this.logRegressionRawData[i - 1]
@@ -288,6 +292,34 @@ class CryptoStore {
                 }
             ];
         });
+    }
+
+    setLogRegressionFormattedData() {
+        this.logRegressionUsableData.forEach((el, i) => {
+            const buy =
+                el['mav'] - (el[i - 1] ? el[i - 1]['mav'] : 0) > 0 &&
+                el['openOpen'] > 0;
+
+            this.logRegressionFormattedData[i] = { ...el, buy: buy };
+        });
+    }
+
+    setLogRegressionTrainingData() {
+        this.logRegressionFormattedData.forEach((el, i) => {
+            this.logRegressionTrainingData[i] = {
+                open: el.open,
+                openOpen: el.openOpen,
+                mav: el.mav,
+                buy: el.buy
+            };
+        });
+    }
+
+    setLogRegressionModeledData(data) {
+        this.logRegressionModeledData = [
+            ...this.logRegressionModeledData,
+            data
+        ];
     }
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import ObjectLearning from 'object-learning';
 import axios from 'axios';
@@ -29,10 +29,22 @@ const LogisticRegression = () => {
         CryptoStore.setLogRegressionUsableData();
     };
 
+    const handleSetLogRegressionFormattedData = () => {
+        CryptoStore.setLogRegressionFormattedData();
+    };
+
+    const handleSetLogRegressionTrainingData = () => {
+        CryptoStore.setLogRegressionTrainingData();
+    };
+
     // console.log(JSON.parse(JSON.stringify(CryptoStore.logRegressionRawData)));
-    console.log(
-        JSON.parse(JSON.stringify(CryptoStore.logRegressionUsableData))
-    );
+    // console.log(
+    //     JSON.parse(JSON.stringify(CryptoStore.logRegressionUsableData))
+    // );
+
+    // console.log(
+    //     JSON.parse(JSON.stringify(CryptoStore.logRegressionFormattedData))
+    // );
 
     // TODO: Use Previous day close, current day open, Open 10 day MAV close-close = buy/sell
 
@@ -57,15 +69,27 @@ const LogisticRegression = () => {
         { A: 23677, B: 2462, C: 1.9, D: 0.86, buy: false }
     ];
 
-    const regressionModel = ObjectLearning.runLogisticReg(
-        testData,
-        ['A', 'B', 'C', 'D'],
-        'buy'
-    );
+    const handleLogRegressionModel = () => {
+        ObjectLearning.runLogisticReg(
+            JSON.parse(JSON.stringify(CryptoStore.logRegressionTrainingData)),
+            ['open', 'openOpen', 'mav'],
+            'buy'
+        );
+    };
 
-    // console.log(
-    //     regressionModel.evalObject({ A: 5123, B: 234, C: 1.7, D: 0.35 })
-    // );
+    const handleModelPrediction = () => {
+        const model = ObjectLearning.runLogisticReg(
+            JSON.parse(JSON.stringify(CryptoStore.logRegressionTrainingData)),
+            ['open', 'openOpen', 'mav'],
+            'buy'
+        );
+        const prediction = model.evalObject({
+            open: 423,
+            openOpen: -10,
+            mav: 396
+        });
+        console.log(prediction);
+    };
 
     return (
         <>
@@ -75,6 +99,34 @@ const LogisticRegression = () => {
                 onClick={handleSetLogRegressionUsableData}
             >
                 Set Log Regression Data
+            </Button>
+            <Button
+                variant="contained"
+                className="endpointTest"
+                onClick={handleSetLogRegressionFormattedData}
+            >
+                Set Log Regression Formatted Data
+            </Button>
+            <Button
+                variant="contained"
+                className="endpointTest"
+                onClick={handleSetLogRegressionTrainingData}
+            >
+                Set Log Regression Training Data
+            </Button>
+            <Button
+                variant="contained"
+                className="endpointTest"
+                onClick={handleLogRegressionModel}
+            >
+                Train Logistic Regression Model
+            </Button>
+            <Button
+                variant="contained"
+                className="endpointTest"
+                onClick={handleModelPrediction}
+            >
+                Calculate Model Prediction
             </Button>
         </>
     );
