@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { std, sqrt } from 'mathjs';
+import ObjectLearning from 'object-learning';
 
 class CryptoStore {
     loaded = {
@@ -275,6 +276,7 @@ class CryptoStore {
                     date: el['Date'],
                     name: el['Name'],
                     ticker: el['Symbol'],
+                    close: +el['Close'],
                     open: +el['Open'],
                     openOpen:
                         el['Open'] -
@@ -315,11 +317,37 @@ class CryptoStore {
         });
     }
 
-    setLogRegressionModeledData(data) {
-        this.logRegressionModeledData = [
-            ...this.logRegressionModeledData,
-            data
-        ];
+    setLogRegressionModeledData() {
+        this.setLogRegressionTrainingData();
+
+        const model = ObjectLearning.runLogisticReg(
+            JSON.parse(JSON.stringify(this.logRegressionTrainingData)),
+            ['open', 'openOpen', 'mav'],
+            'buy'
+        );
+
+        this.logRegressionTrainingData.forEach((el, i) => {
+            this.logRegressionModeledData[i] = {
+                open: el.open,
+                openOpen: el.openOpen,
+                mav: el.mav,
+                logRegProb: model.evalObject({
+                    open: el.open,
+                    openOpen: el.openOpen,
+                    mav: el.mav
+                })
+            };
+        });
+
+        this.logRegressionFormattedData.forEach((el, i) => {
+            this.logRegressionModeledData[i] = {
+                ...this.logRegressionModeledData[i],
+                date: el.date,
+                name: el.name,
+                ticker: el.ticker,
+                close: el.close
+            };
+        });
     }
 }
 

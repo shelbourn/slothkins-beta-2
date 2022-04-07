@@ -71,27 +71,22 @@ const LogisticRegression = () => {
         { A: 23677, B: 2462, C: 1.9, D: 0.86, buy: false }
     ];
 
-    const handleLogRegressionModel = () => {
-        ObjectLearning.runLogisticReg(
-            JSON.parse(JSON.stringify(CryptoStore.logRegressionTrainingData)),
-            ['open', 'openOpen', 'mav'],
-            'buy'
-        );
-    };
+    //TODO: Probably don't need this function or its handler
+    // const handleLogRegressionModel = () => {
+    //     ObjectLearning.runLogisticReg(
+    //         JSON.parse(JSON.stringify(CryptoStore.logRegressionTrainingData)),
+    //         ['open', 'openOpen', 'mav'],
+    //         'buy'
+    //     );
+    // };
 
     const handleModelPrediction = () => {
-        const model = ObjectLearning.runLogisticReg(
-            JSON.parse(JSON.stringify(CryptoStore.logRegressionTrainingData)),
-            ['open', 'openOpen', 'mav'],
-            'buy'
-        );
-        const prediction = model.evalObject({
-            open: 423,
-            openOpen: -10,
-            mav: 396
-        });
-        console.log(prediction);
+        CryptoStore.setLogRegressionModeledData();
     };
+
+    // console.log(
+    //     JSON.parse(JSON.stringify(CryptoStore.logRegressionModeledData))
+    // );
 
     return (
         <>
@@ -116,13 +111,13 @@ const LogisticRegression = () => {
             >
                 Set Log Regression Training Data
             </Button>
-            <Button
+            {/* <Button
                 variant="contained"
                 className="endpointTest"
                 onClick={handleLogRegressionModel}
             >
                 Train Logistic Regression Model
-            </Button>
+            </Button> */}
             <Button
                 variant="contained"
                 className="endpointTest"
