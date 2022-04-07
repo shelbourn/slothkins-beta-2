@@ -1,4 +1,4 @@
-import './styles.css';
+// import './styles.css';
 import React, { Component } from 'react';
 import {
     LineChart,
@@ -63,7 +63,7 @@ const initialState = {
     animation: true
 };
 
-export default class App extends Component<any, any> {
+export default class ZoomLineChart extends Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = initialState;
