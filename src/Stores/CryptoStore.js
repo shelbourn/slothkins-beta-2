@@ -10,7 +10,8 @@ class CryptoStore {
         annualMeanReturns: false,
         annualPriceVariances: false,
         kMeansData: false,
-        kMeansClusteringData: false
+        kMeansClusteringData: false,
+        logRegModeledData: false
     };
     loading = {
         cryptoPercentChange: false
@@ -279,17 +280,17 @@ class CryptoStore {
                     close: +el['Close'],
                     open: +el['Open'],
                     openOpen:
-                        el['Open'] -
+                        el.Open -
                         (this.logRegressionRawData[i - 1]
-                            ? this.logRegressionRawData[i - 1]['Open']
+                            ? this.logRegressionRawData[i - 1].Open
                             : 0),
                     mav: !!this.logRegressionRawData[i - 9]
                         ? this.logRegressionRawData
                               .slice(i - 9, i + 1)
-                              .reduce((a, b) => a + +b['Open'], 0) / 10
+                              .reduce((a, b) => a + +b.Open, 0) / 10
                         : this.logRegressionRawData
                               .slice(0, i + 1)
-                              .reduce((a, b) => a + +b['Open'], 0) /
+                              .reduce((a, b) => a + +b.Open, 0) /
                           (i + 1)
                 }
             ];
@@ -299,8 +300,7 @@ class CryptoStore {
     setLogRegressionFormattedData() {
         this.logRegressionUsableData.forEach((el, i) => {
             const buy =
-                el['mav'] - (el[i - 1] ? el[i - 1]['mav'] : 0) > 0 &&
-                el['openOpen'] > 0;
+                el.mav - (el[i - 1] ? el[i - 1].mav : 0) > 0 && el.openOpen > 0;
 
             this.logRegressionFormattedData[i] = { ...el, buy: buy };
         });
@@ -309,10 +309,10 @@ class CryptoStore {
     setLogRegressionTrainingData() {
         this.logRegressionFormattedData.forEach((el, i) => {
             this.logRegressionTrainingData[i] = {
-                open: el.open,
-                openOpen: el.openOpen,
-                mav: el.mav,
-                buy: el.buy
+                open: el['open'],
+                openOpen: el['openOpen'],
+                mav: el['mav'],
+                buy: el['buy']
             };
         });
     }
@@ -331,6 +331,7 @@ class CryptoStore {
                 open: el.open,
                 openOpen: el.openOpen,
                 mav: el.mav,
+                buy: el.buy,
                 logRegProb: model.evalObject({
                     open: el.open,
                     openOpen: el.openOpen,
@@ -348,6 +349,12 @@ class CryptoStore {
                 close: el.close
             };
         });
+
+        this.setIsLoaded(['logRegModeledData'], true);
+    }
+
+    get logRegressionModData() {
+        return this.logRegressionModeledData;
     }
 }
 
