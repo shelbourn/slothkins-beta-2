@@ -1,0 +1,16 @@
+.tooltip {
+    border-color: var(--border);
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    opacity: 1;
+}
+
+.tooltipBackground {
+    background-color: var(--color);
+}
+
+.tooltipLabel {
+    font-weight: 600;
+}

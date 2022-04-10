@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { std, sqrt } from 'mathjs';
 import ObjectLearning from 'object-learning';
+import Moment from 'moment';
 
 class CryptoStore {
     loaded = {
@@ -11,7 +12,10 @@ class CryptoStore {
         annualPriceVariances: false,
         kMeansData: false,
         kMeansClusteringData: false,
-        logRegModeledData: false
+        logRegRawData: false,
+        logRegUsableData: false,
+        logRegModeledData: false,
+        logRegFields: false
     };
     loading = {
         cryptoPercentChange: false
@@ -46,7 +50,24 @@ class CryptoStore {
     logRegressionFormattedData = [];
     logRegressionTrainingData = [];
     logRegressionModeledData = [];
-    logRegressionChartColors = ['#26C6DA', '#EC407A', '#FF7043', '#8D6E63'];
+    logRegressionChartColors = {
+        blue: {
+            solid: 'rgb(38, 198, 218)',
+            transparency: 'rgba(38, 198, 218, 0.6)'
+        },
+        pink: {
+            solid: 'rgb(236, 64, 122)',
+            transparency: 'rgba(236, 64, 122, 0.6)'
+        },
+        orange: {
+            solid: 'rgb(255, 112, 67)',
+            transparency: 'rgba(255, 112, 67, 0.6)'
+        },
+        brown: {
+            solid: 'rgb(141, 110, 99)',
+            transparency: 'rgba(141, 110, 99, 0.6)'
+        }
+    };
 
     constructor(root) {
         makeAutoObservable(this);
@@ -264,6 +285,11 @@ class CryptoStore {
 
     setLogRegressionRawData(data) {
         this.logRegressionRawData = data;
+        this.setIsLoaded(['logRegRawData'], true);
+    }
+
+    setLogRegressionNextDate(date) {
+        this.logRegressionNextDate = date;
     }
 
     setLogRegressionUsableData() {
@@ -274,7 +300,9 @@ class CryptoStore {
             this.logRegressionUsableData = [
                 ...this.logRegressionUsableData,
                 {
-                    date: el['Date'],
+                    date: this.loaded.logRegFields
+                        ? el['Date']
+                        : Moment(el['Date']).format('l'),
                     name: el['Name'],
                     ticker: el['Symbol'],
                     close: +el['Close'],
@@ -295,12 +323,17 @@ class CryptoStore {
                 }
             ];
         });
+
+        this.setIsLoaded(['logRegUsableData'], true);
     }
 
     setLogRegressionFormattedData() {
         this.logRegressionUsableData.forEach((el, i) => {
-            const buy =
-                el.mav - (el[i - 1] ? el[i - 1].mav : 0) > 0 && el.openOpen > 0;
+            const buy = !(
+                el.mav - (el[i - 1] ? el[i - 1].mav : 0) > 0 &&
+                el.openOpen > 0 &&
+                (el[i - 1] ? el[i - 1].close - el.close : 0) >= 0
+            );
 
             this.logRegressionFormattedData[i] = { ...el, buy: buy };
         });
@@ -333,10 +366,16 @@ class CryptoStore {
                 mav: el.mav,
                 buy: el.buy,
                 logRegProb: model.evalObject({
+                    close: el.close,
                     open: el.open,
                     openOpen: el.openOpen,
                     mav: el.mav
                 })
+                // logRegProb: model.evalObject({
+                //     open: el[i - 1]?.open ?? el.open,
+                //     openOpen: el[i - 1]?.openOpen ?? el.openOpen,
+                //     mav: el[i - 1]?.mav ?? el.mav
+                // })
             };
         });
 
@@ -351,10 +390,6 @@ class CryptoStore {
         });
 
         this.setIsLoaded(['logRegModeledData'], true);
-    }
-
-    get logRegressionModData() {
-        return this.logRegressionModeledData;
     }
 }
 

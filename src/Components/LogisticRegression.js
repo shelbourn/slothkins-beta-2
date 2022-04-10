@@ -4,6 +4,9 @@ import ObjectLearning from 'object-learning';
 import axios from 'axios';
 import { Button } from '@mui/material';
 
+import LogRegChart from './LogRegChart';
+import LogRegProbFields from './LogRegProbFields.js';
+
 import { useStore } from '../Stores/StoreFunctions';
 
 const LogisticRegression = () => {
@@ -123,6 +126,8 @@ const LogisticRegression = () => {
             >
                 Calculate Model Prediction
             </Button>
+            {CryptoStore.loaded.logRegModeledData && <LogRegChart />}
+            <LogRegProbFields />
         </>
     );
 };
