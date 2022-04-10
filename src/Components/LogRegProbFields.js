@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { TextField, InputAdornment } from '@mui/material';
+import { TextField, InputAdornment, Button } from '@mui/material';
 import Moment from 'moment';
 
 import './_styles/LogRegProbFields.css';
@@ -11,49 +11,20 @@ const LogRegProbFields = () => {
     const { CryptoStore } = useStore();
 
     const [fieldData, setFieldData] = useState({
-        date: Moment(
-            CryptoStore.logRegressionUsableData[
-                CryptoStore.logRegressionUsableData?.length - 1
-            ]?.date
-        )
-            .add(1, 'days')
-            .format('l'),
+        rawDate: '',
+        formattedDate: '',
         openPrice: ''
     });
     const [isSelected, setIsSelected] = useState(false);
     const [error, setError] = useState(false);
 
-    //TODO: NEED TO FIX THIS!!
+    useEffect(() => {
+        CryptoStore.setIsLoaded(['logRegFields'], true);
 
-    // let nextDate = '';
-
-    // useEffect(() => {
-    //     if (CryptoStore.loaded.logRegUsableData) {
-    //         nextDate = Moment(
-    //             CryptoStore.logRegressionUsableData[
-    //                 CryptoStore.logRegressionUsableData?.length - 1
-    //             ]?.date
-    //         )
-    //             .add(1, 'days')
-    //             .format('l');
-    //     }
-    // }, []);
-
-    console.log(
-        CryptoStore.logRegressionUsableData[
-            CryptoStore.logRegressionUsableData?.length - 1
-        ]?.date
-    );
-
-    console.log(
-        Moment(
-            CryptoStore.logRegressionUsableData[
-                CryptoStore.logRegressionUsableData?.length - 1
-            ]?.date
-        )
-            .add(1, 'days')
-            .format('l')
-    );
+        return () => {
+            CryptoStore.setIsLoaded(['logRegFields'], false);
+        };
+    }, []);
 
     const handleLogRegField = (event) => {
         setFieldData({ ...fieldData, openPrice: event.target.value });
@@ -75,7 +46,25 @@ const LogRegProbFields = () => {
         setIsSelected(false);
     };
 
-    console.log('State', fieldData.date);
+    const handleNextDate = () => {
+        setFieldData({
+            ...fieldData,
+            rawDate: Moment(
+                CryptoStore.logRegressionUsableData[
+                    CryptoStore.logRegressionUsableData?.length - 1
+                ]?.date
+            ).add(1, 'days')._i,
+            formattedDate: Moment(
+                CryptoStore.logRegressionUsableData[
+                    CryptoStore.logRegressionUsableData?.length - 1
+                ]?.date
+            )
+                .add(1, 'days')
+                .format('l')
+        });
+    };
+
+    console.log('State', fieldData.rawDate);
 
     return (
         <div className="fieldContainer">
@@ -83,14 +72,19 @@ const LogRegProbFields = () => {
                 className="field"
                 variant="outlined"
                 id="log-reg-date"
-                value={
-                    CryptoStore.loaded.logRegUsableData ? fieldData.date : ''
-                }
+                value={fieldData.formattedDate}
                 label="Date"
                 placeholder="Date"
-                onChange={handleLogRegField}
-                // disabled
+                disabled
             />
+            <Button
+                variant="contained"
+                className="field"
+                onClick={handleNextDate}
+                disabled={!CryptoStore.loaded.logRegModeledData}
+            >
+                Set Next Date
+            </Button>
             <TextField
                 className="field"
                 variant="outlined"
