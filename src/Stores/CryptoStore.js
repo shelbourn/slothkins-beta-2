@@ -366,16 +366,10 @@ class CryptoStore {
                 mav: el.mav,
                 buy: el.buy,
                 logRegProb: model.evalObject({
-                    close: el.close,
                     open: el.open,
                     openOpen: el.openOpen,
                     mav: el.mav
                 })
-                // logRegProb: model.evalObject({
-                //     open: el[i - 1]?.open ?? el.open,
-                //     openOpen: el[i - 1]?.openOpen ?? el.openOpen,
-                //     mav: el[i - 1]?.mav ?? el.mav
-                // })
             };
         });
 

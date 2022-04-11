@@ -211,6 +211,7 @@ const KMeans = () => {
                 variant="contained"
                 className="endpointTest"
                 loading={loading.cryptoNames}
+                color="secondary"
             >
                 Get All Crypto Names
             </LoadingButton>
@@ -220,6 +221,7 @@ const KMeans = () => {
                 className="endpointTest"
                 loading={loading.cryptoPrices}
                 disabled={!CryptoStore.loaded.cryptoNames}
+                color="secondary"
             >
                 Get All Crypto Prices
             </LoadingButton>
@@ -229,6 +231,7 @@ const KMeans = () => {
                 className="endpointTest"
                 loading={loading.percentChange}
                 disabled={!CryptoStore.loaded.cryptoPrices}
+                color="secondary"
             >
                 Calculate all percent changes in crypto prices
             </LoadingButton>
@@ -238,6 +241,7 @@ const KMeans = () => {
                 className="endpointTest"
                 loading={loading.meanReturns}
                 disabled={!CryptoStore.loaded.cryptoPercentChange}
+                color="secondary"
             >
                 Calculate annual mean returns for all crypto prices
             </LoadingButton>
@@ -247,6 +251,7 @@ const KMeans = () => {
                 className="endpointTest"
                 loading={loading.priceVariances}
                 disabled={!CryptoStore.loaded.annualMeanReturns}
+                color="secondary"
             >
                 Calculate annual price variances for all crypto prices
             </LoadingButton>
@@ -255,6 +260,7 @@ const KMeans = () => {
                 variant="contained"
                 className="endpointTest"
                 disabled={!CryptoStore.loaded.annualPriceVariances}
+                color="secondary"
             >
                 Calculate K-Means Data
             </Button>
@@ -263,6 +269,7 @@ const KMeans = () => {
                 variant="contained"
                 className="endpointTest"
                 disabled={!CryptoStore.loaded.kMeansData}
+                color="secondary"
             >
                 K-Means Clustering 10,000
             </Button>
@@ -271,6 +278,7 @@ const KMeans = () => {
                 variant="contained"
                 className="endpointTest"
                 disabled={!CryptoStore.loaded.kMeansData}
+                color="secondary"
             >
                 Delete Outlier
             </Button>
@@ -279,6 +287,7 @@ const KMeans = () => {
                 variant="contained"
                 className="endpointTest"
                 disabled={!CryptoStore.loaded.kMeansData}
+                color="secondary"
             >
                 Clean Data
             </Button>
@@ -287,6 +296,7 @@ const KMeans = () => {
                 variant="contained"
                 className="endpointTest"
                 disabled={!CryptoStore.loaded.kMeansData}
+                color="secondary"
             >
                 K-Means Clustering 100,000
             </Button>

@@ -76,12 +76,14 @@ const LogRegProbFields = () => {
                 label="Date"
                 placeholder="Date"
                 disabled
+                color="primary"
             />
             <Button
                 variant="contained"
                 className="field"
                 onClick={handleNextDate}
                 disabled={!CryptoStore.loaded.logRegModeledData}
+                color="secondary"
             >
                 Set Next Date
             </Button>
@@ -99,6 +101,7 @@ const LogRegProbFields = () => {
                 InputProps={logRegAdornment}
                 onFocus={showLogRegAdornment}
                 onBlur={hideLogRegAdornment}
+                color="primary"
             />
         </div>
     );

@@ -95,6 +95,7 @@ const LogisticRegression = () => {
                 variant="contained"
                 className="endpointTest"
                 onClick={handleSetLogRegressionUsableData}
+                color="secondary"
             >
                 Set Log Regression Data
             </Button>
@@ -102,6 +103,7 @@ const LogisticRegression = () => {
                 variant="contained"
                 className="endpointTest"
                 onClick={handleSetLogRegressionFormattedData}
+                color="secondary"
             >
                 Set Log Regression Formatted Data
             </Button>
@@ -109,6 +111,7 @@ const LogisticRegression = () => {
                 variant="contained"
                 className="endpointTest"
                 onClick={handleSetLogRegressionTrainingData}
+                color="secondary"
             >
                 Set Log Regression Training Data
             </Button>
@@ -123,6 +126,7 @@ const LogisticRegression = () => {
                 variant="contained"
                 className="endpointTest"
                 onClick={handleModelPrediction}
+                color="secondary"
             >
                 Calculate Model Prediction
             </Button>
