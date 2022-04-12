@@ -9,3 +9,5 @@
 //TODO: Add button/handler for fetching log reg data
 //TODO: In LogRegProbFields.js -- calculate whether there is a BUY signal and
 // what the logRegProb is for NEXT DATE give the OPENING PRICE provided
+//TODO: Different data point (open, open-open, 10-day MAV, etc) to LogRegChart.js
+//TODO: Change Tooltip style for all LogRegChart.js charts

@@ -307,12 +307,11 @@ class CryptoStore {
                     ticker: el['Symbol'],
                     close: +el['Close'],
                     open: +el['Open'],
-                    openOpen:
-                        el.Open -
-                        (this.logRegressionRawData[i - 1]
-                            ? this.logRegressionRawData[i - 1].Open
-                            : 0),
-                    mav: !!this.logRegressionRawData[i - 9]
+                    openOpen: this.logRegressionRawData[i - 1]
+                        ? this.logRegressionRawData[i].Open -
+                          this.logRegressionRawData[i - 1].Open
+                        : 0,
+                    mav: this.logRegressionRawData[i - 9]
                         ? this.logRegressionRawData
                               .slice(i - 9, i + 1)
                               .reduce((a, b) => a + +b.Open, 0) / 10
@@ -329,11 +328,14 @@ class CryptoStore {
 
     setLogRegressionFormattedData() {
         this.logRegressionUsableData.forEach((el, i) => {
-            const buy = !(
-                el.mav - (el[i - 1] ? el[i - 1].mav : 0) > 0 &&
-                el.openOpen > 0 &&
-                (el[i - 1] ? el[i - 1].close - el.close : 0) >= 0
-            );
+            const buy =
+                (this.logRegressionUsableData[i - 1] &&
+                    this.logRegressionUsableData[i].mav -
+                        this.logRegressionUsableData[i - 1].mav) > 0 &&
+                this.logRegressionUsableData[i].openOpen > 0 &&
+                (this.logRegressionUsableData[i - 1] &&
+                    this.logRegressionUsableData[i].open -
+                        this.logRegressionUsableData[i - 1].close) > 0;
 
             this.logRegressionFormattedData[i] = { ...el, buy: buy };
         });

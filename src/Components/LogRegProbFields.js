@@ -42,6 +42,8 @@ const LogRegProbFields = () => {
         setIsSelected(true);
     };
 
+    console.log(CryptoStore.logRegressionFormattedData);
+
     const hideLogRegAdornment = () => {
         setIsSelected(false);
     };
@@ -63,8 +65,6 @@ const LogRegProbFields = () => {
                 .format('l')
         });
     };
-
-    console.log('State', fieldData.rawDate);
 
     return (
         <div className="fieldContainer">
