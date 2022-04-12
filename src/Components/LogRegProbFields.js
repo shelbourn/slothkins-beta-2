@@ -13,7 +13,8 @@ const LogRegProbFields = () => {
     const [fieldData, setFieldData] = useState({
         rawDate: '',
         formattedDate: '',
-        openPrice: ''
+        openPrice: '',
+        logRegProbPrediction: ''
     });
     const [isSelected, setIsSelected] = useState(false);
     const [error, setError] = useState(false);
@@ -66,6 +67,20 @@ const LogRegProbFields = () => {
         });
     };
 
+    const handleCalculateProbPrediction = () => {
+        CryptoStore.setLogRegressionNextDayPrediction(fieldData.openPrice);
+        // setFieldData({
+        //     ...fieldData,
+        //     logRegProbPrediction: CryptoStore.logRegressionNextDatePrediction
+        // });
+    };
+
+    const test = CryptoStore.logRegressionFormattedData.forEach((el, i) => {
+        console.log(el.open);
+    });
+
+    console.log('Test', test);
+
     return (
         <div className="fieldContainer">
             <TextField
@@ -102,6 +117,25 @@ const LogRegProbFields = () => {
                 onFocus={showLogRegAdornment}
                 onBlur={hideLogRegAdornment}
                 color="primary"
+            />
+            <Button
+                variant="contained"
+                className="field"
+                onClick={handleCalculateProbPrediction}
+                disabled={!fieldData.openPrice}
+                color="secondary"
+            >
+                Calculate Predicted Buy Signal Probability
+            </Button>
+            <TextField
+                className="field"
+                variant="outlined"
+                id="log-reg-prob"
+                value={CryptoStore.logRegressionNextDayPrediction}
+                label="Logistic Regression Buy Signal Probability"
+                placeholder="Logistic Regression Buy Signal Probability"
+                color="primary"
+                disabled
             />
         </div>
     );

@@ -50,6 +50,7 @@ class CryptoStore {
     logRegressionFormattedData = [];
     logRegressionTrainingData = [];
     logRegressionModeledData = [];
+    logRegressionNextDayPrediction = '';
     logRegressionChartColors = {
         blue: {
             solid: 'rgb(38, 198, 218)',
@@ -387,6 +388,57 @@ class CryptoStore {
 
         this.setIsLoaded(['logRegModeledData'], true);
     }
+
+    setLogRegressionNextDayPrediction(openPrice) {
+        this.setLogRegressionTrainingData();
+
+        const tempOpenArray = [];
+
+        this.logRegressionFormattedData.forEach((el) => {
+            [...tempOpenArray, el.open];
+        });
+
+        tempOpenArray.push(+openPrice);
+
+        const model = ObjectLearning.runLogisticReg(
+            JSON.parse(JSON.stringify(this.logRegressionTrainingData)),
+            ['open', 'openOpen', 'mav'],
+            'buy'
+        );
+
+        this.logRegressionNextDayPrediction = model.evalObject({
+            open: +openPrice,
+            openOpen:
+                +openPrice -
+                this.logRegressionFormattedData[
+                    this.logRegressionFormattedData?.length - 1
+                ].open,
+            mav: tempOpenArray.slice(-10).reduce((a, b) => a + b, 0) / 10
+        });
+    }
+
+    // this.logRegressionFormattedData[
+    //             this.logRegressionFormattedData?.length - 10
+    //         ]
+    //             ? this.logRegressionFormattedData
+    //                   .slice(
+    //                       this.logRegressionFormattedData?.length - 10,
+    //                       this.logRegressionFormattedData?.length - 1
+    //                   )
+    //                   .reduce((a, b) => a + +b.Open, 0) / 10
+    //             : this.logRegressionFormattedData
+    //                   .slice(0, this.logRegressionFormattedData?.length - 1)
+    //                   .reduce((a, b) => a + +b.Open, 0) /
+    //               (i + 1)
+
+    // this.logRegressionRawData[i - 9]
+    //                     ? this.logRegressionRawData
+    //                           .slice(i - 9, i + 1)
+    //                           .reduce((a, b) => a + +b.Open, 0) / 10
+    //                     : this.logRegressionRawData
+    //                           .slice(0, i + 1)
+    //                           .reduce((a, b) => a + +b.Open, 0) /
+    //                       (i + 1)
 }
 
 export default CryptoStore;
