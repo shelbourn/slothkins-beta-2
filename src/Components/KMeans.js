@@ -55,9 +55,7 @@ const KMeans = () => {
         }
     };
 
-    console.log(
-        JSON.parse(JSON.stringify(CryptoStore.kMeansClusteringIter10000))
-    );
+    console.log(CryptoStore.cryptoNames);
 
     /***
      * Retrieves all crypto priceve by ticker and hydrates the CryptoStore

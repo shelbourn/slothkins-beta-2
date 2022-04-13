@@ -294,6 +294,7 @@ class CryptoStore {
     }
 
     setLogRegressionUsableData() {
+        this.logRegressionUsableData = [];
         this.logRegressionRawData.forEach((el, i) => {
             this.logRegressionUsableData = [
                 ...this.logRegressionUsableData,
@@ -325,6 +326,7 @@ class CryptoStore {
     }
 
     setLogRegressionFormattedData() {
+        this.logRegressionFormattedData = [];
         this.logRegressionUsableData.forEach((el, i) => {
             const buy =
                 (this.logRegressionUsableData[i - 1] &&
@@ -340,6 +342,8 @@ class CryptoStore {
     }
 
     setLogRegressionTrainingData() {
+        this.logRegressionTrainingData = [];
+
         this.logRegressionFormattedData.forEach((el, i) => {
             this.logRegressionTrainingData[i] = {
                 open: el['open'],
@@ -351,6 +355,8 @@ class CryptoStore {
     }
 
     setLogRegressionModeledData() {
+        this.logRegressionModeledData = [];
+
         this.setLogRegressionTrainingData();
 
         const model = ObjectLearning.runLogisticReg(

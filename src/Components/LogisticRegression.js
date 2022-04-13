@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import ObjectLearning from 'object-learning';
 import axios from 'axios';
 import { Button } from '@mui/material';
 
 import LogRegChart from './LogRegChart';
 import LogRegProbFields from './LogRegProbFields.js';
+import AddCryptoPriceData from './AddCryptoPriceData';
 
 import { useStore } from '../Stores/StoreFunctions';
 
@@ -79,7 +79,8 @@ const LogisticRegression = () => {
                 Calculate Model Prediction
             </Button>
             {CryptoStore.loaded.logRegModeledData && <LogRegChart />}
-            <LogRegProbFields />
+            {/* <LogRegProbFields /> */}
+            <AddCryptoPriceData />
         </>
     );
 };
