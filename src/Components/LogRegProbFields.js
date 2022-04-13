@@ -13,8 +13,7 @@ const LogRegProbFields = () => {
     const [fieldData, setFieldData] = useState({
         rawDate: '',
         formattedDate: '',
-        openPrice: '',
-        logRegProbPrediction: ''
+        openPrice: ''
     });
     const [isSelected, setIsSelected] = useState(false);
     const [error, setError] = useState(false);
@@ -28,6 +27,7 @@ const LogRegProbFields = () => {
     }, []);
 
     const handleLogRegField = (event) => {
+        setError(false);
         setFieldData({ ...fieldData, openPrice: event.target.value });
     };
 
@@ -42,8 +42,6 @@ const LogRegProbFields = () => {
     const showLogRegAdornment = () => {
         setIsSelected(true);
     };
-
-    console.log(CryptoStore.logRegressionFormattedData);
 
     const hideLogRegAdornment = () => {
         setIsSelected(false);
@@ -68,18 +66,14 @@ const LogRegProbFields = () => {
     };
 
     const handleCalculateProbPrediction = () => {
+        //Validate Fields
+        if (!fieldData.openPrice || isNaN(fieldData.openPrice)) {
+            setError(true);
+            return;
+        }
+
         CryptoStore.setLogRegressionNextDayPrediction(fieldData.openPrice);
-        // setFieldData({
-        //     ...fieldData,
-        //     logRegProbPrediction: CryptoStore.logRegressionNextDatePrediction
-        // });
     };
-
-    const test = CryptoStore.logRegressionFormattedData.forEach((el, i) => {
-        console.log(el.open);
-    });
-
-    console.log('Test', test);
 
     return (
         <div className="fieldContainer">
@@ -109,7 +103,9 @@ const LogRegProbFields = () => {
                 error={error}
                 required
                 value={fieldData.openPrice}
-                helperText={error && 'Opening Price is Required'}
+                helperText={
+                    error && 'Opening Price is Required & Must be a Number'
+                }
                 label="Opening Price"
                 placeholder="Opening Price"
                 onChange={handleLogRegField}
@@ -122,7 +118,7 @@ const LogRegProbFields = () => {
                 variant="contained"
                 className="field"
                 onClick={handleCalculateProbPrediction}
-                disabled={!fieldData.openPrice}
+                disabled={!CryptoStore.loaded.logRegModeledData}
                 color="secondary"
             >
                 Calculate Predicted Buy Signal Probability

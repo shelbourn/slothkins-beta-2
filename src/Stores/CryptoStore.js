@@ -295,9 +295,6 @@ class CryptoStore {
 
     setLogRegressionUsableData() {
         this.logRegressionRawData.forEach((el, i) => {
-            // if (i === 0) {
-            //     return;
-            // }
             this.logRegressionUsableData = [
                 ...this.logRegressionUsableData,
                 {
@@ -416,29 +413,6 @@ class CryptoStore {
             mav: tempOpenArray.slice(-10).reduce((a, b) => a + b, 0) / 10
         });
     }
-
-    // this.logRegressionFormattedData[
-    //             this.logRegressionFormattedData?.length - 10
-    //         ]
-    //             ? this.logRegressionFormattedData
-    //                   .slice(
-    //                       this.logRegressionFormattedData?.length - 10,
-    //                       this.logRegressionFormattedData?.length - 1
-    //                   )
-    //                   .reduce((a, b) => a + +b.Open, 0) / 10
-    //             : this.logRegressionFormattedData
-    //                   .slice(0, this.logRegressionFormattedData?.length - 1)
-    //                   .reduce((a, b) => a + +b.Open, 0) /
-    //               (i + 1)
-
-    // this.logRegressionRawData[i - 9]
-    //                     ? this.logRegressionRawData
-    //                           .slice(i - 9, i + 1)
-    //                           .reduce((a, b) => a + +b.Open, 0) / 10
-    //                     : this.logRegressionRawData
-    //                           .slice(0, i + 1)
-    //                           .reduce((a, b) => a + +b.Open, 0) /
-    //                       (i + 1)
 }
 
 export default CryptoStore;
