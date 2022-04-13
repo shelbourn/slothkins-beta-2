@@ -62,23 +62,46 @@ const AddCryptoPriceData = () => {
         setFieldData({ ...fieldData, [name]: value });
     };
 
-    const handleNextDate = () => {
+    const handleHydrateFields = () => {
         setFieldData({
             ...fieldData,
             rawDate: Moment(
-                CryptoStore.logRegressionUsableData[
-                    CryptoStore.logRegressionUsableData?.length - 1
-                ]?.date
+                CryptoStore.logRegressionRawData[
+                    CryptoStore.logRegressionRawData?.length - 1
+                ]?.Date
             ).add(1, 'days')._i,
             date: Moment(
-                CryptoStore.logRegressionUsableData[
-                    CryptoStore.logRegressionUsableData?.length - 1
-                ]?.date
+                CryptoStore.logRegressionRawData[
+                    CryptoStore.logRegressionRawData?.length - 1
+                ]?.Date
             )
                 .add(1, 'days')
-                .format('l')
+                .format('l'),
+            sNo: CryptoStore.logRegressionRawData[
+                CryptoStore.logRegressionRawData?.length - 1
+            ]?.SNo,
+            name: CryptoStore.logRegressionRawData[0].Name,
+            symbol: CryptoStore.logRegressionRawData[0].Symbol
         });
     };
+
+    // const handleNextDate = () => {
+    //     setFieldData({
+    //         ...fieldData,
+    //         rawDate: Moment(
+    //             CryptoStore.logRegressionUsableData[
+    //                 CryptoStore.logRegressionUsableData?.length - 1
+    //             ]?.date
+    //         ).add(1, 'days')._i,
+    //         date: Moment(
+    //             CryptoStore.logRegressionUsableData[
+    //                 CryptoStore.logRegressionUsableData?.length - 1
+    //             ]?.date
+    //         )
+    //             .add(1, 'days')
+    //             .format('l')
+    //     });
+    // };
 
     return (
         <div className="fieldContainer">
@@ -110,11 +133,23 @@ const AddCryptoPriceData = () => {
             >
                 Fetch Currency Data for Selected Ticker
             </Button>
+            <Button
+                variant="contained"
+                className="field"
+                onClick={handleHydrateFields}
+                disabled={
+                    !fieldData.selectedTicker ||
+                    !CryptoStore.loaded.logRegRawData
+                }
+                color="secondary"
+            >
+                Hydrate Fields with Data
+            </Button>
             <TextField
                 className="field"
                 variant="outlined"
                 id="add-data-sno"
-                value={fieldData.formattedDate}
+                value={fieldData.sNo}
                 label="SNo"
                 placeholder="SNo"
                 disabled
@@ -124,7 +159,7 @@ const AddCryptoPriceData = () => {
                 className="field"
                 variant="outlined"
                 id="add-data-name"
-                value={fieldData.formattedDate}
+                value={fieldData.name}
                 label="Currency Name"
                 placeholder="Currency Name"
                 disabled
@@ -134,7 +169,7 @@ const AddCryptoPriceData = () => {
                 className="field"
                 variant="outlined"
                 id="add-data-ticker"
-                value={fieldData.formattedDate}
+                value={fieldData.symbol}
                 label="Currency Ticker"
                 placeholder="Currency Ticker"
                 disabled
@@ -144,7 +179,7 @@ const AddCryptoPriceData = () => {
                 className="field"
                 variant="outlined"
                 id="add-data-date"
-                value={fieldData.formattedDate}
+                value={fieldData.date}
                 label="Date"
                 placeholder="Date"
                 disabled
@@ -220,7 +255,7 @@ const AddCryptoPriceData = () => {
             <Button
                 variant="contained"
                 className="field"
-                onClick={handleNextDate}
+                onClick={'handleNextDate'}
                 disabled={!CryptoStore.loaded.logRegModeledData}
                 color="secondary"
             >

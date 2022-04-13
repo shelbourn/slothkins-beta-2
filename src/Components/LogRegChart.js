@@ -99,7 +99,7 @@ const LogRegChart = () => {
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey={'date'} name="Date" />
+                    <XAxis dataKey="date" name="Date" />
                     <YAxis />
                     <Tooltip content={<TooltipContent />} />
                     <Line
