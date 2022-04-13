@@ -55,8 +55,6 @@ const KMeans = () => {
         }
     };
 
-    console.log(CryptoStore.cryptoNames);
-
     /***
      * Retrieves all crypto priceve by ticker and hydrates the CryptoStore
      */

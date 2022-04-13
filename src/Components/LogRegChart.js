@@ -25,8 +25,6 @@ const LogRegChart = () => {
 
     const TooltipContent = ({ payload, active }) => {
         if (active) {
-            // console.log(payload);
-
             const handleActive = (payload) => {
                 const dataKeys = {
                     date: 'Date',

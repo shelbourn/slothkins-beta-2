@@ -85,24 +85,6 @@ const AddCryptoPriceData = () => {
         });
     };
 
-    // const handleNextDate = () => {
-    //     setFieldData({
-    //         ...fieldData,
-    //         rawDate: Moment(
-    //             CryptoStore.logRegressionUsableData[
-    //                 CryptoStore.logRegressionUsableData?.length - 1
-    //             ]?.date
-    //         ).add(1, 'days')._i,
-    //         date: Moment(
-    //             CryptoStore.logRegressionUsableData[
-    //                 CryptoStore.logRegressionUsableData?.length - 1
-    //             ]?.date
-    //         )
-    //             .add(1, 'days')
-    //             .format('l')
-    //     });
-    // };
-
     return (
         <div className="fieldContainer">
             <TextField
