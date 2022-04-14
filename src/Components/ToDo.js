@@ -11,7 +11,7 @@
 // what the logRegProb is for NEXT DATE give the OPENING PRICE provided *** DONE ***
 //[ ] Different data point (open, open-open, 10-day MAV, etc) to LogRegChart.js
 //[ ] Change Tooltip style for all LogRegChart.js charts
-//[ ] Fix conditional rendering related to CrytoStore.loaded.logRegFields
+//[x] Fix conditional rendering related to CrytoStore.loaded.logRegFields
 // and date property of CryptoStore.logRegUsableData -- currently it will change the
 // date value to a full timestamp when both the logRegChart and logRegFields are displayed
 // need to handle this elegantly

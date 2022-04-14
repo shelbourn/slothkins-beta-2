@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { TextField, InputAdornment, Button } from '@mui/material';
 import Moment from 'moment';
@@ -17,14 +17,6 @@ const LogRegProbFields = () => {
     });
     const [isSelected, setIsSelected] = useState(false);
     const [error, setError] = useState(false);
-
-    useEffect(() => {
-        CryptoStore.setIsLoaded(['logRegFields'], true);
-
-        return () => {
-            CryptoStore.setIsLoaded(['logRegFields'], false);
-        };
-    }, []);
 
     const handleLogRegField = (event) => {
         setError(false);

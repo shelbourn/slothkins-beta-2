@@ -79,7 +79,7 @@ const LogisticRegression = () => {
                 Calculate Model Prediction
             </Button>
             {CryptoStore.loaded.logRegModeledData && <LogRegChart />}
-            {/* <LogRegProbFields /> */}
+            <LogRegProbFields />
             <AddCryptoPriceData />
         </>
     );

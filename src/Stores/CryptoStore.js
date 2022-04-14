@@ -14,8 +14,7 @@ class CryptoStore {
         kMeansClusteringData: false,
         logRegRawData: false,
         logRegUsableData: false,
-        logRegModeledData: false,
-        logRegFields: false
+        logRegModeledData: false
     };
     loading = {
         cryptoPercentChange: false
@@ -299,9 +298,7 @@ class CryptoStore {
             this.logRegressionUsableData = [
                 ...this.logRegressionUsableData,
                 {
-                    date: this.loaded.logRegFields
-                        ? el['Date']
-                        : Moment(el['Date']).format('l'),
+                    date: Moment(el['Date']).format('YYYY-MM-DD'),
                     name: el['Name'],
                     ticker: el['Symbol'],
                     close: +el['Close'],

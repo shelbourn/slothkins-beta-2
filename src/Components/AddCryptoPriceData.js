@@ -88,6 +88,8 @@ const AddCryptoPriceData = () => {
         });
     };
 
+    console.log(JSON.parse(JSON.stringify(CryptoStore.logRegressionRawData)));
+
     const handleSubmitData = async () => {
         try {
             const response = await axios.post(
