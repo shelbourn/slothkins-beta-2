@@ -69,20 +69,48 @@ const AddCryptoPriceData = () => {
                 CryptoStore.logRegressionRawData[
                     CryptoStore.logRegressionRawData?.length - 1
                 ]?.Date
-            ).add(1, 'days')._i,
+            )
+                .add(2, 'days')
+                .format('YYYY-MM-DD'),
             date: Moment(
                 CryptoStore.logRegressionRawData[
                     CryptoStore.logRegressionRawData?.length - 1
                 ]?.Date
             )
-                .add(1, 'days')
+                .add(2, 'days')
                 .format('l'),
-            sNo: CryptoStore.logRegressionRawData[
-                CryptoStore.logRegressionRawData?.length - 1
-            ]?.SNo,
+            sNo:
+                +CryptoStore.logRegressionRawData[
+                    CryptoStore.logRegressionRawData?.length - 1
+                ]?.SNo + 1,
             name: CryptoStore.logRegressionRawData[0].Name,
             symbol: CryptoStore.logRegressionRawData[0].Symbol
         });
+    };
+
+    const handleSubmitData = async () => {
+        try {
+            const response = await axios.post(
+                `https://slothkins-beta-2.herokuapp.com/add-crypto-price-data`,
+                {
+                    SNo: fieldData.sNo,
+                    Name: fieldData.name,
+                    Symbol: fieldData.symbol,
+                    Date: fieldData.rawDate,
+                    High: fieldData.high,
+                    Low: fieldData.low,
+                    Open: fieldData.open,
+                    Close: fieldData.close,
+                    Volume: fieldData.volume,
+                    Marketcap: fieldData.marketcap
+                }
+            );
+            if (response) {
+                console.log(response);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -185,6 +213,7 @@ const AddCryptoPriceData = () => {
                 id="add-data-low"
                 name="low"
                 value={fieldData.low}
+                onChange={handleFieldData}
                 label="Low Price"
                 placeholder="Low Price"
                 helperText="Please enter the currency's trading low price"
@@ -196,6 +225,7 @@ const AddCryptoPriceData = () => {
                 id="add-data-open"
                 name="open"
                 value={fieldData.open}
+                onChange={handleFieldData}
                 label="Open Price"
                 placeholder="Open Price"
                 helperText="Please enter the currency's opening price"
@@ -207,6 +237,7 @@ const AddCryptoPriceData = () => {
                 id="add-data-close"
                 name="close"
                 value={fieldData.close}
+                onChange={handleFieldData}
                 label="Close Price"
                 placeholder="Close Price"
                 helperText="Please enter the currency's closing price"
@@ -218,6 +249,7 @@ const AddCryptoPriceData = () => {
                 id="add-data-volume"
                 name="volume"
                 value={fieldData.volume}
+                onChange={handleFieldData}
                 label="Volume"
                 placeholder="Volume"
                 helperText="Please enter the currency's daily trading volume"
@@ -229,6 +261,7 @@ const AddCryptoPriceData = () => {
                 id="add-data-marketcap"
                 name="marketcap"
                 value={fieldData.marketcap}
+                onChange={handleFieldData}
                 label="Markecap"
                 placeholder="Marketcap"
                 helperText="Please enter the currency's marketcap"
@@ -237,11 +270,11 @@ const AddCryptoPriceData = () => {
             <Button
                 variant="contained"
                 className="field"
-                onClick={'handleNextDate'}
-                disabled={!CryptoStore.loaded.logRegModeledData}
+                onClick={handleSubmitData}
+                disabled={!fieldData.selectedTicker}
                 color="secondary"
             >
-                Set Next Date
+                Submit Data
             </Button>
         </div>
     );

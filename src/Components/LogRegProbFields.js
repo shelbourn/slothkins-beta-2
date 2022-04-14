@@ -54,13 +54,15 @@ const LogRegProbFields = () => {
                 CryptoStore.logRegressionUsableData[
                     CryptoStore.logRegressionUsableData?.length - 1
                 ]?.date
-            ).add(1, 'days')._i,
+            )
+                .add(2, 'days')
+                .format('YYYY-MM-DD'),
             formattedDate: Moment(
                 CryptoStore.logRegressionUsableData[
                     CryptoStore.logRegressionUsableData?.length - 1
                 ]?.date
             )
-                .add(1, 'days')
+                .add(2, 'days')
                 .format('l')
         });
     };
