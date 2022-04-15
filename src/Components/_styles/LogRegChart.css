@@ -1,0 +1,60 @@
+.chartContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.chartContainer div {
+    margin-bottom: 10px;
+}
+
+.chartContainer p {
+    margin-top: -5px;
+}
+
+.chartContainer h3 {
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.chart {
+    height: 200px;
+    width: 85%;
+}
+
+.tooltip {
+    border-color: var(--border);
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    opacity: 1;
+}
+
+.tooltipBackground {
+    background-color: var(--color);
+}
+
+.tooltipLabel {
+    font-weight: 600;
+}
+
+.chartFieldContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+    flex-flow: row wrap;
+    column-gap: 30px;
+}
+
+.chartField {
+    width: 28%;
+    max-width: 350px;
+    margin-bottom: 20px !important;
+}
+
+.chartFieldButton {
+    margin-top: 20px !important;
+}

@@ -1,5 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { std, sqrt } from 'mathjs';
+import ObjectLearning from 'object-learning';
+import Moment from 'moment';
 
 class CryptoStore {
     loaded = {
@@ -9,12 +11,21 @@ class CryptoStore {
         annualMeanReturns: false,
         annualPriceVariances: false,
         kMeansData: false,
-        kMeansClusteringData: false
+        kMeansClusteringData: false,
+        logRegRawData: false,
+        logRegUsableData: false,
+        logRegFormattedData: false,
+        logRegTrainingData: false,
+        logRegModeledData: false
     };
     loading = {
-        cryptoPercentChange: false
+        cryptoNames: false,
+        cryptoPercentChange: false,
+        logRegressionUsableData: false,
+        logRegressionFormattedData: false,
+        logRegressionTrainingData: false,
+        logRegressionModeledData: false
     };
-    cryptoTest = '12345';
     cryptoNames = [];
     cryptoPrices = {};
     cryptoPercentChange = {};
@@ -39,6 +50,30 @@ class CryptoStore {
         '#C8E6C9',
         '#FFE0B2'
     ];
+    logRegressionRawData = [];
+    logRegressionUsableData = [];
+    logRegressionFormattedData = [];
+    logRegressionTrainingData = [];
+    logRegressionModeledData = [];
+    logRegressionNextDayPrediction = '';
+    logRegressionChartColors = {
+        blue: {
+            solid: 'rgb(38, 198, 218)',
+            transparency: 'rgba(38, 198, 218, 0.6)'
+        },
+        pink: {
+            solid: 'rgb(236, 64, 122)',
+            transparency: 'rgba(236, 64, 122, 0.6)'
+        },
+        orange: {
+            solid: 'rgb(255, 112, 67)',
+            transparency: 'rgba(255, 112, 67, 0.6)'
+        },
+        brown: {
+            solid: 'rgb(141, 110, 99)',
+            transparency: 'rgba(141, 110, 99, 0.6)'
+        }
+    };
 
     constructor(root) {
         makeAutoObservable(this);
@@ -252,6 +287,150 @@ class CryptoStore {
             ],
             false
         );
+    }
+
+    setLogRegressionRawData(data) {
+        this.logRegressionRawData = data;
+        this.setIsLoaded(['logRegRawData'], true);
+    }
+
+    setLogRegressionNextDate(date) {
+        this.logRegressionNextDate = date;
+    }
+
+    setLogRegressionUsableData() {
+        this.setIsLoading('logRegressionUsableData', true);
+        this.logRegressionUsableData = [];
+        this.logRegressionRawData.forEach((el, i) => {
+            this.logRegressionUsableData = [
+                ...this.logRegressionUsableData,
+                {
+                    date: Moment(el['Date']).format('YYYY-MM-DD'),
+                    name: el['Name'],
+                    ticker: el['Symbol'],
+                    close: +el['Close'],
+                    open: +el['Open'],
+                    openOpen: this.logRegressionRawData[i - 1]
+                        ? this.logRegressionRawData[i].Open -
+                          this.logRegressionRawData[i - 1].Open
+                        : 0,
+                    mav: this.logRegressionRawData[i - 9]
+                        ? this.logRegressionRawData
+                              .slice(i - 9, i + 1)
+                              .reduce((a, b) => a + +b.Open, 0) / 10
+                        : this.logRegressionRawData
+                              .slice(0, i + 1)
+                              .reduce((a, b) => a + +b.Open, 0) /
+                          (i + 1)
+                }
+            ];
+        });
+
+        this.setIsLoaded(['logRegUsableData'], true);
+        this.setIsLoading('logRegressionUsableData', false);
+    }
+
+    setLogRegressionFormattedData() {
+        this.setIsLoading('logRegressionFormattedData', true);
+        this.logRegressionFormattedData = [];
+        this.logRegressionUsableData.forEach((el, i) => {
+            const buy =
+                (this.logRegressionUsableData[i - 1] &&
+                    this.logRegressionUsableData[i].mav -
+                        this.logRegressionUsableData[i - 1].mav) > 0 &&
+                this.logRegressionUsableData[i].openOpen > 0 &&
+                (this.logRegressionUsableData[i - 1] &&
+                    this.logRegressionUsableData[i].open -
+                        this.logRegressionUsableData[i - 1].close) > 0;
+
+            this.logRegressionFormattedData[i] = { ...el, buy: buy };
+        });
+        this.setIsLoaded(['logRegFormattedData'], true);
+        this.setIsLoading('logRegressionFormattedData', false);
+    }
+
+    setLogRegressionTrainingData() {
+        this.setIsLoading('logRegressionTrainingData', true);
+        this.logRegressionTrainingData = [];
+
+        this.logRegressionFormattedData.forEach((el, i) => {
+            this.logRegressionTrainingData[i] = {
+                open: el['open'],
+                openOpen: el['openOpen'],
+                mav: el['mav'],
+                buy: el['buy']
+            };
+        });
+        this.setIsLoaded(['logRegTrainingData'], true);
+        this.setIsLoading('logRegressionTrainingData', false);
+    }
+
+    setLogRegressionModeledData() {
+        this.setIsLoading('logRegressionModeledData', true);
+        this.logRegressionModeledData = [];
+
+        this.setLogRegressionTrainingData();
+
+        const model = ObjectLearning.runLogisticReg(
+            JSON.parse(JSON.stringify(this.logRegressionTrainingData)),
+            ['open', 'openOpen', 'mav'],
+            'buy'
+        );
+
+        this.logRegressionTrainingData.forEach((el, i) => {
+            this.logRegressionModeledData[i] = {
+                open: el.open,
+                openOpen: el.openOpen,
+                mav: el.mav,
+                buy: el.buy,
+                logRegProb: model.evalObject({
+                    open: el.open,
+                    openOpen: el.openOpen,
+                    mav: el.mav
+                })
+            };
+        });
+
+        this.logRegressionFormattedData.forEach((el, i) => {
+            this.logRegressionModeledData[i] = {
+                ...this.logRegressionModeledData[i],
+                date: el.date,
+                name: el.name,
+                ticker: el.ticker,
+                close: el.close
+            };
+        });
+
+        this.setIsLoaded(['logRegModeledData'], true);
+        this.setIsLoading('logRegressionModeledData', false);
+    }
+
+    setLogRegressionNextDayPrediction(openPrice) {
+        this.setLogRegressionTrainingData();
+
+        const tempOpenArray = [];
+
+        this.logRegressionFormattedData.forEach((el) => {
+            [...tempOpenArray, el.open];
+        });
+
+        tempOpenArray.push(+openPrice);
+
+        const model = ObjectLearning.runLogisticReg(
+            JSON.parse(JSON.stringify(this.logRegressionTrainingData)),
+            ['open', 'openOpen', 'mav'],
+            'buy'
+        );
+
+        this.logRegressionNextDayPrediction = model.evalObject({
+            open: +openPrice,
+            openOpen:
+                +openPrice -
+                this.logRegressionFormattedData[
+                    this.logRegressionFormattedData?.length - 1
+                ].open,
+            mav: tempOpenArray.slice(-10).reduce((a, b) => a + b, 0) / 10
+        });
     }
 }
 

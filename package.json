@@ -16,6 +16,7 @@
         "mathjs": "^10.4.2",
         "mobx": "^6.5.0",
         "mobx-react-lite": "^3.3.0",
+        "moment": "^2.29.2",
         "object-learning": "^1.0.5",
         "react": "^17.0.2",
         "react-csv-reader": "^3.4.0",
