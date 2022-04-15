@@ -20,3 +20,4 @@
 //[ ] Add code comments
 //[ ] Good site for historical currency data: https://coinmarketcap.com/currencies/bitcoin/historical-data/
 //[ ] Another good site: https://www.tradingview.com/chart/?symbol=CRYPTOCAP%3ATOTAL
+//[ ] Change loading prop for KMeans component <LoadingButton />

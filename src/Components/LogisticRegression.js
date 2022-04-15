@@ -1,32 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import axios from 'axios';
-import { Button } from '@mui/material';
-
-import LogRegChart from './LogRegChart';
-import LogRegProbFields from './LogRegProbFields.js';
-import AddCryptoPriceData from './AddCryptoPriceData';
+import { TextField, MenuItem } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
 import { useStore } from '../Stores/StoreFunctions';
+import { getAllCryptoNames } from '../Services/CryptoCollectionService';
+import { getDetailedCryptoData } from '../Services/CryptoService';
 
 const LogisticRegression = () => {
     const { CryptoStore } = useStore();
 
+    const [selectedTicker, setSelectedTicker] = useState('');
+    const [loading, setLoading] = useState({
+        modeledData: false
+    });
+
     useEffect(() => {
-        const test = async () => {
-            try {
-                const response = await axios.get(
-                    'https://slothkins-beta-2.herokuapp.com/detailed-crypto-data?ticker=AAVE'
-                );
-                if (response.data) {
-                    CryptoStore.setLogRegressionRawData(response.data);
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        test();
+        getAllCryptoNames();
     }, []);
+
+    const handleSelectedTicker = (event) => {
+        setSelectedTicker(event.target.value);
+        getDetailedCryptoData(event.target.value);
+    };
 
     const handleSetLogRegressionUsableData = () => {
         CryptoStore.setLogRegressionUsableData();
@@ -44,44 +40,75 @@ const LogisticRegression = () => {
         CryptoStore.setLogRegressionModeledData();
     };
 
+    // console.log(JSON.parse(JSON.stringify(CryptoStore.logRegressionRawData)));
+
     return (
-        <>
-            <Button
+        <div className="fieldContainer">
+            <TextField
+                className="field"
+                variant="outlined"
+                select
+                id="log-reg-currency-select"
+                name="selectedTicker"
+                value={selectedTicker}
+                onChange={handleSelectedTicker}
+                label="Currency Ticker"
+                helperText="Please select a currency ticker"
+                color="primary"
+                defaultValue=""
+                disabled={!CryptoStore.loaded.cryptoNames}
+            >
+                {CryptoStore.cryptoNames.map((ticker, i) => (
+                    <MenuItem value={ticker} key={`${ticker}-${i}`}>
+                        {ticker}
+                    </MenuItem>
+                ))}
+            </TextField>
+            <LoadingButton
                 variant="contained"
-                className="endpointTest"
+                className="field"
                 onClick={handleSetLogRegressionUsableData}
                 color="secondary"
+                loading={CryptoStore.loading.logRegressionUsableData}
+                disabled={
+                    !CryptoStore.loaded.cryptoNames ||
+                    !selectedTicker ||
+                    !CryptoStore.loaded.logRegRawData
+                }
             >
                 Set Log Regression Data
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
                 variant="contained"
-                className="endpointTest"
+                className="field"
                 onClick={handleSetLogRegressionFormattedData}
                 color="secondary"
+                loading={CryptoStore.loading.logRegressionFormattedData}
+                disabled={!CryptoStore.loaded.logRegUsableData}
             >
                 Set Log Regression Formatted Data
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
                 variant="contained"
-                className="endpointTest"
+                className="field"
                 onClick={handleSetLogRegressionTrainingData}
                 color="secondary"
+                loading={CryptoStore.loading.logRegressionTrainingData}
+                disabled={!CryptoStore.loaded.logRegFormattedData}
             >
                 Set Log Regression Training Data
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
                 variant="contained"
-                className="endpointTest"
+                className="field"
                 onClick={handleModelPrediction}
                 color="secondary"
+                loading={CryptoStore.loading.logRegressionModeledData}
+                disabled={!CryptoStore.loaded.logRegTrainingData}
             >
                 Calculate Model Prediction
-            </Button>
-            {CryptoStore.loaded.logRegModeledData && <LogRegChart />}
-            <LogRegProbFields />
-            <AddCryptoPriceData />
-        </>
+            </LoadingButton>
+        </div>
     );
 };
 

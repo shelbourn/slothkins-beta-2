@@ -14,12 +14,18 @@ class CryptoStore {
         kMeansClusteringData: false,
         logRegRawData: false,
         logRegUsableData: false,
+        logRegFormattedData: false,
+        logRegTrainingData: false,
         logRegModeledData: false
     };
     loading = {
-        cryptoPercentChange: false
+        cryptoNames: false,
+        cryptoPercentChange: false,
+        logRegressionUsableData: false,
+        logRegressionFormattedData: false,
+        logRegressionTrainingData: false,
+        logRegressionModeledData: false
     };
-    cryptoTest = '12345';
     cryptoNames = [];
     cryptoPrices = {};
     cryptoPercentChange = {};
@@ -293,6 +299,7 @@ class CryptoStore {
     }
 
     setLogRegressionUsableData() {
+        this.setIsLoading('logRegressionUsableData', true);
         this.logRegressionUsableData = [];
         this.logRegressionRawData.forEach((el, i) => {
             this.logRegressionUsableData = [
@@ -320,9 +327,11 @@ class CryptoStore {
         });
 
         this.setIsLoaded(['logRegUsableData'], true);
+        this.setIsLoading('logRegressionUsableData', false);
     }
 
     setLogRegressionFormattedData() {
+        this.setIsLoading('logRegressionFormattedData', true);
         this.logRegressionFormattedData = [];
         this.logRegressionUsableData.forEach((el, i) => {
             const buy =
@@ -336,9 +345,12 @@ class CryptoStore {
 
             this.logRegressionFormattedData[i] = { ...el, buy: buy };
         });
+        this.setIsLoaded(['logRegFormattedData'], true);
+        this.setIsLoading('logRegressionFormattedData', false);
     }
 
     setLogRegressionTrainingData() {
+        this.setIsLoading('logRegressionTrainingData', true);
         this.logRegressionTrainingData = [];
 
         this.logRegressionFormattedData.forEach((el, i) => {
@@ -349,9 +361,12 @@ class CryptoStore {
                 buy: el['buy']
             };
         });
+        this.setIsLoaded(['logRegTrainingData'], true);
+        this.setIsLoading('logRegressionTrainingData', false);
     }
 
     setLogRegressionModeledData() {
+        this.setIsLoading('logRegressionModeledData', true);
         this.logRegressionModeledData = [];
 
         this.setLogRegressionTrainingData();
@@ -387,6 +402,7 @@ class CryptoStore {
         });
 
         this.setIsLoaded(['logRegModeledData'], true);
+        this.setIsLoading('logRegressionModeledData', false);
     }
 
     setLogRegressionNextDayPrediction(openPrice) {
