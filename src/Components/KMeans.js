@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import {
     Button,
     CircularProgress,
@@ -9,7 +8,6 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { observer } from 'mobx-react-lite';
-import ObjectLearning from 'object-learning';
 import {
     ScatterChart,
     Scatter,
@@ -22,62 +20,30 @@ import {
 } from 'recharts';
 
 import { useStore } from '../Stores/StoreFunctions';
+import {
+    getAllCryptoNames,
+    getAllCryptoPriceData
+} from '../Services/CryptoCollectionService';
 
 import './_styles/KMeans.css';
 
 const KMeans = () => {
     const { CryptoStore } = useStore();
 
-    const [loading, setLoading] = useState({
-        cryptoNames: false,
-        cryptoPrices: false,
-        meanReturns: false,
-        priceVariances: false
-    });
     const [infoMessage, setInfoMessage] = useState(false);
 
     /***
      * Retrieves all crypto names and hydrates the CryptoStore
      */
-    const handleCryptoNames = async () => {
-        setLoading({ ...loading, cryptoNames: true });
-        try {
-            const response = await axios.get(
-                'https://slothkins-beta-2.herokuapp.com/crypto-names'
-            );
-            if (response.data) {
-                CryptoStore.setCryptoNames(response.data[0]['array']);
-                CryptoStore.setIsLoaded(['cryptoNames'], true);
-                setLoading({ ...loading, cryptoNames: false });
-            }
-        } catch (error) {
-            console.log(error);
-        }
+    const handleCryptoNames = () => {
+        getAllCryptoNames();
     };
 
     /***
      * Retrieves all crypto priceve by ticker and hydrates the CryptoStore
      */
-    const handleCryptoPrices = async () => {
-        setLoading({ ...loading, cryptoPrices: true });
-        for (const name in CryptoStore.cryptoNames) {
-            try {
-                const response = await axios.get(
-                    `https://slothkins-beta-2.herokuapp.com/all-crypto-prices?currencyName=${CryptoStore.cryptoNames[name]}`
-                );
-                if (response.data) {
-                    const { array } = response.data[0];
-                    CryptoStore.setCryptoPrice(
-                        CryptoStore.cryptoNames[name],
-                        array.filter((el) => el !== 0)
-                    );
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        CryptoStore.setIsLoaded(['cryptoPrices'], true);
-        setLoading({ ...loading, cryptoPrices: false });
+    const handleCryptoPrices = () => {
+        getAllCryptoPriceData();
     };
 
     const handleCryptoPercentChange = () => {
@@ -86,66 +52,62 @@ const KMeans = () => {
     };
 
     const handleCalculateAnnualMeanReturns = () => {
-        setLoading({ ...loading, meanReturns: true });
         CryptoStore.setAnnualMeanReturns();
-        setLoading({ ...loading, meanReturns: false });
     };
 
     const handleCalculatePriceVariances = () => {
-        setLoading({ ...loading, priceVariances: true });
         CryptoStore.setAnnualPriceVariances();
-        setLoading({ ...loading, priceVariances: false });
     };
 
     const handleCalculateKMeansData = () => {
         CryptoStore.setKMeansData();
     };
 
-    const handleKMeansClusteringIter = (iterations) => () => {
-        const clusteringModel = ObjectLearning.runKClustering(
-            CryptoStore.kMeansData,
-            ['meanReturn', 'priceVariance'],
-            {
-                maxIter: iterations,
-                groups: 5,
-                groupNames: [
-                    'Conservative',
-                    'Conservative-Moderate',
-                    'Moderate',
-                    'Moderate-Aggressive',
-                    'Aggressive'
-                ]
-            }
-        );
-        CryptoStore.setKMeansIterData(
-            `kMeansClusteringIter${iterations}`,
-            JSON.parse(JSON.stringify(clusteringModel))['groups']
-        );
-    };
+    // const handleKMeansClusteringIter = (iterations) => () => {
+    //     const clusteringModel = ObjectLearning.runKClustering(
+    //         CryptoStore.kMeansData,
+    //         ['meanReturn', 'priceVariance'],
+    //         {
+    //             maxIter: iterations,
+    //             groups: 5,
+    //             groupNames: [
+    //                 'Conservative',
+    //                 'Conservative-Moderate',
+    //                 'Moderate',
+    //                 'Moderate-Aggressive',
+    //                 'Aggressive'
+    //             ]
+    //         }
+    //     );
+    //     CryptoStore.setKMeansIterData(
+    //         `kMeansClusteringIter${iterations}`,
+    //         JSON.parse(JSON.stringify(clusteringModel))['groups']
+    //     );
+    // };
 
-    const handleDeleteOutlier = (iterations) => {
-        CryptoStore.deleteStoreOutlier(`kMeansClusteringIter${iterations}`);
-    };
+    // const handleDeleteOutlier = (iterations) => {
+    //     CryptoStore.deleteStoreOutlier(`kMeansClusteringIter${iterations}`);
+    // };
 
-    const handleRefreshKMeansData = (iterations) => () => {
-        CryptoStore.setIsLoaded(['kMeansClusteringData'], false);
-        handleDeleteOutlier(iterations);
-        CryptoStore.setAnnualMeanReturns();
-        CryptoStore.setAnnualPriceVariances();
-        CryptoStore.setKMeansData();
-        handleKMeansClusteringIter(iterations)();
-        CryptoStore.setIsLoaded(['kMeansClusteringData'], true);
-    };
+    // const handleRefreshKMeansData = (iterations) => () => {
+    //     CryptoStore.setIsLoaded(['kMeansClusteringData'], false);
+    //     handleDeleteOutlier(iterations);
+    //     CryptoStore.setAnnualMeanReturns();
+    //     CryptoStore.setAnnualPriceVariances();
+    //     CryptoStore.setKMeansData();
+    //     handleKMeansClusteringIter(iterations)();
+    //     CryptoStore.setIsLoaded(['kMeansClusteringData'], true);
+    // };
 
-    const handleRefreshKMeansDataClean = (iterations) => () => {
-        CryptoStore.setIsLoaded(['kMeansClusteringData'], false);
-        handleDeleteOutlier(iterations);
-        CryptoStore.setAnnualMeanReturnsClean();
-        CryptoStore.setAnnualPriceVariancesClean();
-        CryptoStore.setKMeansData();
-        handleKMeansClusteringIter(iterations)();
-        CryptoStore.setIsLoaded(['kMeansClusteringData'], true);
-    };
+    // const handleRefreshKMeansDataClean = (iterations) => () => {
+    //     CryptoStore.setIsLoaded(['kMeansClusteringData'], false);
+    //     handleDeleteOutlier(iterations);
+    //     CryptoStore.setAnnualMeanReturnsClean();
+    //     CryptoStore.setAnnualPriceVariancesClean();
+    //     CryptoStore.setKMeansData();
+    //     handleKMeansClusteringIter(iterations)();
+    //     CryptoStore.setIsLoaded(['kMeansClusteringData'], true);
+    // };
 
     const handleBackdropClick = () => {
         setInfoMessage(true);
@@ -155,25 +117,25 @@ const KMeans = () => {
         setInfoMessage(false);
     };
 
-    const TickerName = ({ payload, active }) => {
-        if (active) {
-            return (
-                <div className="tickerNameTooltip">
-                    <p className="tooltipLabel">{`${payload[0].name} : ${payload[0].value}%`}</p>
-                    <p className="tooltipLabel">{`${payload[1].name} : ${payload[1].value}%`}</p>
-                    <p className="tooltipLabel">
-                        {payload[0].payload.label
-                            .toLowerCase()
-                            .includes('centroid')
-                            ? `${payload[0].payload.label}`
-                            : `Ticker : ${payload[0].payload.label}`}
-                    </p>
-                    <p className="tooltipLabel">{`Risk Group : ${payload[0].payload.groupName}`}</p>
-                </div>
-            );
-        }
-        return null;
-    };
+    // const TickerName = ({ payload, active }) => {
+    //     if (active) {
+    //         return (
+    //             <div className="tickerNameTooltip">
+    //                 <p className="tooltipLabel">{`${payload[0].name} : ${payload[0].value}%`}</p>
+    //                 <p className="tooltipLabel">{`${payload[1].name} : ${payload[1].value}%`}</p>
+    //                 <p className="tooltipLabel">
+    //                     {payload[0].payload.label
+    //                         .toLowerCase()
+    //                         .includes('centroid')
+    //                         ? `${payload[0].payload.label}`
+    //                         : `Ticker : ${payload[0].payload.label}`}
+    //                 </p>
+    //                 <p className="tooltipLabel">{`Risk Group : ${payload[0].payload.groupName}`}</p>
+    //             </div>
+    //         );
+    //     }
+    //     return null;
+    // };
 
     return (
         <>
@@ -202,101 +164,103 @@ const KMeans = () => {
             >
                 <CircularProgress color="inherit" size={100} />
             </Backdrop>
-            <LoadingButton
-                onClick={handleCryptoNames}
-                variant="contained"
-                className="endpointTest"
-                loading={loading.cryptoNames}
-                color="secondary"
-            >
-                Get All Crypto Names
-            </LoadingButton>
-            <LoadingButton
-                onClick={handleCryptoPrices}
-                variant="contained"
-                className="endpointTest"
-                loading={loading.cryptoPrices}
-                disabled={!CryptoStore.loaded.cryptoNames}
-                color="secondary"
-            >
-                Get All Crypto Prices
-            </LoadingButton>
-            <LoadingButton
-                onClick={handleCryptoPercentChange}
-                variant="contained"
-                className="endpointTest"
-                loading={loading.percentChange}
-                disabled={!CryptoStore.loaded.cryptoPrices}
-                color="secondary"
-            >
-                Calculate all percent changes in crypto prices
-            </LoadingButton>
-            <LoadingButton
-                onClick={handleCalculateAnnualMeanReturns}
-                variant="contained"
-                className="endpointTest"
-                loading={loading.meanReturns}
-                disabled={!CryptoStore.loaded.cryptoPercentChange}
-                color="secondary"
-            >
-                Calculate annual mean returns for all crypto prices
-            </LoadingButton>
-            <LoadingButton
-                onClick={handleCalculatePriceVariances}
-                variant="contained"
-                className="endpointTest"
-                loading={loading.priceVariances}
-                disabled={!CryptoStore.loaded.annualMeanReturns}
-                color="secondary"
-            >
-                Calculate annual price variances for all crypto prices
-            </LoadingButton>
-            <Button
-                onClick={handleCalculateKMeansData}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.annualPriceVariances}
-                color="secondary"
-            >
-                Calculate K-Means Data
-            </Button>
-            <Button
-                onClick={handleKMeansClusteringIter(10000)}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.kMeansData}
-                color="secondary"
-            >
-                K-Means Clustering 10,000
-            </Button>
-            <Button
-                onClick={handleRefreshKMeansData(10000)}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.kMeansData}
-                color="secondary"
-            >
-                Delete Outlier
-            </Button>
-            <Button
-                onClick={handleRefreshKMeansDataClean(10000)}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.kMeansData}
-                color="secondary"
-            >
-                Clean Data
-            </Button>
-            <Button
-                onClick={handleKMeansClusteringIter(100000)}
-                variant="contained"
-                className="endpointTest"
-                disabled={!CryptoStore.loaded.kMeansData}
-                color="secondary"
-            >
-                K-Means Clustering 100,000
-            </Button>
-            {CryptoStore.loaded.kMeansClusteringData && (
+            <div className="kMeansFieldContainer">
+                <LoadingButton
+                    className="kMeansField"
+                    onClick={handleCryptoNames}
+                    variant="contained"
+                    loading={CryptoStore.loading.cryptoNames}
+                    color="secondary"
+                >
+                    Get All Crypto Names
+                </LoadingButton>
+                <LoadingButton
+                    className="kMeansField"
+                    onClick={handleCryptoPrices}
+                    variant="contained"
+                    loading={CryptoStore.loading.cryptoPrices}
+                    disabled={!CryptoStore.loaded.cryptoNames}
+                    color="secondary"
+                >
+                    Get All Crypto Prices
+                </LoadingButton>
+                <LoadingButton
+                    className="kMeansField"
+                    onClick={handleCryptoPercentChange}
+                    variant="contained"
+                    loading={CryptoStore.loading.cryptoPercentChange}
+                    disabled={!CryptoStore.loaded.cryptoPrices}
+                    color="secondary"
+                >
+                    Calculate all percent changes in crypto prices
+                </LoadingButton>
+                <LoadingButton
+                    className="kMeansField"
+                    onClick={handleCalculateAnnualMeanReturns}
+                    variant="contained"
+                    loading={CryptoStore.loading.annualMeanReturns}
+                    disabled={!CryptoStore.loaded.cryptoPercentChange}
+                    color="secondary"
+                >
+                    Calculate annual mean returns for all crypto prices
+                </LoadingButton>
+                <LoadingButton
+                    className="kMeansField"
+                    onClick={handleCalculatePriceVariances}
+                    variant="contained"
+                    loading={CryptoStore.loading.annualPriceVariances}
+                    disabled={!CryptoStore.loaded.annualMeanReturns}
+                    color="secondary"
+                >
+                    Calculate annual price variances for all crypto prices
+                </LoadingButton>
+                <Button
+                    className="kMeansField"
+                    onClick={handleCalculateKMeansData}
+                    variant="contained"
+                    disabled={!CryptoStore.loaded.annualPriceVariances}
+                    color="secondary"
+                >
+                    Calculate K-Means Data
+                </Button>
+                {/* <Button
+                    className="kMeansField"
+                    onClick={handleKMeansClusteringIter(10000)}
+                    variant="contained"
+                    disabled={!CryptoStore.loaded.kMeansData}
+                    color="secondary"
+                >
+                    K-Means Clustering 10,000
+                </Button>
+                <Button
+                    className="kMeansField"
+                    onClick={handleRefreshKMeansData(10000)}
+                    variant="contained"
+                    disabled={!CryptoStore.loaded.kMeansData}
+                    color="secondary"
+                >
+                    Delete Outlier
+                </Button>
+                <Button
+                    className="kMeansField"
+                    onClick={handleRefreshKMeansDataClean(10000)}
+                    variant="contained"
+                    disabled={!CryptoStore.loaded.kMeansData}
+                    color="secondary"
+                >
+                    Clean Data
+                </Button>
+                <Button
+                    className="kMeansField"
+                    onClick={handleKMeansClusteringIter(100000)}
+                    variant="contained"
+                    disabled={!CryptoStore.loaded.kMeansData}
+                    color="secondary"
+                >
+                    K-Means Clustering 100,000
+                </Button> */}
+            </div>
+            {/* {CryptoStore.loaded.kMeansClusteringData && (
                 <div className="kMeansScatter">
                     <ScatterChart
                         width={500}
@@ -357,7 +321,7 @@ const KMeans = () => {
                         </Scatter>
                     </ScatterChart>
                 </div>
-            )}
+            )} */}
         </>
     );
 };

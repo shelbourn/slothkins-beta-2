@@ -70,9 +70,9 @@ const LogRegProbFields = () => {
     };
 
     return (
-        <div className="fieldContainer">
+        <div className="regProbFieldContainer">
             <TextField
-                className="field"
+                className="regProbfield"
                 variant="outlined"
                 id="log-reg-date"
                 value={fieldData.formattedDate}
@@ -83,7 +83,7 @@ const LogRegProbFields = () => {
             />
             <Button
                 variant="contained"
-                className="field"
+                className="regProbField"
                 onClick={handleNextDate}
                 disabled={!CryptoStore.loaded.logRegModeledData}
                 color="secondary"
@@ -91,7 +91,7 @@ const LogRegProbFields = () => {
                 Set Next Date
             </Button>
             <TextField
-                className="field"
+                className="regProbField"
                 variant="outlined"
                 id="log-reg-open-price"
                 error={error}
@@ -109,8 +109,8 @@ const LogRegProbFields = () => {
                 color="primary"
             />
             <Button
+                className="regProbField"
                 variant="contained"
-                className="field"
                 onClick={handleCalculateProbPrediction}
                 disabled={!CryptoStore.loaded.logRegModeledData}
                 color="secondary"
@@ -118,7 +118,7 @@ const LogRegProbFields = () => {
                 Calculate Predicted Buy Signal Probability
             </Button>
             <TextField
-                className="field"
+                className="regProbField"
                 variant="outlined"
                 id="log-reg-prob"
                 value={CryptoStore.logRegressionNextDayPrediction}

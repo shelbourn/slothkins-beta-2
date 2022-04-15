@@ -7,6 +7,8 @@ import { useStore } from '../Stores/StoreFunctions';
 import { getAllCryptoNames } from '../Services/CryptoCollectionService';
 import { getDetailedCryptoData } from '../Services/CryptoService';
 
+import './_styles/LogisticRegression.css';
+
 const LogisticRegression = () => {
     const { CryptoStore } = useStore();
 
@@ -43,9 +45,9 @@ const LogisticRegression = () => {
     // console.log(JSON.parse(JSON.stringify(CryptoStore.logRegressionRawData)));
 
     return (
-        <div className="fieldContainer">
+        <div className="logRegFieldContainer">
             <TextField
-                className="field"
+                className="logRegField"
                 variant="outlined"
                 select
                 id="log-reg-currency-select"
@@ -66,7 +68,7 @@ const LogisticRegression = () => {
             </TextField>
             <LoadingButton
                 variant="contained"
-                className="field"
+                className="logRegField"
                 onClick={handleSetLogRegressionUsableData}
                 color="secondary"
                 loading={CryptoStore.loading.logRegressionUsableData}
@@ -80,7 +82,7 @@ const LogisticRegression = () => {
             </LoadingButton>
             <LoadingButton
                 variant="contained"
-                className="field"
+                className="logRegField"
                 onClick={handleSetLogRegressionFormattedData}
                 color="secondary"
                 loading={CryptoStore.loading.logRegressionFormattedData}
@@ -90,7 +92,7 @@ const LogisticRegression = () => {
             </LoadingButton>
             <LoadingButton
                 variant="contained"
-                className="field"
+                className="logRegField"
                 onClick={handleSetLogRegressionTrainingData}
                 color="secondary"
                 loading={CryptoStore.loading.logRegressionTrainingData}
@@ -100,7 +102,7 @@ const LogisticRegression = () => {
             </LoadingButton>
             <LoadingButton
                 variant="contained"
-                className="field"
+                className="logRegField"
                 onClick={handleModelPrediction}
                 color="secondary"
                 loading={CryptoStore.loading.logRegressionModeledData}
