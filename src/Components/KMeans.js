@@ -14,7 +14,6 @@ import {
     getAllCryptoNames,
     getAllCryptoPriceData
 } from '../Services/CryptoCollectionService';
-import MainHeader from '../Common/MainHeader';
 
 import './_styles/KMeans.css';
 
@@ -31,7 +30,7 @@ const KMeans = () => {
     };
 
     /***
-     * Retrieves all crypto priceve by ticker and hydrates the CryptoStore
+     * Retrieves all crypto prices by ticker and hydrates the CryptoStore
      */
     const handleCryptoPrices = () => {
         getAllCryptoPriceData();
@@ -149,7 +148,6 @@ const KMeans = () => {
                     Calculate K-Means Data
                 </Button>
             </div>
-            <MainHeader />
         </>
     );
 };

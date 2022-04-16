@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     AppBar,
     Box,
@@ -8,50 +9,64 @@ import {
     Menu,
     Container,
     Button,
-    Tooltip,
     MenuItem
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import Sloth from '../Assets/sloth-icon-header.png';
 
 const MainHeader = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+    const navigate = useNavigate();
+
+    const navPages = [
+        { name: 'Home', target: '/' },
+        { name: 'K-means Clustering', target: '/k-means-clustering' },
+        { name: 'Logistic Regression Analysis', target: '/logistic-regression' }
+    ];
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
     };
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
+    const handleSelectNav = (event) => {
+        navigate(`${event.target.value}`);
     };
 
+    const handleSelectNavMenu = (event) => {
+        const { target } = event.currentTarget.dataset;
+        navigate(`${target}`);
+    };
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
+                    <img src={Sloth} alt="Slothkins-beta-2" />
                     <Typography
                         variant="h6"
                         noWrap
                         component="div"
-                        sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+                        sx={{
+                            mr: 2,
+                            ml: 2,
+                            display: { xs: 'flex', md: 'flex' },
+                            flexGrow: 1,
+                            justifyContent: 'flex-start'
+                        }}
                     >
-                        LOGO
+                        SLOTHKINS BETA-2
                     </Typography>
 
                     <Box
                         sx={{
                             flexGrow: 1,
-                            display: { xs: 'flex', md: 'none' }
+                            display: { xs: 'flex', md: 'none' },
+                            justifyContent: 'flex-end'
                         }}
                     >
                         <IconButton
@@ -82,85 +97,36 @@ const MainHeader = () => {
                                 display: { xs: 'block', md: 'none' }
                             }}
                         >
-                            {pages.map((page) => (
+                            {navPages.map((page) => (
                                 <MenuItem
-                                    key={page}
-                                    onClick={handleCloseNavMenu}
+                                    key={page.name}
+                                    onClick={handleSelectNavMenu}
+                                    data-target={page.target}
                                 >
                                     <Typography textAlign="center">
-                                        {page}
+                                        {page.name}
                                     </Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
                     </Box>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{
-                            flexGrow: 1,
-                            display: { xs: 'flex', md: 'none' }
-                        }}
-                    >
-                        LOGO
-                    </Typography>
                     <Box
                         sx={{
                             flexGrow: 1,
-                            display: { xs: 'none', md: 'flex' }
+                            display: { xs: 'none', md: 'flex' },
+                            justifyContent: 'flex-end'
                         }}
                     >
-                        {pages.map((page) => (
+                        {navPages.map((page) => (
                             <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
+                                key={page.name}
+                                onClick={handleSelectNav}
+                                value={page.target}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                {page}
+                                {page.name}
                             </Button>
                         ))}
-                    </Box>
-
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton
-                                onClick={handleOpenUserMenu}
-                                sx={{ p: 0 }}
-                            >
-                                {/* TODO <Avatar
-                                    alt="Remy Sharp"
-                                    src="/static/images/avatar/2.jpg"
-                                /> */}
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right'
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right'
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {settings.map((setting) => (
-                                <MenuItem
-                                    key={setting}
-                                    onClick={handleCloseUserMenu}
-                                >
-                                    <Typography textAlign="center">
-                                        {setting}
-                                    </Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
                     </Box>
                 </Toolbar>
             </Container>
