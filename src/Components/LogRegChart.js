@@ -11,7 +11,14 @@ import {
     Area,
     ResponsiveContainer
 } from 'recharts';
-import { TextField, MenuItem, Button } from '@mui/material';
+import {
+    TextField,
+    MenuItem,
+    Button,
+    Snackbar,
+    Alert,
+    Backdrop
+} from '@mui/material';
 
 import './_styles/LogRegChart.css';
 
@@ -25,6 +32,7 @@ const LogRegChart = () => {
         lineChart2Value: '',
         areaChartValue: ''
     });
+    const [chartInfoMessage, setChartInfoMessage] = useState(true);
 
     const data = CryptoStore.logRegressionModeledData.slice();
 
@@ -62,6 +70,10 @@ const LogRegChart = () => {
             ],
             false
         );
+    };
+
+    const handleConfirmClickaway = () => {
+        setChartInfoMessage(false);
     };
 
     const TooltipContent = ({ payload, active }) => {
@@ -121,6 +133,31 @@ const LogRegChart = () => {
 
     return (
         <>
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={chartInfoMessage}
+                onClose={handleConfirmClickaway}
+            >
+                <Alert
+                    severity="info"
+                    onClose={handleConfirmClickaway}
+                    sx={{
+                        width: '100%',
+                        minWidth: 400
+                    }}
+                >
+                    <h3>
+                        Hover or tap on a point or area in any chart for more
+                        information.
+                    </h3>
+                </Alert>
+            </Snackbar>
+
+            <Backdrop
+                sx={{ color: '#fff', zIndex: '9' }}
+                open={chartInfoMessage}
+                onClick={handleConfirmClickaway}
+            />
             <div className="chartContainer">
                 <h3>{`Visualized Logistic Regression Analysis for ${CryptoStore.logRegressionRawData[0].Name} (${CryptoStore.logRegressionRawData[0].Symbol})`}</h3>
                 <ResponsiveContainer width="95%" height={200}>
@@ -269,6 +306,7 @@ const LogRegChart = () => {
                     color="secondary"
                     variant="contained"
                     className="chartFieldButton"
+                    size="large"
                 >
                     Select a Different Currency
                 </Button>

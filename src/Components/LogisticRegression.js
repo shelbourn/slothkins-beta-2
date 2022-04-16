@@ -75,6 +75,7 @@ const LogisticRegression = () => {
                     !selectedTicker ||
                     !CryptoStore.loaded.logRegRawData
                 }
+                size="large"
             >
                 Set Log Regression Data
             </LoadingButton>
@@ -96,6 +97,7 @@ const LogisticRegression = () => {
                 color="secondary"
                 loading={CryptoStore.loading.logRegressionFormattedData}
                 disabled={!CryptoStore.loaded.logRegUsableData}
+                size="large"
             >
                 Set Log Regression Formatted Data
             </LoadingButton>
@@ -118,6 +120,7 @@ const LogisticRegression = () => {
                 color="secondary"
                 loading={CryptoStore.loading.logRegressionTrainingData}
                 disabled={!CryptoStore.loaded.logRegFormattedData}
+                size="large"
             >
                 Set Log Regression Training Data
             </LoadingButton>
@@ -140,6 +143,7 @@ const LogisticRegression = () => {
                 color="secondary"
                 loading={CryptoStore.loading.logRegressionModeledData}
                 disabled={!CryptoStore.loaded.logRegTrainingData}
+                size="large"
             >
                 Calculate Model Prediction
             </LoadingButton>

@@ -96,6 +96,7 @@ const KMeans = () => {
                     variant="contained"
                     loading={CryptoStore.loading.cryptoNames}
                     color="secondary"
+                    size="large"
                 >
                     Get All Crypto Names
                 </LoadingButton>
@@ -117,6 +118,7 @@ const KMeans = () => {
                     loading={CryptoStore.loading.cryptoPrices}
                     disabled={!CryptoStore.loaded.cryptoNames}
                     color="secondary"
+                    size="large"
                 >
                     Get All Crypto Prices
                 </LoadingButton>
@@ -139,6 +141,7 @@ const KMeans = () => {
                     loading={CryptoStore.loading.cryptoPercentChange}
                     disabled={!CryptoStore.loaded.cryptoPrices}
                     color="secondary"
+                    size="large"
                 >
                     Calculate all percent changes in crypto prices
                 </LoadingButton>
@@ -161,6 +164,7 @@ const KMeans = () => {
                     loading={CryptoStore.loading.annualMeanReturns}
                     disabled={!CryptoStore.loaded.cryptoPercentChange}
                     color="secondary"
+                    size="large"
                 >
                     Calculate annual mean returns for all crypto prices
                 </LoadingButton>
@@ -183,6 +187,7 @@ const KMeans = () => {
                     loading={CryptoStore.loading.annualPriceVariances}
                     disabled={!CryptoStore.loaded.annualMeanReturns}
                     color="secondary"
+                    size="large"
                 >
                     Calculate annual price variances for all crypto prices
                 </LoadingButton>
@@ -204,6 +209,7 @@ const KMeans = () => {
                     variant="contained"
                     disabled={!CryptoStore.loaded.annualPriceVariances}
                     color="secondary"
+                    size="large"
                 >
                     Calculate K-Means Data
                 </Button>

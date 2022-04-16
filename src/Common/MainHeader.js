@@ -13,9 +13,12 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
+import { useStore } from '../Stores/StoreFunctions';
 import Sloth from '../Assets/sloth-icon-header.png';
 
 const MainHeader = () => {
+    const { CryptoStore } = useStore();
+
     const [anchorElNav, setAnchorElNav] = React.useState(null);
 
     const navigate = useNavigate();
@@ -35,11 +38,13 @@ const MainHeader = () => {
     };
 
     const handleSelectNav = (event) => {
+        CryptoStore.resetStore();
         navigate(`${event.target.value}`);
     };
 
     const handleSelectNavMenu = (event) => {
         const { target } = event.currentTarget.dataset;
+        CryptoStore.resetStore();
         navigate(`${target}`);
         handleCloseNavMenu();
     };

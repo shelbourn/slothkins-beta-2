@@ -142,6 +142,7 @@ const AddCryptoPriceData = () => {
                 onClick={handleFetchRawCurrencyData}
                 disabled={!fieldData.selectedTicker}
                 color="secondary"
+                size="large"
             >
                 Fetch Currency Data for Selected Ticker
             </Button>
@@ -154,6 +155,7 @@ const AddCryptoPriceData = () => {
                     !CryptoStore.loaded.logRegRawData
                 }
                 color="secondary"
+                size="large"
             >
                 Hydrate Fields with Data
             </Button>
@@ -275,6 +277,7 @@ const AddCryptoPriceData = () => {
                 onClick={handleSubmitData}
                 disabled={!fieldData.selectedTicker}
                 color="secondary"
+                size="large"
             >
                 Submit Data
             </Button>

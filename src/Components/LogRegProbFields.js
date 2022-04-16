@@ -87,6 +87,7 @@ const LogRegProbFields = () => {
                 onClick={handleNextDate}
                 disabled={!CryptoStore.loaded.logRegModeledData}
                 color="secondary"
+                size="large"
             >
                 Set Next Date
             </Button>
@@ -114,6 +115,7 @@ const LogRegProbFields = () => {
                 onClick={handleCalculateProbPrediction}
                 disabled={!CryptoStore.loaded.logRegModeledData}
                 color="secondary"
+                size="large"
             >
                 Calculate Predicted Buy Signal Probability
             </Button>

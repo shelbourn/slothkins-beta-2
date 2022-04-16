@@ -41,6 +41,12 @@ class CryptoStore {
     kMeansClusteringIter10000 = [];
     kMeansClusteringIter100000 = [];
     kMeansClusteringIter1000000 = [];
+    logRegressionRawData = [];
+    logRegressionUsableData = [];
+    logRegressionFormattedData = [];
+    logRegressionTrainingData = [];
+    logRegressionModeledData = [];
+    logRegressionNextDayPrediction = '';
     kMeansCentroidColors = [
         '#EF5350',
         '#AB47BC',
@@ -55,12 +61,6 @@ class CryptoStore {
         '#C8E6C9',
         '#FFE0B2'
     ];
-    logRegressionRawData = [];
-    logRegressionUsableData = [];
-    logRegressionFormattedData = [];
-    logRegressionTrainingData = [];
-    logRegressionModeledData = [];
-    logRegressionNextDayPrediction = '';
     logRegressionChartColors = {
         blue: {
             solid: 'rgb(38, 198, 218)',
@@ -443,6 +443,44 @@ class CryptoStore {
                 ].open,
             mav: tempOpenArray.slice(-10).reduce((a, b) => a + b, 0) / 10
         });
+    }
+
+    resetStore() {
+        this.setIsLoaded(
+            [
+                'cryptoNames',
+                'cryptoPrices',
+                'cryptoPercentChange',
+                'annualMeanReturns',
+                'annualPriceVariances',
+                'kMeansData',
+                'kMeansClusteringData',
+                'logRegRawData',
+                'logRegUsableData',
+                'logRegFormattedData',
+                'logRegTrainingData',
+                'logRegModeledData'
+            ],
+            false
+        );
+
+        this.cryptoNames = [];
+        this.cryptoPrices = {};
+        this.cryptoPercentChange = {};
+        this.annualMeanReturns = {};
+        this.annualPriceVariances = {};
+        this.kMeansData = [];
+        this.kMeansClusteringIter100 = [];
+        this.kMeansClusteringIter1000 = [];
+        this.kMeansClusteringIter10000 = [];
+        this.kMeansClusteringIter100000 = [];
+        this.kMeansClusteringIter1000000 = [];
+        this.logRegressionRawData = [];
+        this.logRegressionUsableData = [];
+        this.logRegressionFormattedData = [];
+        this.logRegressionTrainingData = [];
+        this.logRegressionModeledData = [];
+        this.logRegressionNextDayPrediction = '';
     }
 }
 

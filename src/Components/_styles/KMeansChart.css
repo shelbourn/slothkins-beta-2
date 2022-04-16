@@ -32,3 +32,9 @@
     flex-flow: row wrap;
     gap: 30px;
 }
+
+@media screen and (max-width: 767px) {
+    .kMeansChartFieldContainer h6 {
+        max-width: 85vw;
+    }
+}

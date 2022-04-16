@@ -34,6 +34,7 @@ const KMeansChart = () => {
     const [cleanFired, setCleanFired] = useState(false);
     const [deleteOrCleanData, setDeleteOrCleanData] = useState('');
     const [confirmMessage, setConfirmMessage] = useState(false);
+    const [chartInfoMessage, setChartInfoMessage] = useState(false);
 
     const iterationOptions = [
         { iterations: 100, storeProp: 'kMeansClusteringIter100' },
@@ -100,6 +101,7 @@ const KMeansChart = () => {
     const handleSelectedIterations = (event) => {
         setSelectedIterations(event.target.value);
         handleKMeansClusteringIter(event.target.value)();
+        setChartInfoMessage(true);
     };
 
     const handleDeleteOrClean = (event) => {
@@ -119,6 +121,7 @@ const KMeansChart = () => {
 
     const handleConfirmClickaway = () => {
         setConfirmMessage(false);
+        setChartInfoMessage(false);
     };
 
     const handleResetData = () => {
@@ -194,9 +197,34 @@ const KMeansChart = () => {
                     </div>
                 </Alert>
             </Snackbar>
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={chartInfoMessage}
+                onClose={handleConfirmClickaway}
+            >
+                <Alert
+                    severity="info"
+                    onClose={handleConfirmClickaway}
+                    sx={{
+                        width: '100%',
+                        minWidth: 400
+                    }}
+                >
+                    <h3>
+                        Hover or tap on a plot point or centroid for more
+                        information.
+                    </h3>
+                    <h3>
+                        <em>
+                            Centroids are the plot points with bolder colors.
+                        </em>
+                    </h3>
+                </Alert>
+            </Snackbar>
+
             <Backdrop
                 sx={{ color: '#fff', zIndex: '9' }}
-                open={confirmMessage}
+                open={confirmMessage || chartInfoMessage}
                 onClick={handleConfirmClickaway}
             />
             {CryptoStore.loaded.kMeansClusteringData && (
@@ -319,6 +347,7 @@ const KMeansChart = () => {
                     }
                     color="secondary"
                     name="delete"
+                    size="large"
                 >
                     Delete Outlier
                 </Button>
@@ -345,6 +374,7 @@ const KMeansChart = () => {
                     }
                     color="secondary"
                     name="clean"
+                    size="large"
                 >
                     Clean Data
                 </Button>
@@ -366,6 +396,7 @@ const KMeansChart = () => {
                     disabled={!cleanFired && !deleteFired}
                     color="primary"
                     name="clean"
+                    size="large"
                 >
                     Reset Data
                 </Button>
