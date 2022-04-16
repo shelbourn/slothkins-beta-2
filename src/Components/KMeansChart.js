@@ -18,7 +18,8 @@ import {
     TextField,
     Snackbar,
     Alert,
-    Backdrop
+    Backdrop,
+    Typography
 } from '@mui/material';
 
 import { useStore } from '../Stores/StoreFunctions';
@@ -199,72 +200,83 @@ const KMeansChart = () => {
                 onClick={handleConfirmClickaway}
             />
             {CryptoStore.loaded.kMeansClusteringData && (
-                <div className="kMeansScatter">
-                    <ResponsiveContainer width="85%" height={500}>
-                        <ScatterChart
-                            width={500}
-                            height={500}
-                            margin={{
-                                top: 20,
-                                right: 20,
-                                bottom: 20,
-                                left: 20
-                            }}
-                        >
-                            <CartesianGrid />
-                            <XAxis
-                                unit="%"
-                                type="number"
-                                dataKey="meanReturn"
-                                name="Mean Return"
-                                dy={10}
+                <>
+                    <h3
+                        style={{
+                            textAlign: 'center',
+                            paddingLeft: 10,
+                            paddingRight: 10
+                        }}
+                    >{`Visualized K-means Clustering for All Cryptocurrencies (${selectedIterations.toLocaleString(
+                        'en-US'
+                    )} iterations)`}</h3>
+                    <div className="kMeansScatter">
+                        <ResponsiveContainer width="85%" height={500}>
+                            <ScatterChart
+                                width={500}
+                                height={500}
+                                margin={{
+                                    top: 20,
+                                    right: 20,
+                                    bottom: 20,
+                                    left: 20
+                                }}
                             >
-                                <Label
-                                    value="Annual Mean Returns"
-                                    offset={-20}
-                                    position="insideBottom"
-                                />
-                            </XAxis>
-                            <YAxis
-                                unit="%"
-                                type="number"
-                                dataKey="priceVariance"
-                                name="Price Variance"
-                                dx={-10}
-                            >
-                                <Label
-                                    value="Annual Price Variance"
-                                    offset={10}
-                                    angle={-90}
-                                    position="left"
-                                    style={{ textAnchor: 'middle' }}
-                                />
-                            </YAxis>
-                            <Tooltip
-                                content={<TickerName />}
-                                cursor={{ strokeDasharray: '3 3' }}
-                            />
-                            <Scatter
-                                name="Test"
-                                data={
-                                    CryptoStore[
-                                        `kMeansClusteringIter${selectedIterations}`
-                                    ]
-                                }
-                                fill="#8884d8"
-                            >
-                                {CryptoStore[
-                                    `kMeansClusteringIter${selectedIterations}`
-                                ].map((entry, index) => (
-                                    <Cell
-                                        key={`cell-${index}`}
-                                        fill={entry.c}
+                                <CartesianGrid />
+                                <XAxis
+                                    unit="%"
+                                    type="number"
+                                    dataKey="meanReturn"
+                                    name="Mean Return"
+                                    dy={10}
+                                >
+                                    <Label
+                                        value="Annual Mean Returns"
+                                        offset={-20}
+                                        position="insideBottom"
                                     />
-                                ))}
-                            </Scatter>
-                        </ScatterChart>
-                    </ResponsiveContainer>
-                </div>
+                                </XAxis>
+                                <YAxis
+                                    unit="%"
+                                    type="number"
+                                    dataKey="priceVariance"
+                                    name="Price Variance"
+                                    dx={-10}
+                                >
+                                    <Label
+                                        value="Annual Price Variance"
+                                        offset={10}
+                                        angle={-90}
+                                        position="left"
+                                        style={{ textAnchor: 'middle' }}
+                                    />
+                                </YAxis>
+                                <Tooltip
+                                    content={<TickerName />}
+                                    cursor={{ strokeDasharray: '3 3' }}
+                                />
+                                <Scatter
+                                    name="Test"
+                                    data={
+                                        CryptoStore[
+                                            `kMeansClusteringIter${selectedIterations}`
+                                        ]
+                                    }
+                                    fill="#8884d8"
+                                >
+                                    {CryptoStore[
+                                        `kMeansClusteringIter${selectedIterations}`
+                                    ].map((entry, index) => (
+                                        <Cell
+                                            key={`cell-${index}`}
+                                            fill={entry.c}
+                                        />
+                                    ))}
+                                </Scatter>
+                            </ScatterChart>
+                        </ResponsiveContainer>
+                    </div>
+                </>
             )}
             <div className="kMeansChartFieldContainer">
                 <TextField
@@ -284,6 +296,7 @@ const KMeansChart = () => {
                         deleteFired ||
                         cleanFired
                     }
+                    sx={{ mb: 2 }}
                 >
                     {iterationOptions.map((el, i) => (
                         <MenuItem
@@ -309,6 +322,18 @@ const KMeansChart = () => {
                 >
                     Delete Outlier
                 </Button>
+                <Typography
+                    variant="subtitle2"
+                    sx={{
+                        fontStyle: 'italic',
+                        mb: 2,
+                        textAlign: 'center',
+                        maxWidth: 600
+                    }}
+                >
+                    Outliers are common with ML algorithms. Click this button
+                    the delete the outlier (if present)
+                </Typography>
                 <Button
                     className="kMeansChartField"
                     onClick={handleDeleteOrClean}
@@ -323,6 +348,17 @@ const KMeansChart = () => {
                 >
                     Clean Data
                 </Button>
+                <Typography
+                    variant="subtitle2"
+                    sx={{
+                        fontStyle: 'italic',
+                        mb: 2,
+                        textAlign: 'center',
+                        maxWidth: 600
+                    }}
+                >
+                    Cleans the data to make it more useful
+                </Typography>
                 <Button
                     className="kMeansChartField"
                     onClick={handleResetData}
@@ -333,6 +369,17 @@ const KMeansChart = () => {
                 >
                     Reset Data
                 </Button>
+                <Typography
+                    variant="subtitle2"
+                    sx={{
+                        fontStyle: 'italic',
+                        mb: 2,
+                        textAlign: 'center',
+                        maxWidth: 600
+                    }}
+                >
+                    Resets the data and navigates you back to the previous page
+                </Typography>
             </div>
         </>
     );

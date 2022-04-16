@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { TextField, MenuItem } from '@mui/material';
+import { TextField, MenuItem, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
 import { useStore } from '../Stores/StoreFunctions';
@@ -13,9 +13,6 @@ const LogisticRegression = () => {
     const { CryptoStore } = useStore();
 
     const [selectedTicker, setSelectedTicker] = useState('');
-    const [loading, setLoading] = useState({
-        modeledData: false
-    });
 
     useEffect(() => {
         getAllCryptoNames();
@@ -59,6 +56,7 @@ const LogisticRegression = () => {
                 color="primary"
                 defaultValue=""
                 disabled={!CryptoStore.loaded.cryptoNames}
+                sx={{ mb: 2 }}
             >
                 {CryptoStore.cryptoNames.map((ticker, i) => (
                     <MenuItem value={ticker} key={`${ticker}-${i}`}>
@@ -80,6 +78,17 @@ const LogisticRegression = () => {
             >
                 Set Log Regression Data
             </LoadingButton>
+            <Typography
+                variant="subtitle2"
+                sx={{
+                    fontStyle: 'italic',
+                    mb: 2,
+                    textAlign: 'center',
+                    maxWidth: 600
+                }}
+            >
+                Sets the raw data for use with the Logistic Regression Algorithm
+            </Typography>
             <LoadingButton
                 variant="contained"
                 className="logRegField"
@@ -90,6 +99,18 @@ const LogisticRegression = () => {
             >
                 Set Log Regression Formatted Data
             </LoadingButton>
+            <Typography
+                variant="subtitle2"
+                sx={{
+                    fontStyle: 'italic',
+                    mb: 2,
+                    textAlign: 'center',
+                    maxWidth: 600
+                }}
+            >
+                Formats the raw data to make it usable with the Logistic
+                Regression algorithm
+            </Typography>
             <LoadingButton
                 variant="contained"
                 className="logRegField"
@@ -100,6 +121,18 @@ const LogisticRegression = () => {
             >
                 Set Log Regression Training Data
             </LoadingButton>
+            <Typography
+                variant="subtitle2"
+                sx={{
+                    fontStyle: 'italic',
+                    mb: 2,
+                    textAlign: 'center',
+                    maxWidth: 600
+                }}
+            >
+                Further formats the data to make it usable for training the
+                Logistic Regression model
+            </Typography>
             <LoadingButton
                 variant="contained"
                 className="logRegField"
@@ -110,6 +143,18 @@ const LogisticRegression = () => {
             >
                 Calculate Model Prediction
             </LoadingButton>
+            <Typography
+                variant="subtitle2"
+                sx={{
+                    fontStyle: 'italic',
+                    mb: 2,
+                    textAlign: 'center',
+                    maxWidth: 600
+                }}
+            >
+                Initiates the Logistic Regression training process and returns
+                the model
+            </Typography>
         </div>
     );
 };

@@ -4,7 +4,8 @@ import {
     CircularProgress,
     Backdrop,
     Snackbar,
-    Alert
+    Alert,
+    Typography
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { observer } from 'mobx-react-lite';
@@ -74,7 +75,7 @@ const KMeans = () => {
                     sx={{ width: '100%' }}
                     onClose={handleInfoClickaway}
                 >
-                    <h3>Sloths are meticulous but work a bit slow</h3>
+                    <h3>Sloths are careful and calculated with their work.</h3>
                     <h3>
                         Please allow the calculations to complete. It'll take
                         about 20 seconds.
@@ -98,6 +99,17 @@ const KMeans = () => {
                 >
                     Get All Crypto Names
                 </LoadingButton>
+                <Typography
+                    variant="subtitle2"
+                    sx={{
+                        fontStyle: 'italic',
+                        mb: 2,
+                        textAlign: 'center',
+                        maxWidth: 600
+                    }}
+                >
+                    Fetch all cryptocurrency tickers from the database
+                </Typography>
                 <LoadingButton
                     className="kMeansField"
                     onClick={handleCryptoPrices}
@@ -108,6 +120,18 @@ const KMeans = () => {
                 >
                     Get All Crypto Prices
                 </LoadingButton>
+                <Typography
+                    variant="subtitle2"
+                    sx={{
+                        fontStyle: 'italic',
+                        mb: 2,
+                        textAlign: 'center',
+                        maxWidth: 600
+                    }}
+                >
+                    Fetch all cryptocurrency price data for all currencies from
+                    the database
+                </Typography>
                 <LoadingButton
                     className="kMeansField"
                     onClick={handleCryptoPercentChange}
@@ -118,6 +142,18 @@ const KMeans = () => {
                 >
                     Calculate all percent changes in crypto prices
                 </LoadingButton>
+                <Typography
+                    variant="subtitle2"
+                    sx={{
+                        fontStyle: 'italic',
+                        mb: 2,
+                        textAlign: 'center',
+                        maxWidth: 600
+                    }}
+                >
+                    Calculate the percent change between opening prices for each
+                    day and all currencies (this calculation takes some time)
+                </Typography>
                 <LoadingButton
                     className="kMeansField"
                     onClick={handleCalculateAnnualMeanReturns}
@@ -128,6 +164,18 @@ const KMeans = () => {
                 >
                     Calculate annual mean returns for all crypto prices
                 </LoadingButton>
+                <Typography
+                    variant="subtitle2"
+                    sx={{
+                        fontStyle: 'italic',
+                        mb: 2,
+                        textAlign: 'center',
+                        maxWidth: 600
+                    }}
+                >
+                    Calculate the average annual returns for all
+                    cryptocurrencies
+                </Typography>
                 <LoadingButton
                     className="kMeansField"
                     onClick={handleCalculatePriceVariances}
@@ -138,6 +186,18 @@ const KMeans = () => {
                 >
                     Calculate annual price variances for all crypto prices
                 </LoadingButton>
+                <Typography
+                    variant="subtitle2"
+                    sx={{
+                        fontStyle: 'italic',
+                        mb: 2,
+                        textAlign: 'center',
+                        maxWidth: 600
+                    }}
+                >
+                    Calculate the average annual price variances for all
+                    cryptocurrencies
+                </Typography>
                 <Button
                     className="kMeansField"
                     onClick={handleCalculateKMeansData}
@@ -147,6 +207,18 @@ const KMeans = () => {
                 >
                     Calculate K-Means Data
                 </Button>
+                <Typography
+                    variant="subtitle2"
+                    sx={{
+                        fontStyle: 'italic',
+                        mb: 2,
+                        textAlign: 'center',
+                        maxWidth: 600
+                    }}
+                >
+                    Formats the data into a usable structure for use with the
+                    K-means algorithm
+                </Typography>
             </div>
         </>
     );
