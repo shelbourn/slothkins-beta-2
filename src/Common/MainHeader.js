@@ -52,7 +52,11 @@ const MainHeader = () => {
         <AppBar position="sticky">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <img src={Sloth} alt="Slothkins-beta-2" />
+                    <img
+                        src={Sloth}
+                        alt="Slothkins-beta-2"
+                        style={{ padding: '10px 0' }}
+                    />
                     <Typography
                         variant="h6"
                         noWrap
