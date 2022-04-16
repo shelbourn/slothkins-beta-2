@@ -9,9 +9,17 @@ import {
     CartesianGrid,
     Tooltip,
     Cell,
-    Label
+    Label,
+    ResponsiveContainer
 } from 'recharts';
-import { Button, MenuItem, TextField } from '@mui/material';
+import {
+    Button,
+    MenuItem,
+    TextField,
+    Snackbar,
+    Alert,
+    Backdrop
+} from '@mui/material';
 
 import { useStore } from '../Stores/StoreFunctions';
 
@@ -21,16 +29,21 @@ const KMeansChart = () => {
     const { CryptoStore } = useStore();
 
     const [selectedIterations, setSelectedIterations] = useState('');
+    const [deleteFired, setDeleteFired] = useState(false);
+    const [cleanFired, setCleanFired] = useState(false);
+    const [deleteOrCleanData, setDeleteOrCleanData] = useState('');
+    const [confirmMessage, setConfirmMessage] = useState(false);
 
     const iterationOptions = [
-        { iterations: '100', storeProp: 'kMeansClusteringIter100' },
-        { iterations: '1,000', storeProp: 'kMeansClusteringIter1000' },
-        { iterations: '10,000', storeProp: 'kMeansClusteringIter10000' },
-        { iterations: '100,000', storeProp: 'kMeansClusteringIter100000' },
-        { iterations: '1,000,000', storeProp: 'kMeansClusteringIter1000000' }
+        { iterations: 100, storeProp: 'kMeansClusteringIter100' },
+        { iterations: 1000, storeProp: 'kMeansClusteringIter1000' },
+        { iterations: 10000, storeProp: 'kMeansClusteringIter10000' },
+        { iterations: 100000, storeProp: 'kMeansClusteringIter100000' },
+        { iterations: 1000000, storeProp: 'kMeansClusteringIter1000000' }
     ];
 
     const handleKMeansClusteringIter = (iterations) => () => {
+        CryptoStore.setIsLoaded(['kMeansClusteringData'], false);
         const clusteringModel = ObjectLearning.runKClustering(
             CryptoStore.kMeansData,
             ['meanReturn', 'priceVariance'],
@@ -50,6 +63,7 @@ const KMeansChart = () => {
             `kMeansClusteringIter${iterations}`,
             JSON.parse(JSON.stringify(clusteringModel))['groups']
         );
+        CryptoStore.setIsLoaded(['kMeansClusteringData'], true);
     };
 
     const handleDeleteOutlier = (iterations) => {
@@ -58,26 +72,66 @@ const KMeansChart = () => {
 
     const handleRefreshKMeansData = (iterations) => () => {
         CryptoStore.setIsLoaded(['kMeansClusteringData'], false);
+
         handleDeleteOutlier(iterations);
         CryptoStore.setAnnualMeanReturns();
         CryptoStore.setAnnualPriceVariances();
         CryptoStore.setKMeansData();
         handleKMeansClusteringIter(iterations)();
+        setDeleteFired(true);
+
         CryptoStore.setIsLoaded(['kMeansClusteringData'], true);
     };
 
     const handleRefreshKMeansDataClean = (iterations) => () => {
         CryptoStore.setIsLoaded(['kMeansClusteringData'], false);
+
         handleDeleteOutlier(iterations);
         CryptoStore.setAnnualMeanReturnsClean();
         CryptoStore.setAnnualPriceVariancesClean();
         CryptoStore.setKMeansData();
         handleKMeansClusteringIter(iterations)();
+        setCleanFired(true);
+
         CryptoStore.setIsLoaded(['kMeansClusteringData'], true);
     };
 
     const handleSelectedIterations = (event) => {
         setSelectedIterations(event.target.value);
+        handleKMeansClusteringIter(event.target.value)();
+    };
+
+    const handleDeleteOrClean = (event) => {
+        setDeleteOrCleanData(event.target.name);
+        setConfirmMessage(true);
+    };
+
+    const handleConfirmDeleteClean = () => {
+        if (deleteOrCleanData === 'delete') {
+            handleRefreshKMeansData(selectedIterations)();
+        }
+        if (deleteOrCleanData === 'clean') {
+            handleRefreshKMeansDataClean(selectedIterations)();
+        }
+        setConfirmMessage(false);
+    };
+
+    const handleConfirmClickaway = () => {
+        setConfirmMessage(false);
+    };
+
+    const handleResetData = () => {
+        CryptoStore.setIsLoaded(
+            [
+                'cryptoNames',
+                'cryptoPrices',
+                'cryptoPercentChange',
+                'annualMeanReturns',
+                'annualPriceVariances',
+                'kMeansData'
+            ],
+            false
+        );
     };
 
     const TickerName = ({ payload, active }) => {
@@ -102,66 +156,114 @@ const KMeansChart = () => {
 
     return (
         <>
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={confirmMessage}
+                onClose={handleConfirmClickaway}
+            >
+                <Alert
+                    severity="warning"
+                    onClose={handleConfirmClickaway}
+                    sx={{
+                        width: '100%',
+                        minWidth: 400
+                    }}
+                >
+                    <h3>
+                        Once you delete the outlier or clean the data you{' '}
+                        <em>will not</em> be able to perform any other actions
+                        without refreshing the data.
+                    </h3>
+                    <div className="alertButtons">
+                        <Button
+                            onClick={handleConfirmDeleteClean}
+                            variant="contained"
+                            color="primary"
+                            sx={{ width: '45%', minWidth: 200 }}
+                        >
+                            Confirm
+                        </Button>
+                        <Button
+                            onClick={handleConfirmClickaway}
+                            color="primary"
+                            sx={{ width: '45%', minWidth: 200 }}
+                        >
+                            Cancel
+                        </Button>
+                    </div>
+                </Alert>
+            </Snackbar>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: '9' }}
+                open={confirmMessage}
+                onClick={handleConfirmClickaway}
+            />
             {CryptoStore.loaded.kMeansClusteringData && (
                 <div className="kMeansScatter">
-                    <ScatterChart
-                        width={500}
-                        height={500}
-                        margin={{
-                            top: 20,
-                            right: 20,
-                            bottom: 20,
-                            left: 20
-                        }}
-                    >
-                        <CartesianGrid />
-                        <XAxis
-                            unit="%"
-                            type="number"
-                            dataKey="meanReturn"
-                            name="Mean Return"
-                            dy={10}
+                    <ResponsiveContainer width="85%" height={500}>
+                        <ScatterChart
+                            width={500}
+                            height={500}
+                            margin={{
+                                top: 20,
+                                right: 20,
+                                bottom: 20,
+                                left: 20
+                            }}
                         >
-                            <Label
-                                value="Annual Mean Returns"
-                                offset={-20}
-                                position="insideBottom"
+                            <CartesianGrid />
+                            <XAxis
+                                unit="%"
+                                type="number"
+                                dataKey="meanReturn"
+                                name="Mean Return"
+                                dy={10}
+                            >
+                                <Label
+                                    value="Annual Mean Returns"
+                                    offset={-20}
+                                    position="insideBottom"
+                                />
+                            </XAxis>
+                            <YAxis
+                                unit="%"
+                                type="number"
+                                dataKey="priceVariance"
+                                name="Price Variance"
+                                dx={-10}
+                            >
+                                <Label
+                                    value="Annual Price Variance"
+                                    offset={10}
+                                    angle={-90}
+                                    position="left"
+                                    style={{ textAnchor: 'middle' }}
+                                />
+                            </YAxis>
+                            <Tooltip
+                                content={<TickerName />}
+                                cursor={{ strokeDasharray: '3 3' }}
                             />
-                        </XAxis>
-                        <YAxis
-                            unit="%"
-                            type="number"
-                            dataKey="priceVariance"
-                            name="Price Variance"
-                            dx={-10}
-                        >
-                            <Label
-                                value="Annual Price Variance"
-                                offset={10}
-                                angle={-90}
-                                position="left"
-                                style={{ textAnchor: 'middle' }}
-                            />
-                        </YAxis>
-                        <Tooltip
-                            content={<TickerName />}
-                            cursor={{ strokeDasharray: '3 3' }}
-                        />
-                        <Scatter
-                            name="Test"
-                            data={CryptoStore.kMeansClusteringIter10000}
-                            fill="#8884d8"
-                        >
-                            {CryptoStore.kMeansClusteringIter10000.map(
-                                (entry, index) => (
+                            <Scatter
+                                name="Test"
+                                data={
+                                    CryptoStore[
+                                        `kMeansClusteringIter${selectedIterations}`
+                                    ]
+                                }
+                                fill="#8884d8"
+                            >
+                                {CryptoStore[
+                                    `kMeansClusteringIter${selectedIterations}`
+                                ].map((entry, index) => (
                                     <Cell
                                         key={`cell-${index}`}
                                         fill={entry.c}
                                     />
-                                )
-                            )}
-                        </Scatter>
-                    </ScatterChart>
+                                ))}
+                            </Scatter>
+                        </ScatterChart>
+                    </ResponsiveContainer>
                 </div>
             )}
             <div className="kMeansChartFieldContainer">
@@ -177,52 +279,59 @@ const KMeansChart = () => {
                     helperText="Please select the number of iterations to run"
                     color="primary"
                     defaultValue=""
-                    disabled={!CryptoStore.loaded.kMeansData}
+                    disabled={
+                        !CryptoStore.loaded.kMeansData ||
+                        deleteFired ||
+                        cleanFired
+                    }
                 >
                     {iterationOptions.map((el, i) => (
                         <MenuItem
-                            value={el.storeProp}
+                            value={el.iterations}
                             key={`${el.iterations}-${i}`}
                         >
-                            {el.iterations}
+                            {el.iterations.toLocaleString('en-US')}
                         </MenuItem>
                     ))}
                 </TextField>
                 <Button
                     className="kMeansChartField"
-                    onClick={handleKMeansClusteringIter(10000)}
+                    onClick={handleDeleteOrClean}
                     variant="contained"
-                    disabled={!CryptoStore.loaded.kMeansData}
+                    disabled={
+                        !CryptoStore.loaded.kMeansData ||
+                        deleteFired ||
+                        cleanFired ||
+                        !selectedIterations
+                    }
                     color="secondary"
-                >
-                    K-Means Clustering 10,000
-                </Button>
-                <Button
-                    className="kMeansChartField"
-                    onClick={handleRefreshKMeansData(10000)}
-                    variant="contained"
-                    disabled={!CryptoStore.loaded.kMeansData}
-                    color="secondary"
+                    name="delete"
                 >
                     Delete Outlier
                 </Button>
                 <Button
                     className="kMeansChartField"
-                    onClick={handleRefreshKMeansDataClean(10000)}
+                    onClick={handleDeleteOrClean}
                     variant="contained"
-                    disabled={!CryptoStore.loaded.kMeansData}
+                    disabled={
+                        !CryptoStore.loaded.kMeansData ||
+                        cleanFired ||
+                        !selectedIterations
+                    }
                     color="secondary"
+                    name="clean"
                 >
                     Clean Data
                 </Button>
                 <Button
                     className="kMeansChartField"
-                    onClick={handleKMeansClusteringIter(100000)}
+                    onClick={handleResetData}
                     variant="contained"
-                    disabled={!CryptoStore.loaded.kMeansData}
-                    color="secondary"
+                    disabled={!cleanFired && !deleteFired}
+                    color="primary"
+                    name="clean"
                 >
-                    K-Means Clustering 100,000
+                    Reset Data
                 </Button>
             </div>
         </>

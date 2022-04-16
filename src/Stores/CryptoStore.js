@@ -246,6 +246,7 @@ class CryptoStore {
         this.kMeansClusteringIter1000 = [];
         this.kMeansClusteringIter10000 = [];
         this.kMeansClusteringIter100000 = [];
+        this.kMeansClusteringIter1000000 = [];
 
         data.forEach((group, i) => {
             this[key] = [

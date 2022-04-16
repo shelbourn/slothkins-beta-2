@@ -27,3 +27,9 @@
 .tooltipLabel {
     font-weight: 600;
 }
+
+.alertButtons {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 30px;
+}
