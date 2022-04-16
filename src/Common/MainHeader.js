@@ -41,6 +41,7 @@ const MainHeader = () => {
     const handleSelectNavMenu = (event) => {
         const { target } = event.currentTarget.dataset;
         navigate(`${target}`);
+        handleCloseNavMenu();
     };
     return (
         <AppBar position="static">
