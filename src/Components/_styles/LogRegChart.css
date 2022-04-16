@@ -56,5 +56,17 @@
 }
 
 .chartFieldButton {
-    margin-top: 20px !important;
+    margin: 20px 0 40px !important;
+}
+
+@media screen and (max-width: 767px) {
+    .chartField {
+        width: 85vw;
+        max-width: 400px;
+    }
+
+    .chartFieldButton {
+        width: 85vw;
+        max-width: 400px;
+    }
 }
