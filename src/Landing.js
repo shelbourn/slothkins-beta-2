@@ -44,7 +44,7 @@ function Landing() {
                 >
                     <Button
                         variant="contained"
-                        sx={{ mt: 8, height: 60, width: 200 }}
+                        sx={{ mt: 8, mb: 6, height: 60, width: 200 }}
                         onClick={handleGetStarted}
                     >
                         Get Started
