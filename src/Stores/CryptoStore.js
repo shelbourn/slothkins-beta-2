@@ -19,8 +19,12 @@ class CryptoStore {
         logRegModeledData: false
     };
     loading = {
+        annualMeanReturns: false,
+        annualPriceVariances: false,
         cryptoNames: false,
+        cryptoPrices: false,
         cryptoPercentChange: false,
+        logRegressionRawData: false,
         logRegressionUsableData: false,
         logRegressionFormattedData: false,
         logRegressionTrainingData: false,
@@ -36,6 +40,7 @@ class CryptoStore {
     kMeansClusteringIter1000 = [];
     kMeansClusteringIter10000 = [];
     kMeansClusteringIter100000 = [];
+    kMeansClusteringIter1000000 = [];
     kMeansCentroidColors = [
         '#EF5350',
         '#AB47BC',
@@ -158,6 +163,8 @@ class CryptoStore {
     }
 
     setAnnualMeanReturns() {
+        this.setIsLoading('annualMeanReturns', true);
+
         this.annualMeanReturns = {};
         Object.entries(this.cryptoPercentChange).forEach(
             ([ticker, priceChangeArray]) => {
@@ -171,6 +178,7 @@ class CryptoStore {
             }
         );
         this.setIsLoaded(['annualMeanReturns'], true);
+        this.setIsLoading('annualMeanReturns', false);
     }
 
     setAnnualMeanReturnsClean() {
@@ -192,6 +200,8 @@ class CryptoStore {
     }
 
     setAnnualPriceVariances() {
+        this.setIsLoading('annualPriceVariances', true);
+
         this.annualPriceVariances = {};
         Object.entries(this.cryptoPercentChange).forEach(
             ([ticker, priceChangeArray]) => {
@@ -200,6 +210,7 @@ class CryptoStore {
             }
         );
         this.setIsLoaded(['annualPriceVariances'], true);
+        this.setIsLoading('annualPriceVariances', false);
     }
 
     setAnnualPriceVariancesClean() {
@@ -235,6 +246,7 @@ class CryptoStore {
         this.kMeansClusteringIter1000 = [];
         this.kMeansClusteringIter10000 = [];
         this.kMeansClusteringIter100000 = [];
+        this.kMeansClusteringIter1000000 = [];
 
         data.forEach((group, i) => {
             this[key] = [
