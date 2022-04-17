@@ -50,7 +50,7 @@ const MainHeader = () => {
     };
     return (
         <AppBar position="sticky">
-            <Container maxWidth="xl">
+            <Container maxWidth="x2">
                 <Toolbar disableGutters>
                     <img
                         src={Sloth}

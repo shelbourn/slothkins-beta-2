@@ -40,7 +40,10 @@ const KMeansChart = () => {
         { iterations: 100, storeProp: 'kMeansClusteringIter100' },
         { iterations: 1000, storeProp: 'kMeansClusteringIter1000' },
         { iterations: 10000, storeProp: 'kMeansClusteringIter10000' },
+        { iterations: 50000, storeProp: 'kMeansClusteringIter50000' },
         { iterations: 100000, storeProp: 'kMeansClusteringIter100000' },
+        { iterations: 200000, storeProp: 'kMeansClusteringIter200000' },
+        { iterations: 500000, storeProp: 'kMeansClusteringIter500000' },
         { iterations: 1000000, storeProp: 'kMeansClusteringIter1000000' }
     ];
 
@@ -73,29 +76,20 @@ const KMeansChart = () => {
     };
 
     const handleRefreshKMeansData = (iterations) => () => {
-        CryptoStore.setIsLoaded(['kMeansClusteringData'], false);
-
         handleDeleteOutlier(iterations);
         CryptoStore.setAnnualMeanReturns();
         CryptoStore.setAnnualPriceVariances();
         CryptoStore.setKMeansData();
         handleKMeansClusteringIter(iterations)();
         setDeleteFired(true);
-
-        CryptoStore.setIsLoaded(['kMeansClusteringData'], true);
     };
 
     const handleRefreshKMeansDataClean = (iterations) => () => {
-        CryptoStore.setIsLoaded(['kMeansClusteringData'], false);
-
-        handleDeleteOutlier(iterations);
         CryptoStore.setAnnualMeanReturnsClean();
         CryptoStore.setAnnualPriceVariancesClean();
         CryptoStore.setKMeansData();
         handleKMeansClusteringIter(iterations)();
         setCleanFired(true);
-
-        CryptoStore.setIsLoaded(['kMeansClusteringData'], true);
     };
 
     const handleSelectedIterations = (event) => {
@@ -125,17 +119,7 @@ const KMeansChart = () => {
     };
 
     const handleResetData = () => {
-        CryptoStore.setIsLoaded(
-            [
-                'cryptoNames',
-                'cryptoPrices',
-                'cryptoPercentChange',
-                'annualMeanReturns',
-                'annualPriceVariances',
-                'kMeansData'
-            ],
-            false
-        );
+        CryptoStore.resetStore();
     };
 
     const TickerName = ({ payload, active }) => {
@@ -175,8 +159,8 @@ const KMeansChart = () => {
                 >
                     <h3>
                         Once you delete the outlier or clean the data you{' '}
-                        <em>will not</em> be able to perform any other actions
-                        without refreshing the data.
+                        <em>will not</em> be able to select a different number
+                        of iterations to run without refreshing the data.
                     </h3>
                     <div className="alertButtons">
                         <Button

@@ -39,7 +39,10 @@ class CryptoStore {
     kMeansClusteringIter100 = [];
     kMeansClusteringIter1000 = [];
     kMeansClusteringIter10000 = [];
+    kMeansClusteringIter50000 = [];
     kMeansClusteringIter100000 = [];
+    kMeansClusteringIter200000 = [];
+    kMeansClusteringIter500000 = [];
     kMeansClusteringIter1000000 = [];
     logRegressionRawData = [];
     logRegressionUsableData = [];
@@ -187,7 +190,7 @@ class CryptoStore {
             ([ticker, priceChangeArray]) => {
                 this.annualMeanReturns[ticker] =
                     (priceChangeArray
-                        .filter((el) => el <= 1)
+                        .filter((el) => el <= 5)
                         .reduce((a, b) => {
                             a + b;
                             return b;
@@ -218,7 +221,7 @@ class CryptoStore {
         Object.entries(this.cryptoPercentChange).forEach(
             ([ticker, priceChangeArray]) => {
                 this.annualPriceVariances[ticker] =
-                    std(priceChangeArray.filter((el) => el <= 1)) * sqrt(365);
+                    std(priceChangeArray.filter((el) => el <= 5)) * sqrt(365);
             }
         );
         this.setIsLoaded(['annualPriceVariances'], true);
