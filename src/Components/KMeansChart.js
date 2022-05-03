@@ -21,6 +21,7 @@ import {
     Backdrop,
     Typography
 } from '@mui/material';
+import { motion } from 'framer-motion';
 
 import { useStore } from '../Stores/StoreFunctions';
 
@@ -291,110 +292,126 @@ const KMeansChart = () => {
                 </>
             )}
             <div className="kMeansChartFieldContainer">
-                <TextField
+                <motion.div
                     className="kMeansChartField"
-                    variant="outlined"
-                    select
-                    id="k-means-select"
-                    name="kMeansIterations"
-                    value={selectedIterations}
-                    onChange={handleSelectedIterations}
-                    label="Number of Iterations"
-                    helperText="Please select the number of iterations to run"
-                    color="primary"
-                    defaultValue=""
-                    disabled={
-                        !CryptoStore.loaded.kMeansData ||
-                        deleteFired ||
-                        cleanFired
-                    }
-                    sx={{ mb: 2 }}
-                >
-                    {iterationOptions.map((el, i) => (
-                        <MenuItem
-                            value={el.iterations}
-                            key={`${el.iterations}-${i}`}
-                        >
-                            {el.iterations.toLocaleString('en-US')}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <Button
-                    className="kMeansChartField"
-                    onClick={handleDeleteOrClean}
-                    variant="contained"
-                    disabled={
-                        !CryptoStore.loaded.kMeansData ||
-                        deleteFired ||
-                        cleanFired ||
-                        !selectedIterations
-                    }
-                    color="secondary"
-                    name="delete"
-                    size="large"
-                >
-                    Delete Outlier
-                </Button>
-                <Typography
-                    variant="subtitle2"
-                    sx={{
-                        fontStyle: 'italic',
-                        mb: 2,
-                        textAlign: 'center',
-                        maxWidth: 600
+                    key={'kMeansOptions'}
+                    initial={{
+                        x: -1000
+                    }}
+                    animate={{ x: 0, opacity: [0, 0.5, 1] }}
+                    transition={{
+                        ease: 'easeIn',
+                        duration: 1,
+                        type: 'spring'
                     }}
                 >
-                    Outliers are common with ML algorithms. Click this button
-                    the delete the outlier (if present)
-                </Typography>
-                <Button
-                    className="kMeansChartField"
-                    onClick={handleDeleteOrClean}
-                    variant="contained"
-                    disabled={
-                        !CryptoStore.loaded.kMeansData ||
-                        cleanFired ||
-                        !selectedIterations
-                    }
-                    color="secondary"
-                    name="clean"
-                    size="large"
-                >
-                    Clean Data
-                </Button>
-                <Typography
-                    variant="subtitle2"
-                    sx={{
-                        fontStyle: 'italic',
-                        mb: 2,
-                        textAlign: 'center',
-                        maxWidth: 600
-                    }}
-                >
-                    Cleans the data to make it more useful
-                </Typography>
-                <Button
-                    className="kMeansChartField"
-                    onClick={handleResetData}
-                    variant="contained"
-                    disabled={!cleanFired && !deleteFired}
-                    color="primary"
-                    name="clean"
-                    size="large"
-                >
-                    Reset Data
-                </Button>
-                <Typography
-                    variant="subtitle2"
-                    sx={{
-                        fontStyle: 'italic',
-                        mb: 2,
-                        textAlign: 'center',
-                        maxWidth: 600
-                    }}
-                >
-                    Resets the data and navigates you back to the previous page
-                </Typography>
+                    <TextField
+                        // className="kMeansChartField"
+                        variant="outlined"
+                        select
+                        id="k-means-select"
+                        name="kMeansIterations"
+                        value={selectedIterations}
+                        onChange={handleSelectedIterations}
+                        label="Number of Iterations"
+                        helperText="Please select the number of iterations to run"
+                        color="primary"
+                        defaultValue=""
+                        disabled={
+                            !CryptoStore.loaded.kMeansData ||
+                            deleteFired ||
+                            cleanFired
+                        }
+                        sx={{ mb: 4 }}
+                    >
+                        {iterationOptions.map((el, i) => (
+                            <MenuItem
+                                value={el.iterations}
+                                key={`${el.iterations}-${i}`}
+                            >
+                                {el.iterations.toLocaleString('en-US')}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+
+                    <Button
+                        // className="kMeansChartField"
+                        onClick={handleDeleteOrClean}
+                        variant="contained"
+                        disabled={
+                            !CryptoStore.loaded.kMeansData ||
+                            deleteFired ||
+                            cleanFired ||
+                            !selectedIterations
+                        }
+                        color="secondary"
+                        name="delete"
+                        size="large"
+                    >
+                        Delete Outlier
+                    </Button>
+                    <Typography
+                        variant="subtitle2"
+                        sx={{
+                            fontStyle: 'italic',
+                            mb: 2,
+                            textAlign: 'center',
+                            maxWidth: 600
+                        }}
+                    >
+                        Outliers are common with ML algorithms. Click this
+                        button the delete the outlier (if present)
+                    </Typography>
+                    <Button
+                        // className="kMeansChartField"
+                        onClick={handleDeleteOrClean}
+                        variant="contained"
+                        disabled={
+                            !CryptoStore.loaded.kMeansData ||
+                            cleanFired ||
+                            !selectedIterations
+                        }
+                        color="secondary"
+                        name="clean"
+                        size="large"
+                    >
+                        Clean Data
+                    </Button>
+                    <Typography
+                        variant="subtitle2"
+                        sx={{
+                            fontStyle: 'italic',
+                            mb: 2,
+                            textAlign: 'center',
+                            maxWidth: 600
+                        }}
+                    >
+                        Cleans the data to make it more useful
+                    </Typography>
+                    <Button
+                        // className="kMeansChartField"
+                        onClick={handleResetData}
+                        variant="contained"
+                        disabled={!cleanFired && !deleteFired}
+                        color="primary"
+                        name="clean"
+                        size="large"
+                    >
+                        Reset Data
+                    </Button>
+                    <Typography
+                        variant="subtitle2"
+                        sx={{
+                            fontStyle: 'italic',
+                            mb: 2,
+                            textAlign: 'center',
+                            maxWidth: 600
+                        }}
+                    >
+                        Resets the data and navigates you back to the previous
+                        page
+                    </Typography>
+                </motion.div>
             </div>
         </>
     );

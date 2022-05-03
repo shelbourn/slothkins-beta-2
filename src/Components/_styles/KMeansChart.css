@@ -6,9 +6,17 @@
     align-items: center;
 }
 
-.kMeansChartField {
-    width: 85%;
+.kMeansChartField > div {
+    display: flex;
+    width: 85vw;
     max-width: 600px;
+    height: 60px;
+}
+
+.kMeansChartField > button {
+    width: 85vw;
+    max-width: 600px;
+    height: 60px;
 }
 
 .kMeansScatter {

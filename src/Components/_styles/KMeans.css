@@ -10,6 +10,7 @@
 .kMeansField button {
     width: 85vw;
     max-width: 600px;
+    height: 60px;
 }
 
 @media screen and (max-width: 767px) {
