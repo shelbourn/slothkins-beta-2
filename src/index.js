@@ -18,7 +18,8 @@ const theme = createTheme({
         },
         secondary: {
             main: '#7E57C2'
-        }
+        },
+        tertiary: '#9E9E9E'
     }
 });
 

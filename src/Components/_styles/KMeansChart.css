@@ -1,4 +1,4 @@
-.kMeansChartFieldContainer {
+.kMeansChartFieldContainer > div {
     display: flex;
     justify-content: center;
     margin-top: 32px;
@@ -7,7 +7,6 @@
 }
 
 .kMeansChartField > div {
-    display: flex;
     width: 85vw;
     max-width: 600px;
     height: 60px;
@@ -42,7 +41,7 @@
 }
 
 @media screen and (max-width: 767px) {
-    .kMeansChartFieldContainer h6 {
+    .kMeansChartFieldContainer > h6 {
         max-width: 85vw;
     }
 }

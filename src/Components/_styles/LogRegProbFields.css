@@ -1,13 +1,35 @@
 .regProbFieldContainer {
     display: flex;
     justify-content: center;
-    margin-top: 32px;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px 0;
+}
+
+.regProbFieldContainer > div {
+    display: flex;
+    justify-content: center;
     flex-direction: column;
     align-items: center;
 }
 
-.regProbField {
-    width: 85%;
+.regProbField > div {
+    width: 85vw;
     max-width: 600px;
     margin-bottom: 20px !important;
+    height: 60px;
+}
+
+.regProbField > button {
+    width: 85vw;
+    max-width: 600px;
+    margin-bottom: 20px !important;
+    height: 60px;
+}
+
+.goBackButton {
+    width: 85vw;
+    max-width: 600px;
+    height: 60px;
+    margin-top: 40px !important;
 }

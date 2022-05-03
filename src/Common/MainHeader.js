@@ -26,7 +26,11 @@ const MainHeader = () => {
     const navPages = [
         { name: 'Home', target: '/' },
         { name: 'K-means Clustering', target: '/k-means-clustering' },
-        { name: 'Logistic Regression Analysis', target: '/logistic-regression' }
+        {
+            name: 'Logistic Regression Analysis',
+            target: '/logistic-regression'
+        },
+        { name: 'Add Currency Data', target: '/add-crypto-price-data' }
     ];
 
     const handleOpenNavMenu = (event) => {

@@ -16,7 +16,8 @@ class CryptoStore {
         logRegUsableData: false,
         logRegFormattedData: false,
         logRegTrainingData: false,
-        logRegModeledData: false
+        logRegModeledData: false,
+        logRegNextDayPrediction: false
     };
     loading = {
         annualMeanReturns: false,
@@ -446,6 +447,8 @@ class CryptoStore {
                 ].open,
             mav: tempOpenArray.slice(-10).reduce((a, b) => a + b, 0) / 10
         });
+
+        this.setIsLoaded(['logRegNextDayPrediction'], true);
     }
 
     resetStore() {

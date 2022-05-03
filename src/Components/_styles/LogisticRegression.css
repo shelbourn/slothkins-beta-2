@@ -1,19 +1,39 @@
 .logRegFieldContainer {
     display: flex;
     justify-content: center;
-    margin-top: 32px;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
+    margin: 40px 0;
 }
 
-.logRegField {
-    width: 85%;
+.logRegField div {
+    width: 85vw;
     max-width: 600px;
+    height: 60px;
+}
+
+.logRegField button {
+    width: 85vw;
+    max-width: 600px;
+    height: 60px;
+}
+
+.helperTextLogReg {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.helperTextLogReg h6 {
+    max-width: 800px;
 }
 
 @media screen and (max-width: 767px) {
     .logRegFieldContainer h6 {
+        max-width: 85vw;
+    }
+
+    .helperTextLogReg h6 {
         max-width: 85vw;
     }
 }

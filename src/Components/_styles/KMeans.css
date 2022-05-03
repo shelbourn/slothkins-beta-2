@@ -1,10 +1,16 @@
+.kMeansComponentContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px 0;
+}
+
 .kMeansFieldContainer {
     display: flex;
     justify-content: center;
-    margin-top: 32px;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
 }
 
 .kMeansField button {
@@ -13,8 +19,22 @@
     height: 60px;
 }
 
+.helperTextKMeans {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.helperTextKMeans h6 {
+    max-width: 800px;
+}
+
 @media screen and (max-width: 767px) {
     .kMeansFieldContainer h6 {
+        max-width: 85vw;
+    }
+
+    .helperTextKMeans h6 {
         max-width: 85vw;
     }
 }

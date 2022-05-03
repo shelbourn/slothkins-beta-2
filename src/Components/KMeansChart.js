@@ -306,7 +306,6 @@ const KMeansChart = () => {
                     }}
                 >
                     <TextField
-                        // className="kMeansChartField"
                         variant="outlined"
                         select
                         id="k-means-select"
@@ -335,7 +334,6 @@ const KMeansChart = () => {
                     </TextField>
 
                     <Button
-                        // className="kMeansChartField"
                         onClick={handleDeleteOrClean}
                         variant="contained"
                         disabled={
@@ -363,7 +361,6 @@ const KMeansChart = () => {
                         button the delete the outlier (if present)
                     </Typography>
                     <Button
-                        // className="kMeansChartField"
                         onClick={handleDeleteOrClean}
                         variant="contained"
                         disabled={
@@ -389,7 +386,6 @@ const KMeansChart = () => {
                         Cleans the data to make it more useful
                     </Typography>
                     <Button
-                        // className="kMeansChartField"
                         onClick={handleResetData}
                         variant="contained"
                         disabled={!cleanFired && !deleteFired}
