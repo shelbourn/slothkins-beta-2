@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { observer } from 'mobx-react-lite';
+import { motion } from 'framer-motion';
 
 import { useStore } from '../Stores/StoreFunctions';
 import {
@@ -22,6 +23,14 @@ const KMeans = () => {
     const { CryptoStore } = useStore();
 
     const [infoMessage, setInfoMessage] = useState(false);
+    const [framer, setFramer] = useState({
+        cryptoNames: true,
+        cryptoPrices: false,
+        percentChange: false,
+        meanReturns: false,
+        meanVariance: false,
+        kMeansData: false
+    });
 
     /***
      * Retrieves all crypto names and hydrates the CryptoStore
@@ -34,6 +43,7 @@ const KMeans = () => {
      * Retrieves all crypto prices by ticker and hydrates the CryptoStore
      */
     const handleCryptoPrices = () => {
+        setTest(false);
         getAllCryptoPriceData();
     };
 
@@ -90,141 +100,285 @@ const KMeans = () => {
                 <CircularProgress color="primary" size={100} />
             </Backdrop>
             <div className="kMeansFieldContainer">
-                <LoadingButton
+                <motion.div
                     className="kMeansField"
-                    onClick={handleCryptoNames}
-                    variant="contained"
-                    loading={CryptoStore.loading.cryptoNames}
-                    color="secondary"
-                    size="large"
+                    key={'getCryptoNames'}
+                    initial={framer.cryptoNames ? { x: -1000 } : { x: 0 }}
+                    animate={
+                        framer.cryptoNames
+                            ? { x: 0, opacity: [0, 0.5, 1] }
+                            : { x: 1000, opacity: [1, 0.5, 0] }
+                    }
+                    transition={
+                        framer.cryptoNames
+                            ? {
+                                  ease: 'easeIn',
+                                  duration: 1,
+                                  type: 'spring'
+                              }
+                            : {
+                                  ease: 'easeOut',
+                                  duration: 1,
+                                  type: 'spring'
+                              }
+                    }
                 >
-                    Get All Crypto Names
-                </LoadingButton>
-                <Typography
-                    variant="subtitle2"
-                    sx={{
-                        fontStyle: 'italic',
-                        mb: 2,
-                        textAlign: 'center',
-                        maxWidth: 600
-                    }}
-                >
-                    Fetch all cryptocurrency tickers from the database
-                </Typography>
-                <LoadingButton
+                    <LoadingButton
+                        onClick={handleCryptoNames}
+                        variant="contained"
+                        loading={CryptoStore.loading.cryptoNames}
+                        color="secondary"
+                        size="large"
+                    >
+                        Get All Crypto Names
+                    </LoadingButton>
+                    <Typography
+                        variant="subtitle2"
+                        sx={{
+                            fontStyle: 'italic',
+                            mb: 2,
+                            textAlign: 'center',
+                            maxWidth: 600
+                        }}
+                    >
+                        Fetch all cryptocurrency tickers from the database
+                    </Typography>
+                </motion.div>
+                <motion.div
                     className="kMeansField"
-                    onClick={handleCryptoPrices}
-                    variant="contained"
-                    loading={CryptoStore.loading.cryptoPrices}
-                    disabled={!CryptoStore.loaded.cryptoNames}
-                    color="secondary"
-                    size="large"
+                    key={'getCryptoNames'}
+                    initial={framer.cryptoNames ? { x: -1000 } : { x: 0 }}
+                    animate={
+                        framer.cryptoNames
+                            ? { x: 0, opacity: [0, 0.5, 1] }
+                            : { x: 1000, opacity: [1, 0.5, 0] }
+                    }
+                    transition={
+                        framer.cryptoNames
+                            ? {
+                                  ease: 'easeIn',
+                                  duration: 1,
+                                  type: 'spring'
+                              }
+                            : {
+                                  ease: 'easeOut',
+                                  duration: 1,
+                                  type: 'spring'
+                              }
+                    }
                 >
-                    Get All Crypto Prices
-                </LoadingButton>
-                <Typography
-                    variant="subtitle2"
-                    sx={{
-                        fontStyle: 'italic',
-                        mb: 2,
-                        textAlign: 'center',
-                        maxWidth: 600
-                    }}
-                >
-                    Fetch all cryptocurrency price data for all currencies from
-                    the database
-                </Typography>
-                <LoadingButton
+                    <LoadingButton
+                        className="kMeansField"
+                        onClick={handleCryptoPrices}
+                        variant="contained"
+                        loading={CryptoStore.loading.cryptoPrices}
+                        disabled={!CryptoStore.loaded.cryptoNames}
+                        color="secondary"
+                        size="large"
+                    >
+                        Get All Crypto Prices
+                    </LoadingButton>
+                    <Typography
+                        variant="subtitle2"
+                        sx={{
+                            fontStyle: 'italic',
+                            mb: 2,
+                            textAlign: 'center',
+                            maxWidth: 600
+                        }}
+                    >
+                        Fetch all cryptocurrency price data for all currencies
+                        from the database
+                    </Typography>
+                </motion.div>
+                <motion.div
                     className="kMeansField"
-                    onClick={handleCryptoPercentChange}
-                    variant="contained"
-                    loading={CryptoStore.loading.cryptoPercentChange}
-                    disabled={!CryptoStore.loaded.cryptoPrices}
-                    color="secondary"
-                    size="large"
+                    key={'getCryptoNames'}
+                    initial={framer.cryptoNames ? { x: -1000 } : { x: 0 }}
+                    animate={
+                        framer.cryptoNames
+                            ? { x: 0, opacity: [0, 0.5, 1] }
+                            : { x: 1000, opacity: [1, 0.5, 0] }
+                    }
+                    transition={
+                        framer.cryptoNames
+                            ? {
+                                  ease: 'easeIn',
+                                  duration: 1,
+                                  type: 'spring'
+                              }
+                            : {
+                                  ease: 'easeOut',
+                                  duration: 1,
+                                  type: 'spring'
+                              }
+                    }
                 >
-                    Calculate all percent changes in crypto prices
-                </LoadingButton>
-                <Typography
-                    variant="subtitle2"
-                    sx={{
-                        fontStyle: 'italic',
-                        mb: 2,
-                        textAlign: 'center',
-                        maxWidth: 600
-                    }}
-                >
-                    Calculate the percent change between opening prices for each
-                    day and all currencies (this calculation takes some time)
-                </Typography>
-                <LoadingButton
+                    <LoadingButton
+                        className="kMeansField"
+                        onClick={handleCryptoPercentChange}
+                        variant="contained"
+                        loading={CryptoStore.loading.cryptoPercentChange}
+                        disabled={!CryptoStore.loaded.cryptoPrices}
+                        color="secondary"
+                        size="large"
+                    >
+                        Calculate all percent changes in crypto prices
+                    </LoadingButton>
+                    <Typography
+                        variant="subtitle2"
+                        sx={{
+                            fontStyle: 'italic',
+                            mb: 2,
+                            textAlign: 'center',
+                            maxWidth: 600
+                        }}
+                    >
+                        Calculate the percent change between opening prices for
+                        each day and all currencies (this calculation takes some
+                        time)
+                    </Typography>
+                </motion.div>
+                <motion.div
                     className="kMeansField"
-                    onClick={handleCalculateAnnualMeanReturns}
-                    variant="contained"
-                    loading={CryptoStore.loading.annualMeanReturns}
-                    disabled={!CryptoStore.loaded.cryptoPercentChange}
-                    color="secondary"
-                    size="large"
+                    key={'getCryptoNames'}
+                    initial={framer.cryptoNames ? { x: -1000 } : { x: 0 }}
+                    animate={
+                        framer.cryptoNames
+                            ? { x: 0, opacity: [0, 0.5, 1] }
+                            : { x: 1000, opacity: [1, 0.5, 0] }
+                    }
+                    transition={
+                        framer.cryptoNames
+                            ? {
+                                  ease: 'easeIn',
+                                  duration: 1,
+                                  type: 'spring'
+                              }
+                            : {
+                                  ease: 'easeOut',
+                                  duration: 1,
+                                  type: 'spring'
+                              }
+                    }
                 >
-                    Calculate annual mean returns for all crypto prices
-                </LoadingButton>
-                <Typography
-                    variant="subtitle2"
-                    sx={{
-                        fontStyle: 'italic',
-                        mb: 2,
-                        textAlign: 'center',
-                        maxWidth: 600
-                    }}
-                >
-                    Calculate the average annual returns for all
-                    cryptocurrencies
-                </Typography>
-                <LoadingButton
+                    <LoadingButton
+                        className="kMeansField"
+                        onClick={handleCalculateAnnualMeanReturns}
+                        variant="contained"
+                        loading={CryptoStore.loading.annualMeanReturns}
+                        disabled={!CryptoStore.loaded.cryptoPercentChange}
+                        color="secondary"
+                        size="large"
+                    >
+                        Calculate annual mean returns for all crypto prices
+                    </LoadingButton>
+                    <Typography
+                        variant="subtitle2"
+                        sx={{
+                            fontStyle: 'italic',
+                            mb: 2,
+                            textAlign: 'center',
+                            maxWidth: 600
+                        }}
+                    >
+                        Calculate the average annual returns for all
+                        cryptocurrencies
+                    </Typography>
+                </motion.div>
+                <motion.div
                     className="kMeansField"
-                    onClick={handleCalculatePriceVariances}
-                    variant="contained"
-                    loading={CryptoStore.loading.annualPriceVariances}
-                    disabled={!CryptoStore.loaded.annualMeanReturns}
-                    color="secondary"
-                    size="large"
+                    key={'getCryptoNames'}
+                    initial={framer.cryptoNames ? { x: -1000 } : { x: 0 }}
+                    animate={
+                        framer.cryptoNames
+                            ? { x: 0, opacity: [0, 0.5, 1] }
+                            : { x: 1000, opacity: [1, 0.5, 0] }
+                    }
+                    transition={
+                        framer.cryptoNames
+                            ? {
+                                  ease: 'easeIn',
+                                  duration: 1,
+                                  type: 'spring'
+                              }
+                            : {
+                                  ease: 'easeOut',
+                                  duration: 1,
+                                  type: 'spring'
+                              }
+                    }
                 >
-                    Calculate annual price variances for all crypto prices
-                </LoadingButton>
-                <Typography
-                    variant="subtitle2"
-                    sx={{
-                        fontStyle: 'italic',
-                        mb: 2,
-                        textAlign: 'center',
-                        maxWidth: 600
-                    }}
-                >
-                    Calculate the average annual price variances for all
-                    cryptocurrencies
-                </Typography>
-                <Button
+                    <LoadingButton
+                        className="kMeansField"
+                        onClick={handleCalculatePriceVariances}
+                        variant="contained"
+                        loading={CryptoStore.loading.annualPriceVariances}
+                        disabled={!CryptoStore.loaded.annualMeanReturns}
+                        color="secondary"
+                        size="large"
+                    >
+                        Calculate annual price variances for all crypto prices
+                    </LoadingButton>
+                    <Typography
+                        variant="subtitle2"
+                        sx={{
+                            fontStyle: 'italic',
+                            mb: 2,
+                            textAlign: 'center',
+                            maxWidth: 600
+                        }}
+                    >
+                        Calculate the average annual price variances for all
+                        cryptocurrencies
+                    </Typography>
+                </motion.div>
+                <motion.div
                     className="kMeansField"
-                    onClick={handleCalculateKMeansData}
-                    variant="contained"
-                    disabled={!CryptoStore.loaded.annualPriceVariances}
-                    color="secondary"
-                    size="large"
+                    key={'getCryptoNames'}
+                    initial={framer.cryptoNames ? { x: -1000 } : { x: 0 }}
+                    animate={
+                        framer.cryptoNames
+                            ? { x: 0, opacity: [0, 0.5, 1] }
+                            : { x: 1000, opacity: [1, 0.5, 0] }
+                    }
+                    transition={
+                        framer.cryptoNames
+                            ? {
+                                  ease: 'easeIn',
+                                  duration: 1,
+                                  type: 'spring'
+                              }
+                            : {
+                                  ease: 'easeOut',
+                                  duration: 1,
+                                  type: 'spring'
+                              }
+                    }
                 >
-                    Calculate K-Means Data
-                </Button>
-                <Typography
-                    variant="subtitle2"
-                    sx={{
-                        fontStyle: 'italic',
-                        mb: 2,
-                        textAlign: 'center',
-                        maxWidth: 600
-                    }}
-                >
-                    Formats the data into a usable structure for use with the
-                    K-means algorithm
-                </Typography>
+                    <Button
+                        className="kMeansField"
+                        onClick={handleCalculateKMeansData}
+                        variant="contained"
+                        disabled={!CryptoStore.loaded.annualPriceVariances}
+                        color="secondary"
+                        size="large"
+                    >
+                        Calculate K-Means Data
+                    </Button>
+                    <Typography
+                        variant="subtitle2"
+                        sx={{
+                            fontStyle: 'italic',
+                            mb: 2,
+                            textAlign: 'center',
+                            maxWidth: 600
+                        }}
+                    >
+                        Formats the data into a usable structure for use with
+                        the K-means algorithm
+                    </Typography>
+                </motion.div>
             </div>
         </>
     );

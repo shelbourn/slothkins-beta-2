@@ -7,8 +7,8 @@
     height: 100vh;
 }
 
-.kMeansField {
-    width: 85%;
+.kMeansField button {
+    width: 85vw;
     max-width: 600px;
 }
 
