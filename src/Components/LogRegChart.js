@@ -30,6 +30,10 @@ import { useStore } from '../Stores/StoreFunctions';
 const LogRegChart = () => {
     const { CryptoStore } = useStore();
 
+    /***
+     * Local state
+     */
+
     const [fieldData, setFieldData] = useState({
         lineChart1Value: '',
         lineChart2Value: '',
@@ -37,9 +41,21 @@ const LogRegChart = () => {
     });
     const [chartInfoMessage, setChartInfoMessage] = useState(true);
 
+    /***
+     * navigate - declares the method to enable routing
+     */
+
     const navigate = useNavigate();
 
+    /***
+     * data - data that will be used to draw the graphs
+     */
+
     const data = CryptoStore.logRegressionModeledData.slice();
+
+    /***
+     * dataKeysForSelect - sets the user-selectable values to map to each graph
+     */
 
     const dataKeysForSelect = [
         { dataKey: 'close', description: 'Closing Price' },
@@ -57,6 +73,10 @@ const LogRegChart = () => {
             description: 'Logistic Regression Probability (Buy Signal)'
         }
     ];
+
+    /***
+     * Component handlers
+     */
 
     const handleSelect = (event) => {
         const { name, value } = event.target;
@@ -84,6 +104,11 @@ const LogRegChart = () => {
     const handleConfirmClickaway = () => {
         setChartInfoMessage(false);
     };
+
+    /***
+     * TooltipContent - sets the tooltip and information when the user hovers/clicks on
+     * any area/line in the graphs
+     */
 
     const TooltipContent = ({ payload, active }) => {
         if (active) {

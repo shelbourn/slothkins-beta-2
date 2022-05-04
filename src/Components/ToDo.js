@@ -1,3 +1,9 @@
+/***
+ * Running to-do list for app development tasks
+ * (I decided to leave this in the repository because I intend to continue
+ * developing this app after I graduate)
+ */
+
 //[x] Remove all comments and console logs
 //[x] Clean up CSS / CSS Classes
 //[x] Clean up UI/UX
@@ -17,7 +23,7 @@
 // need to handle this elegantly
 //[x] Add handler/Server endpoint/DB query to POST new crypto data entry (for individual
 // ticker) for AddCryptoPriceData
-//[ ] Add code comments
+//[x] Add code comments
 //[ ] Good site for historical currency data: https://coinmarketcap.com/currencies/bitcoin/historical-data/
 //[ ] Another good site: https://www.tradingview.com/chart/?symbol=CRYPTOCAP%3ATOTAL
 //[x] Change loading prop for KMeans component <LoadingButton />

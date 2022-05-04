@@ -12,6 +12,10 @@ import { useStore } from '../Stores/StoreFunctions.js';
 const LogRegProbFields = () => {
     const { CryptoStore } = useStore();
 
+    /***
+     * Local state
+     */
+
     const [fieldData, setFieldData] = useState({
         rawDate: '',
         formattedDate: '',
@@ -20,7 +24,15 @@ const LogRegProbFields = () => {
     const [isSelected, setIsSelected] = useState(false);
     const [error, setError] = useState(false);
 
+    /***
+     * navigate - declares the method to enable routing
+     */
+
     const navigate = useNavigate();
+
+    /***
+     * Component handlers
+     */
 
     const handleLogRegField = (event) => {
         setError(false);

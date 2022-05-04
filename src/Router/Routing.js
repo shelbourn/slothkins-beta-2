@@ -8,6 +8,10 @@ import AddCryptoPriceData from '../Components/AddCryptoPriceData';
 
 import MainHeader from '../Common/MainHeader';
 
+/***
+ * Declares all app routes and handles routing
+ */
+
 const Routing = () => {
     return (
         <Router>

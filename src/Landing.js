@@ -10,6 +10,10 @@ import './Landing.css';
 function Landing() {
     const navigate = useNavigate();
 
+    /***
+     * Component handler
+     */
+
     const handleGetStarted = () => {
         navigate('/k-means-clustering');
     };

@@ -22,18 +22,20 @@ import './_styles/KMeans.css';
 const KMeans = () => {
     const { CryptoStore } = useStore();
 
+    /***
+     * Local state to handle display of info alert modal
+     */
+
     const [infoMessage, setInfoMessage] = useState(false);
 
     /***
-     * Retrieves all crypto names and hydrates the CryptoStore
+     * Component handlers
      */
+
     const handleCryptoNames = () => {
         getAllCryptoNames();
     };
 
-    /***
-     * Retrieves all crypto prices by ticker and hydrates the CryptoStore
-     */
     const handleCryptoPrices = () => {
         getAllCryptoPriceData();
     };

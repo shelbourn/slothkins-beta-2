@@ -2,6 +2,11 @@ import axios from 'axios';
 
 import { stores } from '../Stores/StoreFunctions';
 
+/***
+ * getAllCryptoNames - retrieves all cryptocurrency names and tickers from
+ * the database asychronously.
+ */
+
 export const getAllCryptoNames = async () => {
     stores.CryptoStore.setIsLoading('cryptoNames', true);
 
@@ -20,6 +25,11 @@ export const getAllCryptoNames = async () => {
         stores.CryptoStore.setIsLoading('cryptoNames', false);
     }
 };
+
+/***
+ * getAllCryptoPriceData - retrieves all cryptocurrency price data from the
+ * database asychronously.
+ */
 
 export const getAllCryptoPriceData = async () => {
     stores.CryptoStore.setIsLoading('cryptoPrices', true);

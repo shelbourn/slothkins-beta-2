@@ -3,7 +3,16 @@ import { std, sqrt } from 'mathjs';
 import ObjectLearning from 'object-learning';
 import Moment from 'moment';
 
+/***
+ * CryptoStore - manages global app state. houses properties, methods, loading state,
+ * etc.
+ */
+
 class CryptoStore {
+    /***
+     * loaded - stores all state for the loaded properties
+     */
+
     loaded = {
         cryptoNames: false,
         cryptoPrices: false,
@@ -19,6 +28,11 @@ class CryptoStore {
         logRegModeledData: false,
         logRegNextDayPrediction: false
     };
+
+    /***
+     * loading - stores all state for the loading properties
+     */
+
     loading = {
         annualMeanReturns: false,
         annualPriceVariances: false,
@@ -31,6 +45,12 @@ class CryptoStore {
         logRegressionTrainingData: false,
         logRegressionModeledData: false
     };
+
+    /***
+     * Other miscellaneous store properties (I used verbose and descriptive names, so it
+     * is rather self-explanatory what they store)
+     */
+
     cryptoNames = [];
     cryptoPrices = {};
     cryptoPercentChange = {};
@@ -88,6 +108,10 @@ class CryptoStore {
         makeAutoObservable(this);
         this.root = root;
     }
+
+    /***
+     * Store methods
+     */
 
     setIsLoaded(arrayOfKeys, bool) {
         arrayOfKeys.forEach((key) => {

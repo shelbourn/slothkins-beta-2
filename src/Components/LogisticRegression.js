@@ -13,11 +13,23 @@ import './_styles/LogisticRegression.css';
 const LogisticRegression = () => {
     const { CryptoStore } = useStore();
 
+    /***
+     * Local state
+     */
+
     const [selectedTicker, setSelectedTicker] = useState('');
+
+    /***
+     * Pre-loads all crypto names so they can be mapped to select list
+     */
 
     useEffect(() => {
         getAllCryptoNames();
     }, []);
+
+    /***
+     * Component handlers
+     */
 
     const handleSelectedTicker = (event) => {
         CryptoStore.setIsLoaded(

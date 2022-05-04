@@ -12,6 +12,10 @@ import './_styles/AddCryptoPriceData.css';
 const AddCryptoPriceData = () => {
     const { CryptoStore } = useStore();
 
+    /***
+     * Local state to manage form fields
+     */
+
     const [fieldData, setFieldData] = useState({
         selectedTicker: '',
         sNo: '',
@@ -27,10 +31,18 @@ const AddCryptoPriceData = () => {
         marketcap: ''
     });
 
+    /***
+     * Local state to manage section loading
+     */
+
     const [loaded, setLoaded] = useState({
         hydrateFields: false,
         hydratedFields: false
     });
+
+    /***
+     * Pre-loads all cryto names so they can be mapped to select list
+     */
 
     useEffect(() => {
         const getCryptoNames = async () => {
@@ -48,6 +60,10 @@ const AddCryptoPriceData = () => {
         };
         getCryptoNames();
     }, []);
+
+    /***
+     * Component handlers
+     */
 
     const handleFetchRawCurrencyData = async () => {
         try {
@@ -95,8 +111,6 @@ const AddCryptoPriceData = () => {
 
         setLoaded({ ...loaded, hydrateFields: true, hydratedFields: true });
     };
-
-    const validateFields = () => {};
 
     const handleSubmitData = async () => {
         try {

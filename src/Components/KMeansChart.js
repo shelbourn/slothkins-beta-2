@@ -31,12 +31,21 @@ import './_styles/KMeansChart.css';
 const KMeansChart = () => {
     const { CryptoStore } = useStore();
 
+    /***
+     * Local state
+     */
+
     const [selectedIterations, setSelectedIterations] = useState('');
     const [deleteFired, setDeleteFired] = useState(false);
     const [cleanFired, setCleanFired] = useState(false);
     const [deleteOrCleanData, setDeleteOrCleanData] = useState('');
     const [confirmMessage, setConfirmMessage] = useState(false);
     const [chartInfoMessage, setChartInfoMessage] = useState(false);
+
+    /***
+     * iterationOptions - iterable that will be mapped to select list for choosing
+     * number of iterations to run
+     */
 
     const iterationOptions = [
         { iterations: 100, storeProp: 'kMeansClusteringIter100' },
@@ -48,6 +57,10 @@ const KMeansChart = () => {
         { iterations: 500000, storeProp: 'kMeansClusteringIter500000' },
         { iterations: 1000000, storeProp: 'kMeansClusteringIter1000000' }
     ];
+
+    /***
+     * Component handlers
+     */
 
     const handleKMeansClusteringIter = (iterations) => () => {
         CryptoStore.setIsLoaded(['kMeansClusteringData'], false);
@@ -123,6 +136,11 @@ const KMeansChart = () => {
     const handleResetData = () => {
         CryptoStore.resetStore();
     };
+
+    /***
+     * TickerName - Formats the tooltip and information displayed when hovering/clicking
+     * on chart datapoints
+     */
 
     const TickerName = ({ payload, active }) => {
         if (active) {
