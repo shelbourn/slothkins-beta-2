@@ -2,6 +2,11 @@ import axios from 'axios';
 
 import { stores } from '../Stores/StoreFunctions';
 
+/***
+ * getDetailedCryptoData - retrieves all cryptocurrency price data for a single
+ * currency asychronously.
+ */
+
 export const getDetailedCryptoData = async (ticker) => {
     stores.CryptoStore.setIsLoading('logRegressionRawData', true);
 

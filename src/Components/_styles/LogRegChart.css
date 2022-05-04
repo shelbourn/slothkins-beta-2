@@ -41,7 +41,7 @@
     font-weight: 600;
 }
 
-.chartFieldContainer {
+.chartFieldContainer > div {
     display: flex;
     justify-content: center;
     margin-top: 32px;
@@ -49,24 +49,47 @@
     column-gap: 30px;
 }
 
-.chartField {
+.chartField > div {
     width: 28%;
     max-width: 350px;
     margin-bottom: 20px !important;
 }
 
-.chartFieldButton {
-    margin: 20px 0 40px !important;
+.chartField > div > div {
+    height: 60px;
+}
+
+.chartField > button {
+    width: 28%;
+    max-width: 350px;
+    margin-top: 20px !important;
+    height: 60px;
+}
+
+.helperTextLogRegChart {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 60px 0;
+}
+
+.helperTextLogRegChart h6 {
+    max-width: 800px;
+    text-align: justify;
+    text-shadow: 1px 1px rgba(92, 107, 192, 0.2);
 }
 
 @media screen and (max-width: 767px) {
-    .chartField {
+    .chartField > div {
         width: 85vw;
         max-width: 400px;
     }
 
-    .chartFieldButton {
+    .chartField > button {
         width: 85vw;
         max-width: 400px;
+    }
+
+    .helperTextLogRegChart h6 {
+        max-width: 85vw;
     }
 }

@@ -11,6 +11,10 @@ import './index.css';
 import Routing from './Router/Routing';
 import { storeContext, stores } from './Stores/StoreFunctions';
 
+/***
+ * theme - global app theming using Material UI
+ */
+
 const theme = createTheme({
     palette: {
         primary: {
@@ -18,6 +22,16 @@ const theme = createTheme({
         },
         secondary: {
             main: '#7E57C2'
+        },
+        tertiary: '#9E9E9E'
+    },
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 600,
+            md: 968,
+            lg: 1200,
+            xl: 1536
         }
     }
 });

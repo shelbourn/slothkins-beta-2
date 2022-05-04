@@ -23,11 +23,23 @@ const MainHeader = () => {
 
     const navigate = useNavigate();
 
+    /***
+     * navPages - contains name and target values for header nav items
+     */
+
     const navPages = [
         { name: 'Home', target: '/' },
         { name: 'K-means Clustering', target: '/k-means-clustering' },
-        { name: 'Logistic Regression Analysis', target: '/logistic-regression' }
+        {
+            name: 'Logistic Regression Analysis',
+            target: '/logistic-regression'
+        },
+        { name: 'Add Currency Data', target: '/add-crypto-price-data' }
     ];
+
+    /***
+     * Component handlers
+     */
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -76,18 +88,20 @@ const MainHeader = () => {
                         sx={{
                             flexGrow: 1,
                             display: { xs: 'flex', md: 'none' },
-                            justifyContent: 'flex-end'
+                            justifyContent: 'flex-end',
+                            alignItems: 'center'
                         }}
                     >
                         <IconButton
                             size="large"
-                            aria-label="account of current user"
+                            aria-label="application menu"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
                             onClick={handleOpenNavMenu}
                             color="inherit"
                         >
-                            <MenuIcon />
+                            <Typography variant="h6">MENU</Typography>
+                            <MenuIcon sx={{ fontSize: '30px', ml: 1 }} />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -132,7 +146,12 @@ const MainHeader = () => {
                                 key={page.name}
                                 onClick={handleSelectNav}
                                 value={page.target}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{
+                                    my: 2,
+                                    color: 'white',
+                                    display: 'block',
+                                    whiteSpace: 'nowrap'
+                                }}
                             >
                                 {page.name}
                             </Button>

@@ -3,7 +3,14 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Landing from '../Landing.js';
 import KMeansContainer from '../Containers/KMeansContainer';
 import LogRegressionContainer from '../Containers/LogRegressionContainer';
+import LogRegProbFields from '../Components/LogRegProbFields';
+import AddCryptoPriceData from '../Components/AddCryptoPriceData';
+
 import MainHeader from '../Common/MainHeader';
+
+/***
+ * Declares all app routes and handles routing
+ */
 
 const Routing = () => {
     return (
@@ -20,6 +27,16 @@ const Routing = () => {
                     path="/logistic-regression"
                     exact
                     element={<LogRegressionContainer />}
+                />
+                <Route
+                    path="/next-day-buy-signal-prediction"
+                    exact
+                    element={<LogRegProbFields />}
+                />
+                <Route
+                    path="/add-crypto-price-data"
+                    exact
+                    element={<AddCryptoPriceData />}
                 />
             </Routes>
         </Router>

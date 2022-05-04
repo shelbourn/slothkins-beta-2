@@ -1,13 +1,64 @@
-.fieldContainer {
+.componentContainer {
+    margin: 100px 0 !important;
+}
+
+.fieldContainer > div {
     display: flex;
     justify-content: center;
-    margin-top: 32px;
     flex-direction: column;
     align-items: center;
 }
 
-.field {
-    width: 85%;
+.field > div {
+    width: 85vw;
     max-width: 600px;
-    margin-bottom: 20px !important;
+    margin-bottom: 30px !important;
+}
+
+.field > div > div {
+    height: 60px;
+}
+
+.field > button {
+    width: 85vw;
+    max-width: 600px;
+    margin-bottom: 30px !important;
+    height: 60px;
+}
+
+.actionButtonContainer {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+    column-gap: 30px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.actionButton > button {
+    width: 285px;
+    height: 60px !important;
+    margin-top: 20px !important;
+}
+
+.helperText {
+    display: flex;
+    justify-content: center;
+}
+
+.helperText h6 {
+    max-width: 800px;
+    text-align: justify;
+    text-shadow: 1px 1px rgba(92, 107, 192, 0.2);
+}
+
+@media screen and (max-width: 767px) {
+    .actionButton > button {
+        width: 85vw !important;
+        max-width: 400px;
+    }
+
+    .helperText h6 {
+        max-width: 85vw;
+    }
 }

@@ -1,19 +1,42 @@
+.kMeansComponentContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 100px 0;
+}
+
 .kMeansFieldContainer {
     display: flex;
     justify-content: center;
-    margin-top: 32px;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
 }
 
-.kMeansField {
-    width: 85%;
+.kMeansField button {
+    width: 85vw;
     max-width: 600px;
+    height: 60px;
+}
+
+.helperTextKMeans {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.helperTextKMeans h6 {
+    max-width: 800px;
+    text-align: justify;
+    text-shadow: 1px 1px rgba(92, 107, 192, 0.2);
 }
 
 @media screen and (max-width: 767px) {
     .kMeansFieldContainer h6 {
+        max-width: 85vw;
+    }
+
+    .helperTextKMeans h6 {
         max-width: 85vw;
     }
 }

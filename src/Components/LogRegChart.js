@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     LineChart,
     Line,
@@ -17,8 +18,10 @@ import {
     Button,
     Snackbar,
     Alert,
-    Backdrop
+    Backdrop,
+    Typography
 } from '@mui/material';
+import { motion } from 'framer-motion';
 
 import './_styles/LogRegChart.css';
 
@@ -27,6 +30,10 @@ import { useStore } from '../Stores/StoreFunctions';
 const LogRegChart = () => {
     const { CryptoStore } = useStore();
 
+    /***
+     * Local state
+     */
+
     const [fieldData, setFieldData] = useState({
         lineChart1Value: '',
         lineChart2Value: '',
@@ -34,7 +41,21 @@ const LogRegChart = () => {
     });
     const [chartInfoMessage, setChartInfoMessage] = useState(true);
 
+    /***
+     * navigate - declares the method to enable routing
+     */
+
+    const navigate = useNavigate();
+
+    /***
+     * data - data that will be used to draw the graphs
+     */
+
     const data = CryptoStore.logRegressionModeledData.slice();
+
+    /***
+     * dataKeysForSelect - sets the user-selectable values to map to each graph
+     */
 
     const dataKeysForSelect = [
         { dataKey: 'close', description: 'Closing Price' },
@@ -52,6 +73,10 @@ const LogRegChart = () => {
             description: 'Logistic Regression Probability (Buy Signal)'
         }
     ];
+
+    /***
+     * Component handlers
+     */
 
     const handleSelect = (event) => {
         const { name, value } = event.target;
@@ -72,9 +97,18 @@ const LogRegChart = () => {
         );
     };
 
+    const handleNextDayBuySignal = () => {
+        navigate('/next-day-buy-signal-prediction');
+    };
+
     const handleConfirmClickaway = () => {
         setChartInfoMessage(false);
     };
+
+    /***
+     * TooltipContent - sets the tooltip and information when the user hovers/clicks on
+     * any area/line in the graphs
+     */
 
     const TooltipContent = ({ payload, active }) => {
         if (active) {
@@ -241,76 +275,136 @@ const LogRegChart = () => {
                 </ResponsiveContainer>
             </div>
             <div className="chartFieldContainer">
-                <TextField
+                <motion.div
                     className="chartField"
-                    variant="outlined"
-                    select
-                    id="log-reg-line-chart-1"
-                    name="lineChart1Value"
-                    value={fieldData.lineChart1Value}
-                    onChange={handleSelect}
-                    label="Line Chart 1 Value"
-                    helperText="Please select a value for the first line chart"
-                    color="primary"
-                    defaultValue=""
-                    disabled={!CryptoStore.loaded.logRegModeledData}
+                    key={'logRegChart'}
+                    initial={{
+                        x: -1000
+                    }}
+                    animate={{ x: 0, opacity: [0, 0.5, 1] }}
+                    transition={{
+                        ease: 'easeIn',
+                        duration: 1,
+                        type: 'spring'
+                    }}
                 >
-                    {dataKeysForSelect.map((el, i) => (
-                        <MenuItem value={el.dataKey} key={`${el.dataKey}-${i}`}>
-                            {el.description}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField
-                    className="chartField"
-                    variant="outlined"
-                    select
-                    id="log-reg-line-chart-2"
-                    name="lineChart2Value"
-                    value={fieldData.lineChart2Value}
-                    onChange={handleSelect}
-                    label="Line Chart 1 Value"
-                    helperText="Please select a value for the first line chart"
-                    color="primary"
-                    defaultValue=""
-                    disabled={!CryptoStore.loaded.logRegModeledData}
-                >
-                    {dataKeysForSelect.map((el, i) => (
-                        <MenuItem value={el.dataKey} key={`${el.dataKey}-${i}`}>
-                            {el.description}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField
-                    className="chartField"
-                    variant="outlined"
-                    select
-                    id="log-reg-area-chart"
-                    name="areaChartValue"
-                    value={fieldData.areaChartValue}
-                    onChange={handleSelect}
-                    label="Area Chart Value"
-                    helperText="Select a value for the area chart"
-                    color="primary"
-                    defaultValue=""
-                    disabled={!CryptoStore.loaded.logRegModeledData}
-                >
-                    {dataKeysForSelect.map((el, i) => (
-                        <MenuItem value={el.dataKey} key={`${el.dataKey}-${i}`}>
-                            {el.description}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <Button
-                    onClick={handleCurrencyButton}
-                    color="secondary"
-                    variant="contained"
-                    className="chartFieldButton"
-                    size="large"
-                >
-                    Select a Different Currency
-                </Button>
+                    <TextField
+                        variant="outlined"
+                        select
+                        id="log-reg-line-chart-1"
+                        name="lineChart1Value"
+                        value={fieldData.lineChart1Value}
+                        onChange={handleSelect}
+                        label="Line Chart 1 Value"
+                        helperText="Please select a value for the first line chart"
+                        color="primary"
+                        defaultValue=""
+                        disabled={!CryptoStore.loaded.logRegModeledData}
+                    >
+                        {dataKeysForSelect.map((el, i) => (
+                            <MenuItem
+                                value={el.dataKey}
+                                key={`${el.dataKey}-${i}`}
+                            >
+                                {el.description}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        variant="outlined"
+                        select
+                        id="log-reg-line-chart-2"
+                        name="lineChart2Value"
+                        value={fieldData.lineChart2Value}
+                        onChange={handleSelect}
+                        label="Line Chart 1 Value"
+                        helperText="Please select a value for the first line chart"
+                        color="primary"
+                        defaultValue=""
+                        disabled={!CryptoStore.loaded.logRegModeledData}
+                    >
+                        {dataKeysForSelect.map((el, i) => (
+                            <MenuItem
+                                value={el.dataKey}
+                                key={`${el.dataKey}-${i}`}
+                            >
+                                {el.description}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        variant="outlined"
+                        select
+                        id="log-reg-area-chart"
+                        name="areaChartValue"
+                        value={fieldData.areaChartValue}
+                        onChange={handleSelect}
+                        label="Area Chart Value"
+                        helperText="Select a value for the area chart"
+                        color="primary"
+                        defaultValue=""
+                        disabled={!CryptoStore.loaded.logRegModeledData}
+                    >
+                        {dataKeysForSelect.map((el, i) => (
+                            <MenuItem
+                                value={el.dataKey}
+                                key={`${el.dataKey}-${i}`}
+                            >
+                                {el.description}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <Button
+                        onClick={handleCurrencyButton}
+                        color="secondary"
+                        variant="contained"
+                        size="large"
+                    >
+                        Select a Different Currency
+                    </Button>
+                    <Button
+                        onClick={handleNextDayBuySignal}
+                        color="primary"
+                        variant="contained"
+                        size="large"
+                    >
+                        Calculate Next Day Buy Signal Probability
+                    </Button>
+                </motion.div>
             </div>
+            <motion.div
+                className="helperTextLogRegChart"
+                key={'helperTextLogRegChart'}
+                initial={{
+                    y: 1000
+                }}
+                animate={{ y: 0, opacity: [0, 0.5, 1] }}
+                transition={{
+                    ease: 'easeIn',
+                    duration: 1.5,
+                    type: 'spring',
+                    delay: 2
+                }}
+            >
+                <Typography variant="h6" color="tertiary">
+                    On this page you will find three synchronized charts. You
+                    are able to hover/click on any data point on each graph to
+                    see additional information. Also, you can limit the date
+                    range of the charts by dragging either end of the slider
+                    beneath the middle chart. You are also able to modify which
+                    variables are mapped to each of the individual charts.
+                    <br />
+                    <br /> The "Logistic Regression Probability" is the value
+                    that was calculated by the algorithm and indicates the
+                    probability of a "buy" signal on the following day. Spikes
+                    in the Logisitic Regression Probability are strong
+                    indicators that the closing price of the currency will be
+                    higher on the following day. Troughs in the Logistic
+                    Regression Probability indicate the opposite, meaning that
+                    there is a strong possibility that the closing price of the
+                    currency will be lower on the following day.
+                </Typography>
+            </motion.div>
         </>
     );
 };

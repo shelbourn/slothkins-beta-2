@@ -1,13 +1,63 @@
 .regProbFieldContainer {
     display: flex;
     justify-content: center;
-    margin-top: 32px;
     flex-direction: column;
     align-items: center;
 }
 
-.regProbField {
-    width: 85%;
+.regProbFieldContainer:first-of-type {
+    margin: 100px 0;
+}
+
+.regProbFieldContainer:last-of-type {
+    margin: 100px 0;
+}
+
+.regProbFieldContainer > div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.regProbField > div {
+    width: 85vw;
     max-width: 600px;
     margin-bottom: 20px !important;
+}
+
+.regProbField > div > div {
+    height: 60px;
+}
+
+.regProbField > button {
+    width: 85vw;
+    max-width: 600px;
+    margin-bottom: 20px !important;
+    height: 60px;
+}
+
+.goBackButton {
+    width: 85vw;
+    max-width: 600px;
+    height: 60px;
+    margin-top: 40px !important;
+}
+
+.helperTextLogRegProbFields {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 60px 0;
+}
+
+.helperTextLogRegProbFields h6 {
+    max-width: 800px;
+    text-align: justify;
+    text-shadow: 1px 1px rgba(92, 107, 192, 0.2);
+}
+
+@media screen and (max-width: 767px) {
+    .helperTextLogRegProbFields h6 {
+        max-width: 85vw;
+    }
 }
