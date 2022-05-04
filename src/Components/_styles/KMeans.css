@@ -3,7 +3,7 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    margin: 40px 0;
+    margin: 60px 0;
 }
 
 .kMeansFieldContainer {
@@ -27,6 +27,8 @@
 
 .helperTextKMeans h6 {
     max-width: 800px;
+    text-align: justify;
+    text-shadow: 1px 1px rgba(92, 107, 192, 0.2);
 }
 
 @media screen and (max-width: 767px) {

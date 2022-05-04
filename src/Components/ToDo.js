@@ -22,5 +22,5 @@
 //[ ] Another good site: https://www.tradingview.com/chart/?symbol=CRYPTOCAP%3ATOTAL
 //[x] Change loading prop for KMeans component <LoadingButton />
 //[x] Add site header with nav
-//[ ] Add helper text to LogRegProbFields.js
-//[ ] Add helper text to KMeansChart.js
+//[x] Add helper text to LogRegProbFields.js
+//[x] Add helper text to KMeansChart.js

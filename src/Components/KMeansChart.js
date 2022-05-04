@@ -19,7 +19,8 @@ import {
     Snackbar,
     Alert,
     Backdrop,
-    Typography
+    Typography,
+    Link
 } from '@mui/material';
 import { motion } from 'framer-motion';
 
@@ -406,6 +407,52 @@ const KMeansChart = () => {
                     >
                         Resets the data and navigates you back to the previous
                         page
+                    </Typography>
+                </motion.div>
+                <motion.div
+                    className="helperTextKMeansChart"
+                    key={'helperTextKMeansChart'}
+                    initial={{
+                        y: 1000
+                    }}
+                    animate={{ y: 0, opacity: [0, 0.5, 1] }}
+                    transition={{
+                        ease: 'easeIn',
+                        duration: 1.5,
+                        type: 'spring',
+                        delay: 2
+                    }}
+                >
+                    <Typography variant="h6" color="tertiary">
+                        The charts above displays a scatter plot of the k-means
+                        cluster points based on the number of iterations you
+                        selected. The lighter colors represent the currencies
+                        belonging to a specific cluster. While the darker colors
+                        represent the cluster centroids (central points of a
+                        cluster).
+                        <br />
+                        <br /> You can hover/click on any of the datapoints
+                        (currencies or centroids) to view additional
+                        information. You may also use the buttons above to
+                        delete outliers and/or clean the data to make the mapped
+                        clusters more usable and readable.
+                        <br />
+                        <br /> The intended use of k-means clustering for this
+                        application is to classify the different
+                        cryptocurrencies based on risk. There are five risk
+                        groups ranging from low risk to high risk, each are
+                        color-coded. With this information, you may build a
+                        portfolio of cryptocurrencies based on your risk
+                        tolerance. Then you may perform further analysis on your
+                        selected currencies using the{' '}
+                        <Link
+                            color="primary"
+                            href="/logistic-regression"
+                            underline="hover"
+                        >
+                            logistic regression tools
+                        </Link>
+                        .
                     </Typography>
                 </motion.div>
             </div>

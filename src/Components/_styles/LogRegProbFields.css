@@ -33,3 +33,21 @@
     height: 60px;
     margin-top: 40px !important;
 }
+
+.helperTextLogRegProbFields {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 60px 0;
+}
+
+.helperTextLogRegProbFields h6 {
+    max-width: 800px;
+    text-align: justify;
+    text-shadow: 1px 1px rgba(92, 107, 192, 0.2);
+}
+
+@media screen and (max-width: 767px) {
+    .helperTextLogRegProbFields h6 {
+        max-width: 85vw;
+    }
+}

@@ -49,8 +49,6 @@ const LogisticRegression = () => {
         CryptoStore.setLogRegressionModeledData();
     };
 
-    // console.log(JSON.parse(JSON.stringify(CryptoStore.logRegressionRawData)));
-
     return (
         <div className="logRegFieldContainer">
             <motion.div

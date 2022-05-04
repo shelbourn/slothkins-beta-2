@@ -40,8 +40,27 @@
     gap: 30px;
 }
 
+.helperTextKMeansChart {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 60px 0;
+}
+
+.helperTextKMeansChart h6 {
+    max-width: 800px;
+    text-align: justify;
+    text-shadow: 1px 1px rgba(92, 107, 192, 0.2);
+}
+
+@media screen and (max-width: 767px) {
+}
+
 @media screen and (max-width: 767px) {
     .kMeansChartFieldContainer > h6 {
+        max-width: 85vw;
+    }
+
+    .helperTextKMeansChart h6 {
         max-width: 85vw;
     }
 }

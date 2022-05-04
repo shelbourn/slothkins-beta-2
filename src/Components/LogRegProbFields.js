@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { TextField, InputAdornment, Button } from '@mui/material';
+import { TextField, InputAdornment, Button, Typography } from '@mui/material';
 import Moment from 'moment';
 import { motion } from 'framer-motion';
 
@@ -64,7 +64,6 @@ const LogRegProbFields = () => {
     };
 
     const handleCalculateProbPrediction = () => {
-        //Validate Fields
         if (!fieldData.openPrice || isNaN(fieldData.openPrice)) {
             setError(true);
             return;
@@ -209,6 +208,33 @@ const LogRegProbFields = () => {
             >
                 Go Back
             </Button>
+            <motion.div
+                className="helperTextLogRegProbFields"
+                key={'helperTextLogRegProbFields'}
+                initial={{
+                    y: 1000
+                }}
+                animate={{ y: 0, opacity: [0, 0.5, 1] }}
+                transition={{
+                    ease: 'easeIn',
+                    duration: 1.5,
+                    type: 'spring',
+                    delay: 2
+                }}
+            >
+                <Typography variant="h6" color="tertiary">
+                    Use this form to calculate the probability of a "buy" or
+                    "sell" signal for the following trading day, which is based
+                    on the output of the logistic regression algorithm.
+                    <br />
+                    <br /> After you enter data into all fields (fictional or
+                    real), the logistic regression probability will be
+                    displayed. To interpret this output, values closer to 1
+                    indicate a strong "buy" signal for the following trading
+                    day. Values closer to 0 indicate strong "sell" signal for
+                    the following trading day.
+                </Typography>
+            </motion.div>
         </div>
     );
 };
