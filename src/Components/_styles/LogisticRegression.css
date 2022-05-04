@@ -6,9 +6,12 @@
     margin: 100px 0;
 }
 
-.logRegField div {
+.logRegField > div {
     width: 85vw;
     max-width: 600px;
+}
+
+.logRegField > div > div {
     height: 60px;
 }
 

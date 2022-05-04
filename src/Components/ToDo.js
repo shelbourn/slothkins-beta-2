@@ -1,4 +1,4 @@
-//[ ] Remove all comments and console logs
+//[x] Remove all comments and console logs
 //[x] Clean up CSS / CSS Classes
 //[x] Clean up UI/UX
 //[x] Add handler to calculate Log Reg Prob based on Open price *** DONE ***

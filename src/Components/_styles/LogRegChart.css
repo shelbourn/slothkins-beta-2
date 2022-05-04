@@ -53,6 +53,9 @@
     width: 28%;
     max-width: 350px;
     margin-bottom: 20px !important;
+}
+
+.chartField > div > div {
     height: 60px;
 }
 

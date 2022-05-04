@@ -13,6 +13,9 @@
     width: 85vw;
     max-width: 600px;
     margin-bottom: 30px !important;
+}
+
+.field > div > div {
     height: 60px;
 }
 
