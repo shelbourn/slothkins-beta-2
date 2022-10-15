@@ -234,7 +234,7 @@ const LogRegProbFields = () => {
                     delay: 2
                 }}
             >
-                <Typography variant="h6" color="tertiary">
+                <Typography variant="h6" color="info">
                     Use this form to calculate the probability of a "buy" or
                     "sell" signal for the following trading day, which is based
                     on the output of the logistic regression algorithm.
