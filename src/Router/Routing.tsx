@@ -12,7 +12,7 @@ import MainHeader from '../Common/MainHeader';
  * Declares all app routes and handles routing
  */
 
-const Routing = (): JSX.Element => {
+const Routing = () => {
     return (
         <Router>
             <MainHeader />
