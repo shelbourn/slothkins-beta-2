@@ -441,7 +441,7 @@ const KMeansChart = () => {
                         delay: 2
                     }}
                 >
-                    <Typography variant="h6" color="tertiary">
+                    <Typography variant="h6" color="info">
                         The charts above displays a scatter plot of the k-means
                         cluster points based on the number of iterations you
                         selected. The lighter colors represent the currencies

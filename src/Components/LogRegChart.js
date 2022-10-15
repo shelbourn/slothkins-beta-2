@@ -386,7 +386,7 @@ const LogRegChart = () => {
                     delay: 2
                 }}
             >
-                <Typography variant="h6" color="tertiary">
+                <Typography variant="h6" color="info">
                     On this page you will find three synchronized charts. You
                     are able to hover/click on any data point on each graph to
                     see additional information. Also, you can limit the date

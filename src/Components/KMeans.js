@@ -447,7 +447,7 @@ const KMeans = () => {
                         delay: 2
                     }}
                 >
-                    <Typography variant="h6" color="tertiary">
+                    <Typography variant="h6" color="info">
                         On this page you will follow the process flow for
                         retrieving cryptocurrency data from the database,
                         performing operations on the data to make it usable,
