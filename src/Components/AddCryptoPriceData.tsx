@@ -9,14 +9,34 @@ import { useStore } from '../Stores/StoreFunctions';
 
 import './_styles/AddCryptoPriceData.css';
 
-const AddCryptoPriceData = () => {
+interface FieldData {
+    selectedTicker: string;
+    sNo: string | number;
+    name: string;
+    symbol: string;
+    rawDate: string;
+    date: string;
+    high: string;
+    low: string;
+    open: string;
+    close: string;
+    volume: string;
+    marketcap: string;
+}
+
+interface LoadedState {
+    hydrateFields: boolean;
+    hydratedFields: boolean;
+}
+
+const AddCryptoPriceData = (): JSX.Element => {
     const { CryptoStore } = useStore();
 
     /***
      * Local state to manage form fields
      */
 
-    const [fieldData, setFieldData] = useState({
+    const [fieldData, setFieldData] = useState<FieldData>({
         selectedTicker: '',
         sNo: '',
         name: '',
@@ -35,7 +55,7 @@ const AddCryptoPriceData = () => {
      * Local state to manage section loading
      */
 
-    const [loaded, setLoaded] = useState({
+    const [loaded, setLoaded] = useState<LoadedState>({
         hydrateFields: false,
         hydratedFields: false
     });
@@ -167,8 +187,11 @@ const AddCryptoPriceData = () => {
                     }}
                     animate={{ x: 0, opacity: [0, 0.5, 1] }}
                     transition={{
+                        // @ts-ignore
                         ease: 'easeIn',
+                        // @ts-ignore
                         duration: 1,
+                        // @ts-ignore
                         type: 'spring'
                     }}
                 >
@@ -200,8 +223,11 @@ const AddCryptoPriceData = () => {
                         }}
                         animate={{ x: 0, opacity: [0, 0.5, 1] }}
                         transition={{
+                            // @ts-ignore
                             ease: 'easeIn',
+                            // @ts-ignore
                             duration: 1,
+                            // @ts-ignore
                             type: 'spring'
                         }}
                     >
@@ -227,8 +253,11 @@ const AddCryptoPriceData = () => {
                             }}
                             animate={{ x: 0, opacity: [0, 0.5, 1] }}
                             transition={{
+                                // @ts-ignore
                                 ease: 'easeIn',
+                                // @ts-ignore
                                 duration: 1,
+                                // @ts-ignore
                                 type: 'spring'
                             }}
                         >
@@ -258,8 +287,11 @@ const AddCryptoPriceData = () => {
                             }}
                             animate={{ x: 0, opacity: [0, 0.5, 1] }}
                             transition={{
+                                // @ts-ignore
                                 ease: 'easeIn',
+                                // @ts-ignore
                                 duration: 1,
+                                // @ts-ignore
                                 type: 'spring'
                             }}
                         >
@@ -385,8 +417,11 @@ const AddCryptoPriceData = () => {
                             }}
                             animate={{ x: 0, opacity: [0, 0.5, 1] }}
                             transition={{
+                                // @ts-ignore
                                 ease: 'easeIn',
+                                // @ts-ignore
                                 duration: 1,
+                                // @ts-ignore
                                 type: 'spring'
                             }}
                         >
@@ -408,8 +443,11 @@ const AddCryptoPriceData = () => {
                             }}
                             animate={{ x: 0, opacity: [0, 0.5, 1] }}
                             transition={{
+                                // @ts-ignore
                                 ease: 'easeIn',
+                                // @ts-ignore
                                 duration: 1,
+                                // @ts-ignore
                                 type: 'spring'
                             }}
                         >
@@ -434,13 +472,16 @@ const AddCryptoPriceData = () => {
                 }}
                 animate={{ y: 0, opacity: [0, 0.5, 1] }}
                 transition={{
+                    // @ts-ignore
                     ease: 'easeIn',
+                    // @ts-ignore
                     duration: 1.5,
+                    // @ts-ignore
                     type: 'spring',
                     delay: 2
                 }}
             >
-                <Typography variant="h6" color="tertiary">
+                <Typography variant="h6" color="info">
                     Use this form to add new price data to the database. Once
                     you have added the data, it will factor into the
                     application's calculations. A good site to obtain historical

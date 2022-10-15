@@ -16,7 +16,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useStore } from '../Stores/StoreFunctions';
 import Sloth from '../Assets/sloth-icon-header.png';
 
-const MainHeader = () => {
+const MainHeader = (): JSX.Element => {
     const { CryptoStore } = useStore();
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -62,6 +62,7 @@ const MainHeader = () => {
     };
     return (
         <AppBar position="sticky">
+            {/* @ts-ignore */}
             <Container maxWidth="x2">
                 <Toolbar disableGutters>
                     <img
