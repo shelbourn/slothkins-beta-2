@@ -1,13 +1,14 @@
+import React from 'react';
+import { motion } from 'framer-motion';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
-import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router';
 
 import Sloth from './Assets/sloth-icon-landing.png';
 
 import './Landing.css';
 
-function Landing() {
+const Landing = (): JSX.Element => {
     const navigate = useNavigate();
 
     /***
@@ -29,9 +30,13 @@ function Landing() {
                         y: -1000
                     }}
                     animate={{ y: 0, opacity: [0, 0.5, 1] }}
+                    // It seems that Framer Motion has limited typing support at the moment
                     transition={{
+                        // @ts-ignore
                         ease: 'easeIn',
+                        // @ts-ignore
                         duration: 1,
+                        // @ts-ignore
                         type: 'spring',
                         delay: 0.5
                     }}
@@ -55,8 +60,11 @@ function Landing() {
                     }}
                     animate={{ y: 0, opacity: [0, 0.5, 1] }}
                     transition={{
+                        // @ts-ignore
                         ease: 'easeIn',
+                        // @ts-ignore
                         duration: 1,
+                        // @ts-ignore
                         type: 'spring',
                         delay: 2
                     }}
@@ -87,6 +95,6 @@ function Landing() {
             </header>
         </div>
     );
-}
+};
 
 export default Landing;

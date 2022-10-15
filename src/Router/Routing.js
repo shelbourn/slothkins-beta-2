@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Landing from '../Landing.js';
+import Landing from '../Landing.tsx';
 import KMeansContainer from '../Containers/KMeansContainer';
 import LogRegressionContainer from '../Containers/LogRegressionContainer';
 import LogRegProbFields from '../Components/LogRegProbFields';
