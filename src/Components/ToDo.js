@@ -30,3 +30,4 @@
 //[x] Add site header with nav
 //[x] Add helper text to LogRegProbFields.js
 //[x] Add helper text to KMeansChart.js
+// [ ] Add index files to all directories
