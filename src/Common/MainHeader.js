@@ -16,7 +16,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useStore } from '../Stores/StoreFunctions';
 import Sloth from '../Assets/sloth-icon-header.png';
 
-const MainHeader = (): JSX.Element => {
+const MainHeader = () => {
     const { CryptoStore } = useStore();
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
