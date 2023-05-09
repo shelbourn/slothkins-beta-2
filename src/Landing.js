@@ -8,7 +8,7 @@ import Sloth from './Assets/sloth-icon-landing.png';
 
 import './Landing.css';
 
-const Landing = (): JSX.Element => {
+const Landing = () => {
     const navigate = useNavigate();
 
     /***

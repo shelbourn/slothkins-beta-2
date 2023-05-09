@@ -9,34 +9,14 @@ import { useStore } from '../Stores/StoreFunctions';
 
 import './_styles/AddCryptoPriceData.css';
 
-interface FieldData {
-    selectedTicker: string;
-    sNo: string | number;
-    name: string;
-    symbol: string;
-    rawDate: string;
-    date: string;
-    high: string;
-    low: string;
-    open: string;
-    close: string;
-    volume: string;
-    marketcap: string;
-}
-
-interface LoadedState {
-    hydrateFields: boolean;
-    hydratedFields: boolean;
-}
-
-const AddCryptoPriceData = (): JSX.Element => {
+const AddCryptoPriceData = () => {
     const { CryptoStore } = useStore();
 
     /***
      * Local state to manage form fields
      */
 
-    const [fieldData, setFieldData] = useState<FieldData>({
+    const [fieldData, setFieldData] = useState({
         selectedTicker: '',
         sNo: '',
         name: '',
@@ -55,7 +35,7 @@ const AddCryptoPriceData = (): JSX.Element => {
      * Local state to manage section loading
      */
 
-    const [loaded, setLoaded] = useState<LoadedState>({
+    const [loaded, setLoaded] = useState({
         hydrateFields: false,
         hydratedFields: false
     });
@@ -214,34 +194,35 @@ const AddCryptoPriceData = (): JSX.Element => {
                         ))}
                     </TextField>
                 </motion.div>
-                {fieldData.selectedTicker && !CryptoStore.loaded.logRegRawData && (
-                    <motion.div
-                        className="field"
-                        key={'fetchData'}
-                        initial={{
-                            x: -1000
-                        }}
-                        animate={{ x: 0, opacity: [0, 0.5, 1] }}
-                        transition={{
-                            // @ts-ignore
-                            ease: 'easeIn',
-                            // @ts-ignore
-                            duration: 1,
-                            // @ts-ignore
-                            type: 'spring'
-                        }}
-                    >
-                        <Button
-                            variant="contained"
-                            onClick={handleFetchRawCurrencyData}
-                            disabled={!fieldData.selectedTicker}
-                            color="secondary"
-                            size="large"
+                {fieldData.selectedTicker &&
+                    !CryptoStore.loaded.logRegRawData && (
+                        <motion.div
+                            className="field"
+                            key={'fetchData'}
+                            initial={{
+                                x: -1000
+                            }}
+                            animate={{ x: 0, opacity: [0, 0.5, 1] }}
+                            transition={{
+                                // @ts-ignore
+                                ease: 'easeIn',
+                                // @ts-ignore
+                                duration: 1,
+                                // @ts-ignore
+                                type: 'spring'
+                            }}
                         >
-                            Fetch Currency Data for Selected Ticker
-                        </Button>
-                    </motion.div>
-                )}
+                            <Button
+                                variant="contained"
+                                onClick={handleFetchRawCurrencyData}
+                                disabled={!fieldData.selectedTicker}
+                                color="secondary"
+                                size="large"
+                            >
+                                Fetch Currency Data for Selected Ticker
+                            </Button>
+                        </motion.div>
+                    )}
                 {fieldData.selectedTicker &&
                     CryptoStore.loaded.logRegRawData &&
                     !loaded.hydrateFields && (
