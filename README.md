@@ -6,3 +6,5 @@ _This README is a work in progress so please bear with me_
 
 Slothkins is a machine learning enabled cryptocurrency analysis and prediction
 tool using various algorithms
+
+<!-- TESTING NODE VERSION UPGRADE -->
