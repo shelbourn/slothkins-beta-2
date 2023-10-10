@@ -10,6 +10,14 @@ tool using various algorithms
 
 ## How does Slothkins work?
 
+-   Datasets
+-   Data ingestion
+-   Algorithms used
+-   Data output
+-   Data analysis
+-   Dynamic visualizations with accompanied analysis
+-   Dynamic input adjustments for predictions
+
 ## What can Slothkins do?
 
 ## How do I use Slothkins?
